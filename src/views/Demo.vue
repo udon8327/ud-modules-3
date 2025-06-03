@@ -1,8 +1,14 @@
 <template lang="pug">
 #demo
+  .test-area
+    //- .btn-wrapper
+    //-   ud-button(@click="clearVerify" plain) 清除驗證
+    //-   ud-button(@click="submitVerify") 送出表單
+    ud-button(@click="test" throttle) TEST
+
   ud-form(:rules="rules" :model="formData" ref="form")
     ud-form-item(label="姓名" prop="name" flex)
-      ud-input(placeholder="請輸入您的姓名" v-model="formData.name")
+      ud-input(placeholder="請輸入您的姓名" v-model="formData.name" @keydown="onInput" maxlength="10")
     ud-form-item(label="備註" prop="note" flex)
       ud-textarea(placeholder="請輸入您的備註" v-model="formData.note" show-limit :limit="10" no-resize)
     ud-form-item(label="年齡" prop="age" flex) 
@@ -139,7 +145,10 @@ export default {
   mounted() {
   },
   methods: {
-    getRandom() {
+    onInput(e) {
+      console.log('e: ', e);
+    },
+    test() {
       console.log(this.getRandom());
     },
     formSubmit() {
