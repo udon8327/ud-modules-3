@@ -143,6 +143,7 @@ export default {
     };
   },
   mounted() {
+    alert(import.meta.env.VITE_APP_LINE_LIFF_ID);
   },
   methods: {
     onInput(e) {

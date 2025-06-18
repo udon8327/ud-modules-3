@@ -5,7 +5,7 @@ import { udAlert } from "@/components/ud-ui";
 const liffLogin = (callback) => {
   liff
     .init({
-      liffId: process.env.VUE_APP_LINE_LIFF_ID,
+      liffId: import.meta.env.VITE_APP_LINE_LIFF_ID,
     })
     .then(() => {
       // 檢查是否登入
@@ -42,7 +42,7 @@ const liffLogin = (callback) => {
           } else {
             sessionStorage.setItem("loginRedirectUrl", location.href);
             location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${
-              process.env.VUE_APP_LINE_LOGIN_CHANNEL_ID
+              import.meta.env.VITE_APP_LINE_LOGIN_CHANNEL_ID
             }&redirect_uri=${encodeURIComponent(
               location.origin + "/cb-web"
             )}&scope=profile%20openid%20phone%20email&bot_prompt=aggressive&prompt=consent&state=${Date.now()}`;

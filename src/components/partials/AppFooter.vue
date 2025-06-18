@@ -12,7 +12,7 @@ export default {
   },
   computed: {
     brandName() {
-      return process.env.VUE_APP_BRAND_NAME;
+      return import.meta.env.VITE_API_BRAND_NAME;
     },
   },
   mounted() {},
