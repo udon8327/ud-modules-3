@@ -16,7 +16,7 @@ export default defineConfig(async ({ command, mode }) => {
   const devPort = isDev ? await portfinder.getPortPromise({ port: basePort }) : basePort
 
   // https 設定
-  const httpsConfig = useHttps
+  const httpsConfig = isDev && useHttps
     ? {
         key: fs.readFileSync(env.VITE_APP_DEV_SSL_KEY),
         cert: fs.readFileSync(env.VITE_APP_DEV_SSL_CERT),
@@ -24,7 +24,7 @@ export default defineConfig(async ({ command, mode }) => {
     : false
 
   // proxy 設定
-  const proxyConfig = useProxy
+  const proxyConfig = isDev && useProxy
     ? {
         '/api': {
           target: env.VITE_APP_DEV_PROXY,
@@ -42,14 +42,12 @@ export default defineConfig(async ({ command, mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
-    server: isDev
-      ? {
-          host: env.VITE_APP_DEV_HOST || 'localhost',
-          https: httpsConfig,
-          proxy: proxyConfig,
-          port: devPort,
-        }
-      : {},
+    server: {
+      host: env.VITE_APP_DEV_HOST || 'localhost',
+      https: httpsConfig,
+      proxy: proxyConfig,
+      port: devPort,
+    },
     build: {
       outDir: env.VITE_APP_OUTPUT_DIR || 'dist',
       sourcemap: mode === 'development',
