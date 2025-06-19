@@ -15,7 +15,7 @@
     ud-form-item(label="多選" prop="checkbox" flex)
       ud-checkbox(v-model="formData.checkbox" :options="options" flex @change="onChange" @blur="onBlur" @focus="onFocus")
     ud-form-item(label="下拉" prop="select" flex)
-      ud-select(v-model="formData.select" :options="options" flex center)
+      ud-select(v-model="formData.select" :options="options" flex)
     ud-form-item(label="下拉連動" prop="selectLink" flex)
       .d-flex
         ud-select(v-model="formData.selectLink[0]" :options="storeOptions" :group="formData.selectLink" :index="0" placeholder="請選擇縣市")
