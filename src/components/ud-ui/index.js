@@ -1,26 +1,22 @@
 /*
 ==================== ud-modules 常用組件 ====================
 Form
-  ud-button：按鈕 V
-  ud-input：輸入框 V
-  ud-textarea：多行輸入框 V
-  ud-radio：單選框 V
-  ud-checkbox：多選框 V
+  ud-button：按鈕 OK TODO：防抖模式
+  ud-input：輸入框 OK
+  ud-textarea：多行輸入框 OK
+  ud-radio：單選框
+  ud-checkbox：多選框
   ud-select：下拉框
-  ud-select-multiple：下拉多選框
-  ud-select-link：連動下拉框
   ud-select-date：日期連動下拉框
   ud-select-twzip：台灣行政區連動下拉框
   ud-switch：開關
-  ud-date-picker：日期選擇器
-  ud-captcha：圖形驗證碼
   ud-form-item：表單驗證容器
   ud-form：表單驗證
 
 Layout
   ud-arrow：CSS箭頭
   ud-collapse：摺疊容器
-  ud-ratio：等比例自適應容器
+  ud-image：等比例自適應圖片
 
 Notice
   ud-alert：警告彈窗
@@ -39,24 +35,20 @@ import * as udUtils from '@/utils/ud-utils'
 import UdAlert from "./UdAlert.vue"
 import UdArrow from "./UdArrow.vue"
 import UdButton from "./UdButton.vue"
-import UdCaptcha from "./UdCaptcha.vue"
 import UdCheckbox from "./UdCheckbox.vue"
 import UdCollapse from "./UdCollapse.vue"
 import UdCountdown from "./UdCountdown.vue"
-import UdDatePicker from "./UdDatePicker.vue"
 import UdEllipsis from "./UdEllipsis.vue"
 import UdForm from "./UdForm.vue"
 import UdFormItem from "./UdFormItem.vue"
 import UdHtml from "./UdHtml.vue"
+import UdImage from "./UdImage.vue"
 import UdInput from "./UdInput.vue"
 import UdLoading from "./UdLoading.vue"
 import UdModal from "./UdModal.vue"
 import UdRadio from "./UdRadio.vue"
-import UdRatio from "./UdRatio.vue"
 import UdSelect from "./UdSelect.vue"
-import UdSelectMultiple from "./UdSelectMultiple.vue"
 import UdSelectDate from "./UdSelectDate.vue"
-import UdSelectLink from "./UdSelectLink.vue"
 import UdSelectTwzip from "./UdSelectTwzip.vue"
 import UdSwitch from "./UdSwitch.vue"
 import UdTextarea from "./UdTextarea.vue"
@@ -66,24 +58,20 @@ const udComponents = [
   UdAlert,
   UdArrow,
   UdButton,
-  UdCaptcha,
   UdCheckbox,
   UdCollapse,
   UdCountdown,
-  UdDatePicker,
   UdEllipsis,
   UdForm,
   UdFormItem,
   UdHtml,
+  UdImage,
   UdInput,
   UdLoading,
   UdModal,
   UdRadio,
-  UdRatio,
   UdSelect,
-  UdSelectMultiple,
   UdSelectDate,
-  UdSelectLink,
   UdSelectTwzip,
   UdSwitch,
   UdTextarea,

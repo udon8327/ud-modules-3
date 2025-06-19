@@ -40,8 +40,9 @@ export default {
     plain: Boolean, // 線條化
     round: Boolean, // 圓角
     circle: Boolean, // 圓型
-    throttle: Boolean, // 函式節流
-    throttleTime: { default: 1000 } // 函式節流間隔時間
+    throttle: Boolean, // 節流模式
+    debounce: Boolean, // 防抖模式(TODO)
+    delay: { default: 1000 } // 節流/防抖 時間
   },
   computed: {
     filteredAttrs() {
@@ -59,7 +60,7 @@ export default {
     if(!this.throttle) return;
     this.$el.addEventListener('click', throttle(
         evt => this.$emit('click', evt),
-        this.throttleTime
+        this.delay
       )
     );
   }

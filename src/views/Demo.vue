@@ -4,7 +4,7 @@
     //- .btn-wrapper
     //-   ud-button(@click="clearVerify" plain) 清除驗證
     //-   ud-button(@click="submitVerify") 送出表單
-    ud-button(@click="test" throttle) TEST
+    ud-button#test(@click="test") TEST
     br
 
   ud-form(:rules="rules" :model="formData" ref="form")
@@ -21,12 +21,10 @@
     ud-form-item(label="下拉" prop="select" flex)
       ud-select(v-model="formData.select" :options="options" flex center)
     ud-form-item(label="下拉連動" prop="selectLink" flex)
-      ud-select-link(v-model="formData.selectLink" :options="storeOptions" :placeholder="['縣市', '行政區', '分店']" flex third)
-    ud-form-item(label="下拉連動(獨立)" prop="selectLinkSp")
       .d-flex
-        ud-select(v-model="formData.selectLinkSp[0]" :options="storeOptions" :group="formData.selectLinkSp" :index="0" placeholder="請選擇縣市")
-        ud-select(v-model="formData.selectLinkSp[1]" :options="storeOptions" :group="formData.selectLinkSp" :index="1" placeholder="請選擇店點")
-        ud-select(v-model="formData.selectLinkSp[2]" :options="storeOptions" :group="formData.selectLinkSp" :index="2" placeholder="請選擇日期")
+        ud-select(v-model="formData.selectLink[0]" :options="storeOptions" :group="formData.selectLink" :index="0" placeholder="請選擇縣市")
+        ud-select(v-model="formData.selectLink[1]" :options="storeOptions" :group="formData.selectLink" :index="1" placeholder="請選擇店點")
+        ud-select(v-model="formData.selectLink[2]" :options="storeOptions" :group="formData.selectLink" :index="2" placeholder="請選擇日期")
     ud-form-item(label="地址" prop="twzip" flex)
       ud-select-twzip(ref="zip" v-model="formData.twzip" flex)
     ud-form-item(label="預約日期" prop="date" flex)
@@ -82,7 +80,6 @@ export default {
         checkbox: [],
         select: "",
         selectLink: ["", "", ""],
-        selectLinkSp: ["", "", ""],
         twzip: ["", ""],
         date: ["", "", ""],
         isActive: false,
@@ -100,7 +97,6 @@ export default {
         checkbox: [{type: "required"}],
         select: [{type: "required"}],
         selectLink: [{type: "required"}],
-        selectLinkSp: [{type: "required"}],
         twzip: [{type: "required"}],
         date: [{type: "required"}],
         isAgree: [{type: "required", message: "請先同意相關使用條款"},],
@@ -149,7 +145,8 @@ export default {
     onInput(e) {
       console.log('e: ', e);
     },
-    test() {
+    test(e) {
+      console.log('e: ', e);
       console.log(this.getRandom());
     },
     formSubmit() {

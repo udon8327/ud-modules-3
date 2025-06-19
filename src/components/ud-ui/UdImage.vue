@@ -1,6 +1,6 @@
 <template>
-  <div class="ud-ratio">
-    <div class="ud-ratio-bg" :style="{
+  <div class="ud-image">
+    <div class="ud-image-bg" :style="{
       backgroundImage: 'url(' + `${ src ? src : avatarDefault }` + ')',
       paddingBottom: height + '%',
       borderRadius: radius,
@@ -15,7 +15,7 @@
 import avatarDefault from '@/assets/images/picture/avatar_default.jpg'
 
 export default {
-  name: 'UdRatio',
+  name: 'UdImage',
   props: {
     src: { default: avatarDefault }, // 背景圖片
     height: { default: 100 }, // 高度比例
@@ -31,8 +31,8 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.ud-ratio
-  .ud-ratio-bg
+.ud-image
+  .ud-image-bg
     overflow: hidden
     width: 100%
     padding-bottom: 100%
