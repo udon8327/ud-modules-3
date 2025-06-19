@@ -54,10 +54,11 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-router.afterEach(() => {
-  if (to.meta?.title) {
-    document.title = String(to.meta.title)
-  }
+router.afterEach((to, from) => {
+  // console.log(`from: ${ from.path }, to: ${ to.path }`);
+  document.title = to.meta?.title
+    ? String(to.meta.title)
+    : `${import.meta.env.VITE_APP_BRAND_NAME} ${import.meta.env.VITE_APP_PROJECT_NAME}`;
 });
 
 export default router
