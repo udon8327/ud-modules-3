@@ -24,7 +24,7 @@ header
     transform: translate(-50%, -50%)
 
 .container
-  max-width: 540px
+  max-width: 460px
   margin: 0 auto
   text-align: center
   min-height: 100%

@@ -5,6 +5,7 @@
     //-   ud-button(@click="clearVerify" plain) 清除驗證
     //-   ud-button(@click="submitVerify") 送出表單
     ud-button(@click="test" throttle) TEST
+    br
 
   ud-form(:rules="rules" :model="formData" ref="form")
     ud-form-item(label="姓名" prop="name" flex)
@@ -143,7 +144,6 @@ export default {
     };
   },
   mounted() {
-    alert(import.meta.env.VITE_APP_LINE_LIFF_ID);
   },
   methods: {
     onInput(e) {
