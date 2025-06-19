@@ -1,11 +1,7 @@
 <template lang="pug">
 #demo
-  .test-area
-    //- .btn-wrapper
-    //-   ud-button(@click="clearVerify" plain) 清除驗證
-    //-   ud-button(@click="submitVerify") 送出表單
+  .test-area.mb-3
     ud-button#test(@click="test") TEST
-    br
 
   ud-form(:rules="rules" :model="formData" ref="form")
     ud-form-item(label="姓名" prop="name" flex)
@@ -35,21 +31,17 @@
     ud-form-item(label="是否啟用" prop="isActive" flex)
       ud-switch(v-model="formData.isActive")
     ud-form-item(label="" prop="isAgree")
-      ud-checkbox(v-model="formData.isAgree")
+      ud-checkbox(v-model="formData.isAgree" disabled)
         p 我同意#[a(href="https://www.google.com.tw/") 使用者條款]
-    //- ud-form-item(label="驗證碼" prop="captcha" flex)
-    //-   .captcha-wrapper
-    //-     ud-input(v-model="formData.captcha" placeholder="驗證碼" maxlength="4")
-    //-     ud-captcha(v-model="formData.captchaCode")
-    hr(style="margin-bottom: 20px")
 
     ud-button.mb-2(@click="formSubmit") 送出表單
+    ud-button.mb-5(@click="clearVerify" plain) 清除驗證
+    ud-button.mb-2(@click="alert()") Alert
+    ud-button.mb-2(@click="isModalShow = true") Model
     ud-button.mb-2(@click="isCollapse = !isCollapse") 摺疊容器&nbsp
       ud-arrow(color="#fff" :size="4" :width="2" :direction="isCollapse ? 'up' : 'down'")
     ud-collapse.mb-2(v-model="isCollapse" :duration="0.4")
-      ud-ratio(src="img/01.jpg" bg-size="contain")
-    ud-button.mb-2(@click="alert()") Alert
-    ud-button.mb-2(@click="isModalShow = true") Model
+      ud-image(src="img/01.jpg" bg-size="contain")
 
     ud-html(text="<i>用戶</i>自定\n<h3>義訊息</h3>")
     br
@@ -59,13 +51,10 @@
 </template>
 
 <script>
-import Tree from "@/components/Tree.vue";
 
 export default {
-  name: "Index",
-  components: {
-    Tree,
-  },
+  name: "Demo",
+  components: {},
   data() {
     return {
       isModalShow: false,
@@ -142,9 +131,6 @@ export default {
   mounted() {
   },
   methods: {
-    onInput(e) {
-      console.log('e: ', e);
-    },
     test(e) {
       console.log('e: ', e);
       console.log(this.getRandom());
@@ -154,8 +140,17 @@ export default {
         console.log("驗證成功");
       });
     },
-    toIndex() {
-      this.$router.push("/index");
+    clearVerify() {
+
+    },
+    alert() {
+      this.udAlert("Alert！");
+    },
+    timeup() {
+      console.log('timeup');
+    },
+    onInput(e) {
+      console.log('onInput', e);
     },
     onChange(e) {
       console.log("onChange", e); 
@@ -165,9 +160,6 @@ export default {
     },
     onFocus(e) {
       console.log("onFocus", e); 
-    },
-    timeup() {
-      console.log('timeup');
     },
   },
 };

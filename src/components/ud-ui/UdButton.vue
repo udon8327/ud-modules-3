@@ -41,7 +41,7 @@ export default {
     round: Boolean, // 圓角
     circle: Boolean, // 圓型
     throttle: Boolean, // 節流模式
-    debounce: Boolean, // 防抖模式(TODO)
+    debounce: Boolean, // 防抖模式
     delay: { default: 1000 } // 節流/防抖 時間
   },
   computed: {
