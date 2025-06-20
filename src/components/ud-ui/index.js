@@ -26,7 +26,7 @@ Notice
 Tools
   ud-html：用戶自定義訊息 (ok)
   ud-ellipsis：文字省略 (ok)
-  ud-countdown：倒數計時 
+  ud-countdown：倒數計時 (ok)
 */
 
 // import udAxios from '@/services/ud-axios'
