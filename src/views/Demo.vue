@@ -43,7 +43,7 @@
     ud-collapse.mb-2(v-model="isCollapse" :duration="0.4")
       ud-image(src="img/01.jpg" bg-size="contain")
 
-    ud-html(text="<i>用戶</i>自定\n<h3>義訊息</h3>")
+    ud-html
     br
     ud-ellipsis(:max-line="2") 文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略
     br

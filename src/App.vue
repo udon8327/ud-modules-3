@@ -26,7 +26,6 @@ header
 .container
   max-width: 460px
   margin: 0 auto
-  text-align: center
   min-height: 100%
   background-color: #fff
   padding: 0 0 60px 0

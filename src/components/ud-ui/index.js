@@ -1,15 +1,15 @@
 /*
 ==================== ud-modules 常用組件 ====================
 Form
-  ud-button：按鈕 (OK TODO：防抖模式)
-  ud-input：輸入框 (OK)
-  ud-textarea：多行輸入框 (OK)
-  ud-radio：單選框 (OK)
-  ud-checkbox：多選框 (OK TODO：單一框時的disabled處理)
-  ud-select：下拉框 (OK TODO：連動功能)
-  ud-select-date：日期連動下拉框 (OK)
-  ud-select-twzip：台灣行政區連動下拉框 (OK)
-  ud-switch：開關 (OK)
+  ud-button：按鈕 (ok TODO：防抖模式)
+  ud-input：輸入框 (ok)
+  ud-textarea：多行輸入框 (ok)
+  ud-radio：單選框 (ok)
+  ud-checkbox：多選框 (ok TODO：單一框時的disabled處理)
+  ud-select：下拉框 (ok TODO：連動功能)
+  ud-select-date：日期連動下拉框 (ok)
+  ud-select-twzip：台灣行政區連動下拉框 (ok)
+  ud-switch：開關 (ok)
   ud-form-item：表單驗證容器
   ud-form：表單驗證
 
@@ -24,9 +24,9 @@ Notice
   ud-loading：載入中
 
 Tools
-  ud-html：用戶自定義訊息
-  ud-ellipsis：文字省略
-  ud-countdown：倒數計時
+  ud-html：用戶自定義訊息 (ok)
+  ud-ellipsis：文字省略 (ok)
+  ud-countdown：倒數計時 
 */
 
 // import udAxios from '@/services/ud-axios'
