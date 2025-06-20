@@ -1,7 +1,7 @@
 <template lang="pug">
 #demo
   .test-area.mb-3
-    ud-button#test(@click="test") TEST
+    ud-button(@click="test") TEST
 
   ud-form(:rules="rules" :model="formData" ref="form")
     ud-form-item(label="姓名" prop="name" flex)
