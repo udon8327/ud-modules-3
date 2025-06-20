@@ -34,10 +34,12 @@
       ud-checkbox(v-model="formData.isAgree" disabled)
         p 我同意#[a(href="https://www.google.com.tw/") 使用者條款]
 
-    ud-button.mb-2(@click="formSubmit") 送出表單
-    ud-button.mb-5(@click="clearVerify" plain) 清除驗證
-    ud-button.mb-2(@click="alert()") Alert
-    ud-button.mb-2(@click="isModalShow = true") Model
+    .button-wrapper
+      ud-button.mb-5(@click="clearVerify" plain) 清除驗證
+      ud-button.mb-2(@click="formSubmit") 送出表單
+    .button-wrapper
+      ud-button.mb-2(@click="alert()") Alert
+      ud-button.mb-2(@click="isModalShow = true") Model
     ud-button.mb-2(@click="isCollapse = !isCollapse") 摺疊容器&nbsp
       ud-arrow(color="#fff" :size="4" :width="2" :direction="isCollapse ? 'up' : 'down'")
     ud-collapse.mb-2(v-model="isCollapse" :duration="0.4")
@@ -47,7 +49,10 @@
     br
     ud-ellipsis(:max-line="2") 文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略
     br
-    ud-countdown(:time="120" @timeup="timeup()" type="minute")
+    ud-countdown(ref="countdown" :time="120" @timeup="timeup()" delay)
+    .button-wrapper
+      ud-button(@click="$refs.countdown.reset()" plain) 重置倒數
+      ud-button(@click="$refs.countdown.countdown()") 開始倒數
 </template>
 
 <script>
@@ -165,4 +170,10 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+.button-wrapper
+  display: flex
+  justify-content: space-between
+  .ud-button
+    flex: 0 0 49%
+</style>
