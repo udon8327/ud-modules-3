@@ -9,7 +9,7 @@
     ud-form-item(label="備註" prop="note" flex)
       ud-textarea(placeholder="請輸入您的備註" v-model="formData.note" show-limit :limit="10" no-resize)
     ud-form-item(label="年齡" prop="age" flex) 
-      ud-input(placeholder="請輸入您的年齡" v-model="formData.age" type="tel")
+      ud-input(placeholder="請輸入您的年齡" v-model.number="formData.age" type="tel")
     ud-form-item(label="單選" prop="radio" flex)
       ud-radio(v-model="formData.radio" :options="options" flex @change="onChange" @blur="onBlur" @focus="onFocus")
     ud-form-item(label="多選" prop="checkbox" flex)
@@ -31,7 +31,7 @@
     ud-form-item(label="是否啟用" prop="isActive" flex)
       ud-switch(v-model="formData.isActive")
     ud-form-item(label="" prop="isAgree")
-      ud-checkbox(v-model="formData.isAgree" disabled)
+      ud-checkbox(v-model="formData.isAgree")
         p 我同意#[a(href="https://www.google.com.tw/") 使用者條款]
 
     .button-wrapper
@@ -146,7 +146,7 @@ export default {
       });
     },
     clearVerify() {
-
+      this.$refs.form.clearValidate();
     },
     alert() {
       this.udAlert("Alert！");

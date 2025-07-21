@@ -1,9 +1,10 @@
 <template>
   <div class="ud-form-item" :class="{'is-error': errorMessage, 'is-flex': flex}">
-    <div class="ud-form-item-left" :style="{ 'flex-basis': labelWidth, 'text-align': labelAlign }">  
-      <label v-if="label">{{ label }}</label>
+    <div class="ud-form-item-left" :v-if="label" :style="{ 'flex-basis': labelWidth, 'text-align': labelAlign }">  
+      <img :src="icon" v-if="icon">
+      <label v-if="label"><span v-if="required">*</span>{{ label }}</label>
     </div>
-    <div class="ud-form-item-right" @validate="test">  
+    <div class="ud-form-item-right">
       <slot></slot>
       <p class="error-message" v-if="errorMessage">{{ errorMessage }}</p>
     </div>
@@ -19,8 +20,14 @@ export default {
       lock: false,
     }
   },
-  inject: ["form"],
+  inject: ['registerFormItem', 'unregisterFormItem', 'form'],
   props: {
+    required: { // 必填提示
+      type: Boolean,
+    },
+    icon: { // icon路徑
+      type: String
+    },
     label: { // 標籤內容
       type: String,
     },
@@ -36,33 +43,35 @@ export default {
     },
     labelAlign: { // 標籤對齊
       type: String,
-    }
+    },
   },
   mounted() {
+    this.registerFormItem(this);
     this.$mitt.on("validate", () => {
-      if(!this.prop) return;
+      if (!this.prop) return;
       this.validate(false);
     });
   },
+  beforeDestroy() {
+    this.unregisterFormItem(this);
+  },
   methods: {
-    test() {
-      console.log("test");
-    },
     validate(submit) {
-      if(this.form.submitLock) return;
+      if (this.form.submitLock) return;
       const rules = this.form.rules[this.prop]; // 獲取校驗規則
       const value = this.form.model[this.prop]; // 獲取數據
 
-      for(let rule of rules){
-        this.errorMessage = "";
+      if (!rules) return;
+      this.errorMessage = '';
+      for (let rule of rules) {
         switch (rule.type) {
           case "required": // 必填驗證
-            if(Array.isArray(value) && value.length != 0){
-              if(value.some(i => i.length === 0)) this.errorMessage = rule.message || "此欄位為必填項目";
-            }else if(value === null){
+            if (Array.isArray(value) && value.length != 0) {
+              if (value.some(i => i.length === 0)) this.errorMessage = rule.message || "此欄位為必填項目";
+            } else if (value === null) {
               this.errorMessage = rule.message || "此欄位為必填項目";
-            }else{
-              if(value.length === 0 || value === false) this.errorMessage = rule.message || "此欄位為必填項目";
+            } else {
+              if (value.length === 0 || value === false) this.errorMessage = rule.message || "此欄位為必填項目";
             }
             break;
           case "name": // 姓名驗證
@@ -110,14 +119,20 @@ export default {
             console.error("預期外的驗證類型: " + rule.type);
             break;
         }
-        if(this.errorMessage) break;
+        if (this.errorMessage) break;
       }
 
-      if(!submit) return;
+      if (!submit) return;
       return new Promise((resolve, reject) => {
         this.errorMessage ? reject() : resolve();
-      })
-    }
+      });
+    },
+    clearValidate() {
+      this.errorMessage = '';
+    },
+    typeOf(val) {
+      return val === undefined ? 'undefined' : val === null ? 'null' : val.constructor.name.toLowerCase();
+    },
   }
 }
 </script>
@@ -133,14 +148,25 @@ export default {
       text-align: left
       display: flex
       align-items: center
+      img
+        width: 26px
+        margin-right: 2px
       label
-        line-height: 20px
+        font-size: 17px
+        position: relative
+        span
+          color: $red
+          font-size: 20px
+          position: absolute
+          left: -10px
+          top: 64%
+          transform: translate(0% ,-50%)
     .ud-form-item-right
       flex: 1 1 0
   &.is-error
     .ud-form-item-right
       position: relative
-      >div
+      ::v-deep(>div)
         input,textarea,select
           border: 1px solid $red
           &:focus
