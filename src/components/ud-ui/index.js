@@ -7,11 +7,11 @@ Form
   ud-radio：單選框 (ok)
   ud-checkbox：多選框 (ok TODO：單一框時的disabled處理)
   ud-select：下拉框 (ok TODO：連動功能)
-  ud-select-date：日期連動下拉框 (ok)
+  ud-select-date：日期連動下拉框 (ok TODO：年月日黏在一起)
   ud-select-twzip：台灣行政區連動下拉框 (ok)
   ud-switch：開關 (ok)
-  ud-form-item：表單驗證容器
-  ud-form：表單驗證
+  ud-form-item：表單驗證容器 (ok)
+  ud-form：表單驗證 (ok)
 
 Layout
   ud-arrow：CSS箭頭

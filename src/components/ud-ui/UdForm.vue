@@ -48,10 +48,17 @@ export default {
       const tasks = this.formItems.filter(item => item.prop).map(item => item.validate(true));
       // console.log('tasks: ', tasks);
       Promise.all(tasks)
-        .then(() => successCb())
-        .catch(() => {
+        .then(() => {
+          successCb();
+        })
+        .catch((error) => {
+          if (error) return console.error("發生錯誤：", error);
           if (!this.noErrorScroll) {
-            this.$nextTick(() => this.scrollTo(".is-error", 5, -10));
+            this.$nextTick(() => {
+              if (document.querySelector(".is-error")) {
+                this.scrollTo(document.querySelector(".is-error"), 5, -10);
+              }
+            });
           }
           failedCb();
         });
@@ -66,16 +73,22 @@ export default {
     scrollTo(el = "top", speed = 5, offset = 0, callback = () => {}) {
       let scrollTop = document.scrollingElement.scrollTop;
       let top = 0;
-      if(typeof el === 'number') {
+
+      if (typeof el === 'number') {
         top = el + offset;
-      } else {
-        if(el === 'top') {
+      } else if (typeof el === 'string') {
+        if (el === 'top') {
           top = 0 + offset;
-        } else if(el === 'bottom') {
+        } else if (el === 'bottom') {
           top = document.body.scrollHeight - document.body.clientHeight + offset;
         } else {
-          top = document.querySelector(el) && document.querySelector(el).offsetTop + offset;
+          const found = document.querySelector(el);
+          if (found) {
+            top = found.offsetTop + offset;
+          }
         }
+      } else if (el instanceof HTMLElement) {
+        top = el.offsetTop + offset;
       }
       const scroll = () => {
         scrollTop = scrollTop + (top - scrollTop) / speed;

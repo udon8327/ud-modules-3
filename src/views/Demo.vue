@@ -1,26 +1,32 @@
 <template lang="pug">
 #demo
-  .test-area.mb-3
-    ud-button(@click="test") TEST
+  .button-area.mb-3
+    .button-wrapper
+      ud-button(@click="test") TEST
+      ud-button(@click="isNameShow = !isNameShow") toggleName
 
   ud-form(:rules="rules" :model="formData" ref="form")
-    ud-form-item(label="姓名" prop="name" flex)
+    ud-form-item(label="姓名" prop="name" flex v-if="isNameShow")
       ud-input(placeholder="請輸入您的姓名" v-model="formData.name" @keydown="onInput" maxlength="10")
-    ud-form-item(label="備註" prop="note" flex)
-      ud-textarea(placeholder="請輸入您的備註" v-model="formData.note" show-limit :limit="10" no-resize)
+    ud-form-item(label="電話" prop="phone" flex)
+      ud-input(v-model.trim="formData.phone" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10")
+    ud-form-item(label="Email" prop="email" flex)
+      ud-input(v-model.trim="formData.email" placeholder="請輸入您的Email" inputmode="email")
     ud-form-item(label="年齡" prop="age" flex) 
       ud-input(placeholder="請輸入您的年齡" v-model.number="formData.age" type="tel")
+    ud-form-item(label="備註" prop="note" flex)
+      ud-textarea(placeholder="請輸入您的備註" v-model="formData.note" show-limit :limit="10" no-resize)
     ud-form-item(label="單選" prop="radio" flex)
       ud-radio(v-model="formData.radio" :options="options" flex @change="onChange" @blur="onBlur" @focus="onFocus")
     ud-form-item(label="多選" prop="checkbox" flex)
       ud-checkbox(v-model="formData.checkbox" :options="options" flex @change="onChange" @blur="onBlur" @focus="onFocus")
     ud-form-item(label="下拉" prop="select" flex)
       ud-select(v-model="formData.select" :options="options" flex)
-    ud-form-item(label="下拉連動" prop="selectLink" flex)
+    ud-form-item(label="下拉連動" prop="selectGroup" flex)
       .d-flex
-        ud-select(v-model="formData.selectLink[0]" :options="storeOptions" :group="formData.selectLink" :index="0" placeholder="請選擇縣市")
-        ud-select(v-model="formData.selectLink[1]" :options="storeOptions" :group="formData.selectLink" :index="1" placeholder="請選擇店點")
-        ud-select(v-model="formData.selectLink[2]" :options="storeOptions" :group="formData.selectLink" :index="2" placeholder="請選擇日期")
+        ud-select(v-model="formData.selectGroup[0]" :options="storeOptions" :group="formData.selectGroup" :index="0" placeholder="請選擇縣市")
+        ud-select(v-model="formData.selectGroup[1]" :options="storeOptions" :group="formData.selectGroup" :index="1" placeholder="請選擇店點")
+        ud-select(v-model="formData.selectGroup[2]" :options="storeOptions" :group="formData.selectGroup" :index="2" placeholder="請選擇日期")
     ud-form-item(label="地址" prop="twzip" flex)
       ud-select-twzip(ref="zip" v-model="formData.twzip" flex)
     ud-form-item(label="預約日期" prop="date" flex)
@@ -64,37 +70,34 @@ export default {
     return {
       isModalShow: false,
       isCollapse: false,
+      isNameShow: true,
       formData: {
         name: "",
-        phone: ["", "", ""],
-        note: "",
+        phone: "",
+        email: "",
         age: "",
-        birthday: "",
+        note: "",
         radio: "",
         checkbox: [],
         select: "",
-        selectLink: ["", "", ""],
+        selectGroup: ["", "", ""],
         twzip: ["", ""],
         date: ["", "", ""],
         isActive: false,
-        captcha: "",
-        captchaCode: "",
         isAgree: false,
       },
       rules: {
-        name: [{type: "required"}, {type: "name" }],
-        phone: [{type: "required"}],
-        note: [{type: "required"}],
-        age: [{type: "required"}, {type: "number" }],
-        birthday: [{type: "required"}, {type: "date" }],
+        name: [{type: "required"}, {type: "name"}],
+        phone: [{type: "required"}, {type: "phone"}],
+        email: [{type: "required"}, {type: "email"}],
+        age: [{type: "required"}, {type: "number"}],
         radio: [{type: "required"}],
         checkbox: [{type: "required"}],
         select: [{type: "required"}],
-        selectLink: [{type: "required"}],
+        selectGroup: [{type: "required"}],
         twzip: [{type: "required"}],
         date: [{type: "required"}],
         isAgree: [{type: "required", message: "請先同意相關使用條款"},],
-        captcha: [{type: "required"}, {type: "equal", equalTo: "captchaCode", caseIgnore: "true"}],
       },
       options: [
         {label: "甲", value: "a"},
@@ -133,16 +136,18 @@ export default {
       ],
     };
   },
+  computed: {
+  },
   mounted() {
   },
   methods: {
     test(e) {
-      console.log('e: ', e);
+      // console.log('e: ', e);
       console.log(this.getRandom());
     },
     formSubmit() {
       this.$refs.form.validate(() => {
-        console.log("驗證成功");
+        this.udAlert("驗證成功!!");
       });
     },
     clearVerify() {
@@ -174,6 +179,8 @@ export default {
 .button-wrapper
   display: flex
   justify-content: space-between
+  margin-bottom: 10px
+  gap: 5px
   .ud-button
-    flex: 0 0 49%
+    flex: 1 1 0
 </style>

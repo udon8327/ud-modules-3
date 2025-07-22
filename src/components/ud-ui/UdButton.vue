@@ -13,10 +13,10 @@
       }"
       @click="onClick"
     >
-      <div class="button-wrapper">
+      <div class="ud-button-wrapper">
         <span><slot>按鈕</slot></span>
-        <div class="button-icon" v-if="loading || icon || image">
-          <div class="icon-loading" v-if="loading"></div>
+        <div class="ud-button-icon" v-if="loading || icon || image">
+          <div class="ud-icon-loading" v-if="loading"></div>
           <i :class="icon" v-if="icon && !loading"></i>
           <img :src="image" alt="" v-if="image && !loading">
         </div>
@@ -85,14 +85,14 @@ export default {
     outline: none !important
     transition: all 0.2s ease
     position: relative
-    .button-wrapper
+    .ud-button-wrapper
       display: inline-flex
       justify-content: center
       align-items: center
       position: relative
       span
         font-size: 16px
-      .button-icon
+      .ud-button-icon
         position: absolute
         left: -32px
         top: 50%
@@ -105,7 +105,7 @@ export default {
         img
           width: 24px
           height: 24px
-        .icon-loading
+        .ud-icon-loading
           border: 2px solid rgba(#fff, 0.2)
           border-top: 2px solid #fff
           border-radius: 50%

@@ -1,8 +1,10 @@
 <template>
   <div class="ud-form-item" :class="{'is-error': errorMessage, 'is-flex': flex}">
-    <div class="ud-form-item-left" :v-if="label" :style="{ 'flex-basis': labelWidth, 'text-align': labelAlign }">  
+    <div class="ud-form-item-left" :v-if="label" :style="{ 'flex-basis': labelWidth }"
+      :class="{ 'label-align-left': labelAlign === 'left', 'label-align-center': labelAlign === 'center', 'label-align-right': labelAlign === 'right' }"
+    >
       <img :src="icon" v-if="icon">
-      <label v-if="label"><span v-if="required">*</span>{{ label }}</label>
+      <label v-if="label" :style="{ 'text-align': labelAlign }"><span v-if="required">*</span>{{ label }}</label>
     </div>
     <div class="ud-form-item-right">
       <slot></slot>
@@ -39,21 +41,24 @@ export default {
     },
     labelWidth: { // 標籤寬度
       type: String,
-      default: "30%"
+      default: "30%",
     },
     labelAlign: { // 標籤對齊
       type: String,
+      default: 'left',
     },
   },
   mounted() {
     this.registerFormItem(this);
-    this.$mitt.on("validate", () => {
+    this.validateHandler = () => {
       if (!this.prop) return;
       this.validate(false);
-    });
+    };
+    this.$mitt.on("validate", this.validateHandler);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.unregisterFormItem(this);
+    this.$mitt.off("validate", this.validateHandler);
   },
   methods: {
     validate(submit) {
@@ -64,6 +69,7 @@ export default {
       if (!rules) return;
       this.errorMessage = '';
       for (let rule of rules) {
+        console.log('rule: ', rule);
         switch (rule.type) {
           case "required": // 必填驗證
             if (Array.isArray(value) && value.length != 0) {
@@ -112,6 +118,9 @@ export default {
               if(value && value !== this.form.model[rule.equalTo]) this.errorMessage = rule.message || "驗證碼錯誤";
             }
             break;
+          case "schema": // 自定義驗證條件(將rules寫成computed回傳動態驗證函式)
+            if (!rule.schema) this.errorMessage = rule.message || "驗證條件不符合";
+            break;
           case "regex": // 自訂正則驗證
             if(!new RegExp(rule.regex).test(value)) this.errorMessage = rule.message || "格式有誤，請重新輸入";
             break;
@@ -148,12 +157,19 @@ export default {
       text-align: left
       display: flex
       align-items: center
+      &.label-align-left
+        justify-content: flex-start
+      &.label-align-center
+        justify-content: center
+      &.label-align-right
+        justify-content: flex-end
       img
         width: 26px
         margin-right: 2px
       label
-        font-size: 17px
+        font-size: 16px
         position: relative
+        margin-right: 5px
         span
           color: $red
           font-size: 20px
