@@ -69,7 +69,6 @@ export default {
       if (!rules) return;
       this.errorMessage = '';
       for (let rule of rules) {
-        console.log('rule: ', rule);
         switch (rule.type) {
           case "required": // 必填驗證
             if (Array.isArray(value) && value.length != 0) {

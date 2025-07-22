@@ -31,16 +31,18 @@
     ud-form-item(label="預約日期" prop="date" flex)
       ud-select-date(v-model="formData.date" flex third roc)
         p 年
-        p(slot="second") 月
-        p(slot="third") 日
+        template(v-slot:second)
+          p 月
+        template(v-slot:third)
+          p 日
     ud-form-item(label="是否啟用" prop="isActive" flex)
       ud-switch(v-model="formData.isActive")
     ud-form-item(label="" prop="isAgree")
       ud-checkbox(v-model="formData.isAgree")
         p 我同意#[a(href="https://www.google.com.tw/") 使用者條款]
 
-    .button-wrapper
-      ud-button.mb-5(@click="clearVerify" plain) 清除驗證
+    .button-wrapper.pt-2
+      ud-button.mb-2(@click="clearVerify" plain) 清除驗證
       ud-button.mb-2(@click="formSubmit") 送出表單
     .button-wrapper
       ud-button.mb-2(@click="alert()") Alert
