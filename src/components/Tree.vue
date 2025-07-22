@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-:deep(.ud-button)
+::v-deep(.ud-button)
   button
     width: 30px !important
     height: 30px !important
@@ -102,7 +102,7 @@ export default {
             font-size: 14px
             cursor: pointer
             transform: translate(5px, 0)
-          :deep(.ud-button)
+          ::v-deep(.ud-button)
             button
               width: 25px !important
               height: 25px !important
@@ -127,7 +127,7 @@ export default {
         .button-wrapper
           display: flex
           justify-content: space-between
-          :deep(.ud-button)
+          ::v-deep(.ud-button)
             button
               &.disabled
                 opacity: 0.2

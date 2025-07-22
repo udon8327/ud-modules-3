@@ -60,7 +60,7 @@ export default {
     font-size: 14px
     color: #000
     border: 1px solid #ccc
-    border-radius: 0px
+    border-radius: 4px
     background-color: #fff
     transition: all 0.2s ease
     &.is-no-resize

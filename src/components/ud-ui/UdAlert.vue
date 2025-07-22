@@ -169,6 +169,6 @@ export default {
       align-items: center
       .ud-button
         flex: 1 1 0
-        :v-deep button
+        ::v-deep(button)
           max-width: 96px
 </style>

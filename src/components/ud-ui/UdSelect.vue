@@ -108,6 +108,7 @@ export default {
 <style lang="sass" scoped>
 .ud-select
   position: relative
+  flex: 1 1 0
   &:before
     content: ""
     width: 0
@@ -128,7 +129,7 @@ export default {
     min-height: 40px
     font-size: 14px
     border: 1px solid #ccc
-    border-radius: 1px solid #ccc
+    border-radius: 4px
     background-color: #fff
     transition: all 0.2s ease
     transition-property: border

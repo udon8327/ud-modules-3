@@ -97,7 +97,7 @@ export default {
     display: flex
     justify-content: center
     align-items: center
-    .ud-select
+    ::v-deep(.ud-select)
       flex: 1 1 0
       margin: 0 5px 0 0
       &:last-of-type
