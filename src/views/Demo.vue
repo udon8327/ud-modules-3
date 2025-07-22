@@ -3,10 +3,9 @@
   .button-area.mb-3
     .button-wrapper
       ud-button(@click="test") TEST
-      ud-button(@click="isNameShow = !isNameShow") toggleName
 
   ud-form(:rules="rules" :model="formData" ref="form")
-    ud-form-item(label="姓名" prop="name" flex v-if="isNameShow")
+    ud-form-item(label="姓名" prop="name" flex)
       ud-input(placeholder="請輸入您的姓名" v-model="formData.name" @keydown="onInput" maxlength="10")
     ud-form-item(label="電話" prop="phone" flex)
       ud-input(v-model.trim="formData.phone" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10")
@@ -70,7 +69,6 @@ export default {
     return {
       isModalShow: false,
       isCollapse: false,
-      isNameShow: true,
       formData: {
         name: "",
         phone: "",
