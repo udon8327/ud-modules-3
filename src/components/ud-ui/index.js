@@ -20,7 +20,7 @@ Layout
 
 Notice
   ud-alert：警告彈窗
-  ud-modal：通用彈窗
+  ud-modal：通用彈窗 (ok)
   ud-loading：載入中
 
 Tools
@@ -29,7 +29,8 @@ Tools
   ud-countdown：倒數計時 (ok)
 */
 
-// import udAxios from '@/services/ud-axios'
+import { createVNode, render } from "vue"
+import udAxios from '@/services/ud-axios'
 import * as udUtils from '@/utils/ud-utils'
 
 import UdAlert from "./UdAlert.vue"
@@ -102,13 +103,55 @@ const udComponents = [
 // };
 // export { udLoading }
 
+// ---- Vue 3 動態組件掛載 ----
+// udAlert
+const udAlert = (options) => {
+  const container = document.createElement('div');
+  document.body.appendChild(container);
+
+  const props = typeof options === 'string' ? { message: options } : options;
+  const vnode = createVNode(UdAlert, props);
+
+  render(vnode, container);
+  const instance = vnode.component?.proxy;
+
+  return instance?.show?.();
+}
+
+// udLoading
+const udLoading = {
+  instance: null,
+  open: (options = {}) => {
+    const container = document.createElement("div")
+    document.body.appendChild(container)
+
+    const vnode = createVNode(UdLoading, options)
+    render(vnode, container)
+
+    udLoading.instance = vnode.component?.proxy
+
+    if (udLoading.instance?.fixed) {
+      document.body.style.overflowY = "hidden"
+    }
+  },
+  close: () => {
+    if (udLoading.instance) {
+      const el = udLoading.instance.$el
+      render(null, el.parentNode) // 卸載 vnode
+      el.parentNode?.removeChild(el)
+      udLoading.instance = null
+      document.body.style.overflowY = ""
+    }
+  },
+}
+
 // ud-ui插件註冊方法
 const install = (app) => {
   Object.keys(udUtils).forEach(item => app.config.globalProperties[item] = udUtils[item]);
   udComponents.forEach(item => app.component(item.name, item));
-  // app.config.globalProperties.udAxios = udAxios;
-  // app.config.globalProperties.udAlert = udAlert;
-  // app.config.globalProperties.udLoading = udLoading;
+  app.config.globalProperties.udAxios = udAxios;
+  app.config.globalProperties.udAlert = udAlert;
+  app.config.globalProperties.udLoading = udLoading;
 }
 
-export default install;
+export default install

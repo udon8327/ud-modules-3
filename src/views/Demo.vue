@@ -2,7 +2,7 @@
 #demo
   ud-modal(v-model="isModalShow" mask-close btn-close)
     h1 通用彈窗
-    ud-image(src="img/02.jpg", alt="")
+    ud-image(src="@/assets/images/picture/avatar_default.jpg", alt="")
     br
     ud-button(@click="isModalShow = false" plain) 關閉
 
@@ -67,7 +67,7 @@
     .module-area
       .button-wrapper
         ud-button(@click="alert()") Alert
-        ud-button(@click="isModalShow = true") Model
+        ud-button(@click="isModalShow = true") Modal
       ud-button(@click="isCollapse = !isCollapse") 摺疊容器
         ud-arrow(color="#fff" :size="4" :width="2" :direction="isCollapse ? 'up' : 'down'")
       ud-collapse(v-model="isCollapse" :duration="0.4")
@@ -224,13 +224,13 @@ export default {
         });
     },
     getData() {
-      udAxios.get('test/400/失敗了')
+      this.udAxios.get('test/400/失敗了')
         .then(res => {
           console.log('res: ', res);
         })
     },
     postData() {
-      udAxios.post('test', {
+      this.udAxios.post('test', {
         name: "UDON"
       })
         .then(res => {
@@ -238,10 +238,19 @@ export default {
         })
     },
     alert() {
-      udAlert("警告\n彈窗");
+      this.udAlert({
+        msg: "這是一個警告訊息",
+        title: "警告",
+        confirm: true,
+        btnClose: true,
+      }).then(() => {
+        console.log("確定");
+      }).catch(() => {
+        console.log("取消");
+      });
     },
     timeup() {
-      udAlert('時間到！');
+      this.udAlert('時間到！');
     },
     countdown() {
       this.$refs.cd.countdown();

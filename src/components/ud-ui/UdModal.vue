@@ -1,18 +1,18 @@
 <template>
   <transition name="fade">
     <div class="ud-modal" v-if="isShow" @click.self="maskHandler" :class="{ 'full-screen': fullScreen }" :style="{ zIndex: zIndex }">
-      <div class="modal-wrapper" :class="{ 'no-bg': noBg }">
-        <div class="modal-close" v-if="btnClose" @click="isShow = 0">
+      <div class="ud-modal-wrapper" :class="{ 'no-bg': noBg }">
+        <div class="ud-modal-close" v-if="btnClose" @click="isShow = false">
           <i class="icon-close"></i>
         </div>
-        <div class="modal-header" v-if="!$slots.default">
+        <div class="ud-modal-header" v-if="!$slots.default">
           <p>{{ title }}</p>
         </div>
-        <div class="modal-body">
+        <div class="ud-modal-body">
           <p v-if="!$slots.default">{{ message }}</p>
           <slot></slot>
         </div>
-        <div class="modal-footer" v-if="!$slots.default">
+        <div class="ud-modal-footer" v-if="!$slots.default">
           <div class="button-area">
             <ud-button @click="isShow = 0">確認</ud-button>
           </div>
@@ -28,7 +28,7 @@ export default {
   props: {
     title: { default: "通用標題" }, // 通用標題
     message: { default: "通用訊息" }, // 通用訊息
-    value: { default: 0 }, // 開關值
+    modelValue: { default: false }, // 開關值
     maskClose: Boolean, // 遮罩關閉
     btnClose: Boolean, // 按鈕關閉
     fullScreen: Boolean, // 是否全螢幕
@@ -37,13 +37,13 @@ export default {
   },
   computed: {
     isShow: {
-      get(){ return this.value },
-      set(val){ this.$emit('input', val) }
+      get(){ return this.modelValue },
+      set(val){ this.$emit('update:modelValue', val) }
     }
   },
   methods: {
     maskHandler() {
-      if(this.maskClose) this.isShow = 0;
+      if(this.maskClose) this.isShow = false;
     },
   }
 }
@@ -59,25 +59,26 @@ export default {
   bottom: 0
   width: 100%
   height: 100%
-  background-color: rgba(0, 0, 0, 0.5)
+  background-color: rgba(#000, 0.5)
   display: flex
   justify-content: center
   align-items: center
   overflow-x: hidden
-  .modal-wrapper
+  .ud-modal-wrapper
     position: relative
-    width: 80%
-    max-width: 460px
+    width: 85%
+    max-width: 380px
     max-height: 88%
     background-color: #fff
-    box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.3)
+    box-shadow: 0px 3px 20px 0px rgba(#000, 0.2)
+    border-radius: 0px
     text-align: center
     display: flex
     flex-direction: column
     &.no-bg
       background-color: rgba(#fff, 0)
       box-shadow: 0px 3px 20px 0px rgba(#000, 0)
-    .modal-close
+    .ud-modal-close
       position: absolute
       width: 26px
       height: 26px
@@ -101,31 +102,29 @@ export default {
           transform: rotate(45deg)
         &:after
           transform: rotate(-45deg)
-    .modal-header
+    .ud-modal-header
       flex: 0 0 auto
       padding: 15px
       p
         font-size: 18px
         font-weight: bold
-    .modal-body
+    .ud-modal-body
       flex: 1 1 auto
       padding: 15px
       overflow-y: auto
-    .modal-footer
+    .ud-modal-footer
       flex: 0 0 auto
       padding: 15px
   &.full-screen
-    .modal-wrapper
+    .ud-modal-wrapper
       width: 100%
-      max-width: 540px
+      max-width: 460px
       max-height: 100%
       height: 100%
       overflow: hidden
       box-shadow: none
       border-radius: 0
       will-change: auto
-      .modal-body
+      .ud-modal-body
         padding: 0
-        display: flex
-        flex-direction: column
 </style> 

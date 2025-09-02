@@ -1,20 +1,17 @@
 <template>
   <transition name="fade">
     <div class="ud-alert" v-if="isShow" @click.self="maskHandler">
-      <div class="modal-wrapper">
-        <div class="modal-close" v-if="btnClose" @click="destroy">
+      <div class="ud-modal-wrapper">
+        <div class="ud-modal-close" v-if="btnClose" @click="destroy">
           <i class="icon-close"></i>
         </div>
-        <div class="modal-image" v-if="image">
-          <img :src="require(`@/assets/${ image }`)">
-        </div>
-        <div class="modal-header" v-if="title">
+        <div class="ud-modal-header" v-if="title">
           <p v-html="nl2br(title)"></p>
         </div>
-        <div class="modal-body" v-if="msg">
-          <p v-html="nl2br(msg)"></p>
+        <div class="ud-modal-body">
+          <p v-html="nl2br(messageContent)"></p>
         </div>
-        <div class="modal-footer" v-if="!noButton">
+        <div class="ud-modal-footer">
           <ud-button @click="cancelHandler" plain v-if="confirm">{{ cancelText }}</ud-button>
           <ud-button @click="confirmHandler">{{ confirmText }}</ud-button>
         </div>
@@ -25,36 +22,38 @@
 
 <script>
 import { nl2br } from '@/utils/ud-utils'
+import UdButton from './UdButton.vue'
+import { render, createVNode } from 'vue'
 
 export default {
   name: 'UdAlert',
+  components: { UdButton },
+  props: {
+    confirm: { type: Boolean, default: false }, // 是否有確認+取消鈕
+    maskClose: { type: Boolean, default: false }, // 點擊遮罩關閉
+    btnClose: { type: Boolean, default: false }, // 右上關閉按鈕
+    scrollLock: { type: Boolean, default: false }, // 是否鎖定背景頁面捲動
+    title: { type: String, default: "" }, // 標題文字
+    message: { type: String, default: "" }, // 訊息文字(同msg，接受html語法)
+    msg: { type: String, default: "" }, // 訊息文字(同message，接受html語法)
+    cancelText: { type: String, default: "取消" }, // 取消鈕文字
+    onCancel: { type: Function, default: () => {} }, // 取消鈕callback
+    confirmText: { type: String, default: "確定" }, // 確認鈕文字
+    onConfirm: { type: Function, default: () => {} }, // 確認鈕callback
+  },
   data() {
     return {
       isShow: false, // 是否顯示
-      noButton: false, // 是否沒有按鈕
-      confirm: false, // 是否有確認+取消鈕
-      maskClose: false, // 點擊遮罩關閉
-      btnClose: false, // 右上關閉按鈕
-      scrollLock: false, // 是否鎖定背景頁面捲動
-      title: '', // 標題文字
-      msg: "網路通信錯誤，請稍候再試", // 訊息文字
-      cancelText: "取消", // 取消鈕文字
-      onCancel: () => {}, // 取消鈕callback
-      confirmText: "確定", // 確認鈕文字
-      onConfirm: () => {}, // 確認鈕callback
-      resolve: '', // 保存resolve
-      reject: '', // 保存reject
-      image: "", // 圖片路徑
-      time: 0, // 多久後自動關閉
+      resolve: null, // 保存resolve
+      reject: null, // 保存reject
+    }
+  },
+  computed: {
+    messageContent() {
+      return this.message === "" ? this.msg : this.message;
     }
   },
   mounted() {
-    if(this.time) {
-      setTimeout(() => {
-        this.destroy();
-      }, this.time);
-    }
-    if(this.scrollLock) document.getElementsByTagName('body')[0].style.overflow = 'hidden';
     if(this.scrollLock) document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
   },
   methods: {
@@ -79,17 +78,17 @@ export default {
       this.destroy();
     },
     maskHandler() {
-      if(this.maskClose) this.destroy();
+      if (this.maskClose) this.destroy();
     },
     destroy() {
       this.isShow = false;
-      if(this.scrollLock) document.getElementsByTagName('body')[0].style.overflow = 'auto'
-      setTimeout(() => {
-        this.$destroy(true);
-        this.$el.parentNode.removeChild(this.$el);
-      }, 200);
+      if (this.scrollLock) document.body.style.overflowY = 'auto';
+      // 卸載 vnode
+      if (this.$el && this.$el.parentNode) {
+        render(null, this.$el.parentNode);
+      }
     }
-  },
+  }
 }
 </script>
 
@@ -108,18 +107,17 @@ export default {
   justify-content: center
   align-items: center
   overflow-x: hidden
-  .modal-wrapper
+  .ud-modal-wrapper
     position: relative
     padding: 15px
-    width: 80%
-    max-width: 460px
+    width: 90%
+    max-width: 400px
     max-height: 88%
+    background-color: #fff
     box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.3)
-    border-radius: 0px
     text-align: center
     display: flex
     flex-direction: column
-    background-color: #fff
     p
       font-size: 16px
       margin-bottom: 0
@@ -148,27 +146,26 @@ export default {
           transform: rotate(45deg)
         &:after
           transform: rotate(-45deg)
-    .modal-image
-      padding: 0 15%
-    .modal-header
+    .ud-modal-header
       flex: 0 0 auto
-      padding: 10px 0
+      padding: 0 0 15px 0
       p
         font-size: 18px
-        line-height: 22px
-        letter-spacing: 2px
-    .modal-body
+        font-weight: bold
+    .ud-modal-body
       flex: 1 1 auto
-      padding: 10px 0 20px 0
+      padding: 5px 15px
+      margin: 0 -15px
       overflow-y: auto
-    .modal-footer
+    .ud-modal-footer
       flex: 0 0 auto
-      padding: 0 3%
+      padding: 15px 0 0 0
       display: flex
-      justify-content: space-between
+      justify-content: center
       align-items: center
       .ud-button
-        flex: 1 1 0
-        ::v-deep(button)
-          max-width: 96px
+        flex: 1 1 50%
+        max-width: 50%
+      >.ud-button + .ud-button
+        margin-left: 15px
 </style>
