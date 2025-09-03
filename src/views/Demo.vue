@@ -164,6 +164,10 @@ export default {
   computed: {
   },
   mounted() {
+    this.udLoading.open();
+    setTimeout(() => {
+      this.udLoading.close();
+    }, 1000);
     this.liffLogin();
   },
   methods: {
@@ -212,13 +216,13 @@ export default {
               }
             })
             .catch(() => {
-              udAlert(`LIFF初始化失敗，請稍後再試`).then(() => {
+              this.udAlert(`LIFF初始化失敗，請稍後再試`).then(() => {
                 location.href = LINE_OA_URL;
               });
             });
         })
         .catch((err) => {
-          udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() => {
+          this.udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() => {
             location.href = LINE_OA_URL
           });
         });

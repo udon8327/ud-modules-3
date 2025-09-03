@@ -19,9 +19,9 @@ Layout
   ud-image：等比例自適應圖片
 
 Notice
-  ud-alert：警告彈窗
+  ud-alert：警告彈窗 (ok)
   ud-modal：通用彈窗 (ok)
-  ud-loading：載入中
+  ud-loading：載入中 (ok)
 
 Tools
   ud-html：用戶自定義訊息 (ok)
@@ -79,31 +79,6 @@ const udComponents = [
 ]
 
 // 組件呼叫方法
-// const udAlertExtend = Vue.extend(UdAlert);
-// const udAlert = options => {
-//   let instance = new udAlertExtend();
-//   typeof options === 'string' ? instance.msg = options : Object.assign(instance, options);
-//   document.body.appendChild(instance.$mount().$el);
-//   return instance.show();
-// };
-// export { udAlert }
-
-// const udLoadingExtend = Vue.extend(UdLoading);
-// const udLoading = {
-//   instance: null,
-//   open: (options = {}) => {
-//     udLoading.instance = new udLoadingExtend({
-//       el: document.createElement("div"),
-//       data() { return options }
-//     })
-//     if(udLoading.instance.fixed) document.body.style.overflowY = 'hidden';
-//     document.body.appendChild(udLoading.instance.$el);
-//   },
-//   close: () => udLoading.instance.destroy()
-// };
-// export { udLoading }
-
-// ---- Vue 3 動態組件掛載 ----
 // udAlert
 const udAlert = (options) => {
   const container = document.createElement('div');
@@ -115,34 +90,43 @@ const udAlert = (options) => {
   render(vnode, container);
   const instance = vnode.component?.proxy;
 
-  return instance?.show?.();
+  if (!instance) return;
+
+  const originalDestroy = instance.destroy;
+  instance.destroy = (...args) => {
+    originalDestroy?.(...args)
+    render(null, container);
+    container.parentNode?.removeChild(container);
+  }
+
+  return instance.show?.();
 }
 
 // udLoading
 const udLoading = {
   instance: null,
-  open: (options = {}) => {
-    const container = document.createElement("div")
-    document.body.appendChild(container)
-
-    const vnode = createVNode(UdLoading, options)
-    render(vnode, container)
-
-    udLoading.instance = vnode.component?.proxy
-
-    if (udLoading.instance?.fixed) {
-      document.body.style.overflowY = "hidden"
+  container: null,
+  open(options = {}) {
+    // 如果已經有實例就先關掉，避免重複掛載
+    if (this.instance) {
+      this.close();
     }
+    this.container = document.createElement("div");
+    document.body.appendChild(this.container);
+
+    const vnode = createVNode(UdLoading, options);
+    render(vnode, this.container);
+
+    this.instance = vnode.component?.proxy;
   },
-  close: () => {
-    if (udLoading.instance) {
-      const el = udLoading.instance.$el
-      render(null, el.parentNode) // 卸載 vnode
-      el.parentNode?.removeChild(el)
-      udLoading.instance = null
-      document.body.style.overflowY = ""
+  close() {
+    if (this.container) {
+      render(null, this.container);
+      document.body.removeChild(this.container);
+      this.container = null;
+      this.instance = null;
     }
-  },
+  }
 }
 
 // ud-ui插件註冊方法

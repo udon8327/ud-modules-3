@@ -21,9 +21,9 @@ import axios from "axios";
 
 // udAxios 自定義預設值
 const udAxios = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL, // API基礎路徑
+  baseURL: import.meta.env.VITE_APP_API_BASE_URL, // API基礎路徑
   timeout: 30000, // 請求超時時間,
-  withCredentials: true, // 允許攜帶cookie
+  // withCredentials: true, // 允許攜帶cookie
   // headers: { // 自定義headers
   //   'Authorization': 'Bearer token',
   //   'Content-Type': 'application/x-www-form-urlencoded'
@@ -35,6 +35,7 @@ let ajaxCount = 0; // 計算ajax數量
 // 請求攔截器
 udAxios.interceptors.request.use(
   (config) => {
+    console.log('config: ', config);
     if (!config.noLoading) {
       if (ajaxCount === 0) udLoading.open(config.loading);
       ajaxCount++;

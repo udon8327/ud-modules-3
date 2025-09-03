@@ -1,15 +1,15 @@
 <template>
   <transition name="loading">
     <div class="ud-loading" v-show="isShow" :class="{'theme-white': theme === 'white'}">
-      <div class="modal-wrapper">
-        <div class="modal-content">
-          <div class="modal-header">
+      <div class="ud-modal-wrapper">
+        <div class="ud-modal-content">
+          <div class="ud-modal-header">
             <div v-if="iconType === 'css'" class="icon-css"></div>
             <i v-else-if="iconType === 'font'" class="icon-font" :class="iconFont"></i>
             <img v-else class="icon-img" :src="iconImg">
           </div>
-          <div class="modal-body">
-            <p v-html="nl2br(msg)"></p>
+          <div class="ud-modal-body">
+            <p v-html="nl2br(displayMessage)"></p>
           </div>
         </div>
       </div>
@@ -22,31 +22,37 @@ import { nl2br } from '@/utils/ud-utils'
 
 export default {
   name: 'UdLoading',
+  props: {
+    fixed: { type: Boolean, default: true }, // 是否固定body
+    theme: { type: String, default: '' }, // 戴入主題 [white]
+    iconType: { type: String, default: 'css' }, // icon類型 [css:CSS, font:字型, img:圖片]
+    iconFont: { type: String, default: 'fas fa-spinner fa-pulse' }, // 字型icon的class
+    iconImg: { type: String, default: 'https://image.flaticon.com/icons/svg/553/553265.svg' }, // 圖片icon的路徑
+    message: { type: String, default: '' }, // 載入訊息(功能同msg，接受html語法)
+    msg: { type: String, default: '' }, // 載入訊息(功能同message，接受html語法)
+  },
   data() {
     return {
       isShow: false,
-      fixed: false, // 是否固定body
-      theme: "", // 戴入主題 [white]
-      iconType: "css", // icon類型 [css:CSS, font:字型, img:圖片]
-      iconFont: "fas fa-spinner fa-pulse", // 字型icon的class
-      iconImg: "https://image.flaticon.com/icons/svg/553/553265.svg", // 圖片icon的路徑
-      msg: "", // 載入訊息
+    }
+  },
+  computed: {
+    displayMessage() {
+      return this.message === "" ? this.msg : this.message;
     }
   },
   mounted() {
     this.isShow = true;
+    if (this.fixed) {
+      document.body.style.overflowY = "hidden";
+    }
+  },
+  unmounted() {
+    document.body.style.overflowY = "";
   },
   methods: {
     nl2br(val) {
       return nl2br(val);
-    },
-    destroy() {
-      this.isShow = false;
-      document.body.style.overflowY = 'auto';
-      setTimeout(() => {
-        this.$destroy(true);
-        this.$el.parentNode.removeChild(this.$el);
-      }, 200);
     },
   }
 }
@@ -61,28 +67,28 @@ export default {
   width: 100%
   height: 100%
   overflow: auto
-  background-color: rgba(0,0,0,0.2)
+  background-color: rgba(0,0,0,0.5)
   &.theme-white
     background-color: rgba(255,255,255,0.5)
-    .modal-wrapper
-      .modal-content
-        .modal-header
+    .ud-modal-wrapper
+      .ud-modal-content
+        .ud-modal-header
           .icon-css
             border: 3px solid rgba(#000, 0.2)
             border-top: 3px solid #000
           i
             color: #666
-        .modal-body
+        .ud-modal-body
           p
             color: #666
-  .modal-wrapper
+  .ud-modal-wrapper
     width: 100%
     height: 100%
     display: flex
     justify-content: center
     align-items: center
-    .modal-content
-      .modal-header
+    .ud-modal-content
+      .ud-modal-header
         text-align: center
         margin-bottom: 5px
         display: flex
@@ -111,9 +117,8 @@ export default {
               transform: rotate(0deg)
             100% 
               transform: rotate(360deg)
-      .modal-body
-        padding-top: 6px
+      .ud-modal-body
         p
-          color: #fff
-          letter-spacing: 2px
+          font-size: 16px
+          color: #999
 </style>

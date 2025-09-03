@@ -9,7 +9,7 @@
           <p v-html="nl2br(title)"></p>
         </div>
         <div class="ud-modal-body">
-          <p v-html="nl2br(messageContent)"></p>
+          <p v-html="nl2br(displayMessage)"></p>
         </div>
         <div class="ud-modal-footer">
           <ud-button @click="cancelHandler" plain v-if="confirm">{{ cancelText }}</ud-button>
@@ -34,8 +34,8 @@ export default {
     btnClose: { type: Boolean, default: false }, // 右上關閉按鈕
     scrollLock: { type: Boolean, default: false }, // 是否鎖定背景頁面捲動
     title: { type: String, default: "" }, // 標題文字
-    message: { type: String, default: "" }, // 訊息文字(同msg，接受html語法)
-    msg: { type: String, default: "" }, // 訊息文字(同message，接受html語法)
+    message: { type: String, default: "" }, // 訊息文字(功能同msg，接受html語法)
+    msg: { type: String, default: "" }, // 訊息文字(功能同message，接受html語法)
     cancelText: { type: String, default: "取消" }, // 取消鈕文字
     onCancel: { type: Function, default: () => {} }, // 取消鈕callback
     confirmText: { type: String, default: "確定" }, // 確認鈕文字
@@ -49,7 +49,7 @@ export default {
     }
   },
   computed: {
-    messageContent() {
+    displayMessage() {
       return this.message === "" ? this.msg : this.message;
     }
   },

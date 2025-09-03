@@ -14,7 +14,7 @@
         </div>
         <div class="ud-modal-footer" v-if="!$slots.default">
           <div class="button-area">
-            <ud-button @click="isShow = 0">確認</ud-button>
+            <ud-button @click="isShow = false">確認</ud-button>
           </div>
         </div>
       </div>
@@ -26,14 +26,14 @@
 export default {
   name: 'UdModal',
   props: {
-    title: { default: "通用標題" }, // 通用標題
-    message: { default: "通用訊息" }, // 通用訊息
-    modelValue: { default: false }, // 開關值
-    maskClose: Boolean, // 遮罩關閉
-    btnClose: Boolean, // 按鈕關閉
-    fullScreen: Boolean, // 是否全螢幕
-    zIndex: { default: 100 }, // z-index層級
-    noBg: Boolean // 背景是否透明
+    title: { type: String, default: "通用標題" }, // 通用標題
+    message: { type: String, default: "通用訊息" }, // 通用訊息
+    modelValue: { type: Boolean, default: false }, // 開關值
+    maskClose: { type: Boolean, default: false }, // 遮罩關閉
+    btnClose: { type: Boolean, default: false }, // 按鈕關閉
+    fullScreen: { type: Boolean, default: false }, // 是否全螢幕
+    zIndex: { type: Number, default: 100 }, // z-index層級
+    noBg: { type: Boolean, default: false }, // 背景是否透明
   },
   computed: {
     isShow: {
