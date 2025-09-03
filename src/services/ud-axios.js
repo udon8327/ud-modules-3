@@ -1,7 +1,7 @@
 import axios from "axios";
 // import router from '@/router'
 // import store from '@/store'
-// import { udAlert, udLoading } from "@/components/ud-ui";
+import { udAlert, udLoading } from "@/components/ud-ui";
 
 // axios 全局預設值
 // axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL; // API基礎路徑
@@ -35,15 +35,18 @@ let ajaxCount = 0; // 計算ajax數量
 // 請求攔截器
 udAxios.interceptors.request.use(
   (config) => {
-    console.log('config: ', config);
-    if (!config.noLoading) {
-      if (ajaxCount === 0) udLoading.open(config.loading);
+    if (!config?.noLoading) {
+      if (ajaxCount === 0) udLoading.open(config?.loading);
       ajaxCount++;
     }
     return config;
   },
   (error) => {
-    udAlert("請求發送失敗/n請稍候再試");
+    if (!error?.config?.noLoading) {
+      if (ajaxCount > 0) ajaxCount--;
+      if (ajaxCount === 0) udLoading.close();
+    }
+    udAlert("請求發送失敗\n請稍候再試");
     return Promise.reject(error);
   }
 );
@@ -52,30 +55,28 @@ udAxios.interceptors.request.use(
 udAxios.interceptors.response.use(
   // 狀態碼 2xx: 回應成功
   (response) => {
-    if (!response.config.noLoading) {
+    if (!response?.config?.noLoading) {
       ajaxCount--;
       if (ajaxCount === 0) udLoading.close();
     }
-    return response.config.fullRes ? response : response.data;
+    return response?.config?.fullRes ? response : response?.data;
   },
   // 狀態碼 3xx: 重新導向, 4xx: 用戶端錯誤, 5xx: 伺服器錯誤
   (error) => {
-    if (!error.config.noLoading) {
+    if (!error?.config?.noLoading) {
       ajaxCount--;
       if (ajaxCount === 0) udLoading.close();
     }
-    if (error.config.default) return Promise.reject(error);
+    if (error?.config?.default) return Promise.reject(error);
 
     // 定義錯誤訊息
     let errorMsg = "";
-    if (error.response) {
+    if (error?.response) {
       // 請求已發出，有收到錯誤回應
-      errorMsg = statusMsg[error.response.status]
-        ? statusMsg[error.response.status]
-        : "發生未知的錯誤";
-      if (error.response.data && error.response.data.message)
-        errorMsg = error.response.data.message;
-    } else if (error.request) {
+      errorMsg =
+        statusMsg[error.response.status] || "發生未知的錯誤";
+      if (error.response.data?.message) errorMsg = error.response.data.message;
+    } else if (error?.request) {
       // 請求已發出，但没有收到回應
       errorMsg = "請求逾時或伺服器沒有回應";
     } else {
@@ -85,11 +86,10 @@ udAxios.interceptors.response.use(
 
     // 定義警告彈窗
     let alertConfig = { msg: errorMsg };
-    Object.assign(alertConfig, error.config.alert);
+    Object.assign(alertConfig, error?.config?.alert);
 
     // 定義錯誤處理
-    let code =
-      error.response && error.response.data && error.response.data.code;
+    let code = error?.response?.data?.code;
     if (code) {
       // 有收到code的錯誤
       switch (code) {
@@ -104,21 +104,19 @@ udAxios.interceptors.response.use(
               }
             )
             .then(() => console.log("已登入"))
-            .catch((err) => (location.href = err.response.data.data.url));
+            .catch((err) => (location.href = err?.response?.data?.data?.url));
           break;
         default:
           if (
-            !(
-              error.config.noAlertCode &&
-              error.config.noAlertCode.some((error) => error == code)
-            )
+            !error?.config?.noAlertCode?.includes(code) &&
+            !error?.config?.noAlert
           ) {
-            if (!error.config.noAlert) udAlert(alertConfig);
+            udAlert(alertConfig);
           }
       }
     } else {
       // 沒收到code的錯誤
-      if (!error.config.noAlert) udAlert(alertConfig);
+      if (!error?.config?.noAlert) udAlert(alertConfig);
     }
     // 拋回錯誤
     console.log(`errorCode: ${code}, errorMsg: ${errorMsg}`);

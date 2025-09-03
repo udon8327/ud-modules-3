@@ -167,7 +167,7 @@ export default {
     this.udLoading.open();
     setTimeout(() => {
       this.udLoading.close();
-    }, 1000);
+    }, 200);
     this.liffLogin();
   },
   methods: {
@@ -228,7 +228,9 @@ export default {
         });
     },
     getData() {
-      this.udAxios.get('test/400/失敗了')
+      this.udAxios.get('test/400/失敗了', {
+        noAlert: false
+      })
         .then(res => {
           console.log('res: ', res);
         })
@@ -236,6 +238,8 @@ export default {
     postData() {
       this.udAxios.post('test', {
         name: "UDON"
+      }, {
+        noLoading: true
       })
         .then(res => {
           console.log('res: ', res);

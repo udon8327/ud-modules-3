@@ -101,6 +101,7 @@ const udAlert = (options) => {
 
   return instance.show?.();
 }
+export { udAlert };
 
 // udLoading
 const udLoading = {
@@ -128,6 +129,7 @@ const udLoading = {
     }
   }
 }
+export { udLoading };
 
 // ud-ui插件註冊方法
 const install = (app) => {
