@@ -1,37 +1,20 @@
 <template lang="pug">
 #demo
   ud-modal(v-model="isModalShow" mask-close btn-close)
-    h1 通用彈窗
-    ud-image(src="@/assets/images/picture/avatar_default.jpg", alt="")
-    br
+    h4.mb-2 通用彈窗
+    ud-image.mb-3(src="", alt="")
     ud-button(@click="isModalShow = false" plain) 關閉
 
   .liff-area
-    .liff-wrapper
+    .liff-wrapper.mb-2
       ud-image(:src="profile.pictureUrl", alt="")
       .profile-wrapper
         h6 {{ profile.displayName }}
         p {{ profile.userId }}
         p {{ profile.info }}
 
-  .image-area
-    .image-wrapper
-      img(src="@/assets/images/picture/01.jpg", alt="")
-      img(:src="image02", alt="")
-      img(src="https://imgur.com/DIC7dRT.jpg", alt="")
-      ud-image(src="@/assets/images/picture/01.jpg')", alt="")
-      ud-image(src="require('@/assets/images/picture/02.jpg')", alt="")
-      ud-image(:src="image03", alt="")
-
-  .button-area
-    .button-wrapper
-      ud-button(@click="sendMessage" plain) 傳送訊息
-      ud-button(@click="shareTargetPicker") 好友分享
-    .button-wrapper
-      ud-button(@click="getData" plain) GET
-      ud-button(@click="postData") POST
-
   .form-area
+    hr
     ud-form(:rules="rules" :model="formData" ref="form")
       ud-form-item(label="姓名" prop="name" flex)
         ud-input(v-model.trim="formData.name" placeholder="請輸入您的姓名" @keydown="onInput")
@@ -68,25 +51,46 @@
       ud-form-item(label="" prop="isAgree")
         ud-checkbox(v-model="formData.isAgree")
           p 我同意#[a(href="https://www.google.com.tw/") 使用者條款]
-
-    .button-wrapper
+    .button-wrapper.mb-2
       ud-button(@click="clearVerify" plain) 清除驗證
       ud-button(@click="submitVerify") 送出表單
 
-    .module-area
-      .button-wrapper
-        ud-button(@click="alert()") Alert
-        ud-button(@click="isModalShow = true") Modal
+  .layout-area
+    hr
+    .collapse-wrapper.mb-2
       ud-button(@click="isCollapse = !isCollapse") 摺疊容器
         ud-arrow(color="#fff" :size="4" :width="2" :direction="isCollapse ? 'up' : 'down'")
       ud-collapse(v-model="isCollapse" :duration="0.4")
         ud-image(src="img/01.jpg" bg-size="contain")
+    .image-wrapper.mb-2
+      img(src="@/assets/images/picture/01.jpg", alt="")
+      img(:src="image02", alt="")
+      img(src="https://imgur.com/DIC7dRT.jpg", alt="")
+      ud-image(src="@/assets/images/picture/01.jpg", alt="")
+      ud-image(:src="image02", alt="")
+      ud-image(src="https://imgur.com/DIC7dRT.jpg", alt="")
 
-      ud-html(text="<i>用戶</i>自定\n<h3>義訊息</h3>")
-      br
-      ud-ellipsis(:max-line="2") 文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略
-      br
-      ud-countdown(ref="countdown" :time="120" @timeup="timeup" type="minute")
+  .notice-area
+    hr
+    .button-wrapper.mb-2
+      ud-button(@click="alert()") Alert
+      ud-button(@click="isModalShow = true") Modal
+      ud-button(@click="showLoading") Loading
+
+  .tools-area
+    hr
+    ud-html.mb-2(text="<i>用戶</i>自定\n<h3>義訊息</h3>")
+    ud-ellipsis.mb-2(:max-line="2") 文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略
+    ud-countdown.mb-2(ref="countdown" :time="120" @timeup="timeup" type="minute")
+
+  .api-area
+    hr
+    .button-wrapper.mb-2
+      ud-button(@click="sendMessage" plain) 傳送訊息
+      ud-button(@click="shareTargetPicker") 好友分享
+    .button-wrapper.mb-2
+      ud-button(@click="getData" plain) GET
+      ud-button(@click="postData") POST
 </template>
 
 <script>
@@ -291,6 +295,12 @@ export default {
     toUrl(url) {
       location.href = url;
     },
+    showLoading() {
+      this.udLoading.open();
+      setTimeout(() => {
+        this.udLoading.close();
+      }, 1000);
+    },
     sendMessage() {
       liff.sendMessages([
         {
@@ -359,7 +369,6 @@ export default {
 
 <style lang="sass" scoped>
 .liff-area
-  margin-bottom: 15px
   .liff-wrapper
     display: flex
     align-items: center
@@ -379,16 +388,14 @@ export default {
 .button-wrapper
   display: flex
   justify-content: space-between
-  margin-bottom: 10px
   gap: 10px
   .ud-button
     flex: 1 1 0
 
-.image-area
+.layout-area
   .image-wrapper
     display: flex
     justify-content: space-between
-    margin-bottom: 10px
     img, .ud-image
       flex: 0 0 16%
       max-width: 16%
