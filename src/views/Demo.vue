@@ -14,6 +14,15 @@
         p {{ profile.userId }}
         p {{ profile.info }}
 
+  .image-area
+    .image-wrapper
+      img(src="@/assets/images/picture/01.jpg", alt="")
+      img(:src="image02", alt="")
+      img(src="https://imgur.com/DIC7dRT.jpg", alt="")
+      ud-image(src="@/assets/images/picture/01.jpg')", alt="")
+      ud-image(src="require('@/assets/images/picture/02.jpg')", alt="")
+      ud-image(:src="image03", alt="")
+
   .button-area
     .button-wrapper
       ud-button(@click="sendMessage" plain) 傳送訊息
@@ -81,6 +90,7 @@
 </template>
 
 <script>
+import image02 from '@/assets/images/picture/02.jpg'
 import liff from "@line/liff";
 
 export default {
@@ -88,6 +98,7 @@ export default {
   components: {},
   data() {
     return {
+      image02,
       isModalShow: false,
       isCollapse: false,
       profile: {
@@ -372,4 +383,13 @@ export default {
   gap: 10px
   .ud-button
     flex: 1 1 0
+
+.image-area
+  .image-wrapper
+    display: flex
+    justify-content: space-between
+    margin-bottom: 10px
+    img, .ud-image
+      flex: 0 0 16%
+      max-width: 16%
 </style>

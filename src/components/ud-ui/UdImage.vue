@@ -1,7 +1,7 @@
 <template>
   <div class="ud-image">
     <div class="ud-image-bg" :style="{
-      backgroundImage: 'url(' + `${ src ? src : avatarDefault }` + ')',
+      backgroundImage: `url(${src || avatarDefault})`,
       paddingBottom: height + '%',
       borderRadius: radius,
       backgroundSize: bgSize
@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import avatarDefault from '@/assets/images/picture/avatar_default.jpg'
+import avatarDefault from '@/assets/images/picture/default.jpg'
 
 export default {
   name: 'UdImage',
   props: {
-    src: { default: avatarDefault }, // 背景圖片
-    height: { default: 100 }, // 高度比例
-    radius: { default: '0px' }, // 圓角
-    bgSize: { default: "cover" } // 背景尺寸 (cover, contain, 100%...等)
+    src: { type: String, default: avatarDefault }, // 背景圖片
+    height: { type: Number, default: 100 }, // 高度比例
+    radius: { type: String, default: '0px' }, // 圓角
+    bgSize: { type: String, default: "cover" } // 背景尺寸 (cover, contain, 100%...等)
   },
   data() {
     return {
@@ -37,7 +37,7 @@ export default {
     width: 100%
     padding-bottom: 100%
     height: 0
-    background: url('https://i.imgur.com/s3w1Sm3.jpg') no-repeat center center
+    background: url('') no-repeat center center
     background-size: cover
     background-color: #e3e3e3
 </style>
