@@ -3,9 +3,9 @@
     class="ud-arrow"
     :class=[direction]
     :style="{
-      'border-color': bdColor,
-      'border-width': '0 ' + bdWidth + 'px ' + bdWidth + 'px 0',
-      padding: padding + 'px'
+      borderColor: color,
+      borderWidth: '0 ' + width + 'px ' + width + 'px 0',
+      padding: size + 'px',
     }">
   </i>
 </template>
@@ -14,9 +14,9 @@
 export default {
   name: 'UdArrow',
   props: {
-    bdColor: { default: "#333" }, // 顏色
-    bdWidth: { default: "3" }, // 寬度
-    padding: { default: "3" }, // 大小
+    color: { default: "#333" }, // 顏色
+    width: { default: "3" }, // 寬度
+    size: { default: "3" }, // 大小
     direction: { default: "right" } //方向
   }
 }
