@@ -49,10 +49,11 @@
   .layout-area
     hr
     .collapse-wrapper.mb-2
-      ud-button(@click="isCollapse = !isCollapse") 摺疊容器
-        ud-arrow(color="#fff" :size="4" :width="2" :direction="isCollapse ? 'up' : 'down'")
+      .collapse-button-wrapper
+        ud-arrow(color="#fff" :size="4" :width="2" :direction="isCollapse ? 'down' : 'up'")
+        ud-button(@click="isCollapse = !isCollapse") 摺疊容器
       ud-collapse(v-model="isCollapse" :duration="0.4")
-        ud-image(src="img/01.jpg" bg-size="contain")
+        ud-image(src="@/assets/images/picture/04.jpg" bg-size="contain")
     .image-wrapper.mb-2
       img(src="@/assets/images/picture/01.jpg", alt="")
       img(:src="image02", alt="")
@@ -393,6 +394,14 @@ export default {
     flex: 1 1 0
 
 .layout-area
+  .collapse-wrapper
+    .collapse-button-wrapper
+      position: relative
+      .ud-arrow
+        position: absolute
+        right: 15px
+        top: 18px
+        z-index: 1
   .image-wrapper
     display: flex
     justify-content: space-between

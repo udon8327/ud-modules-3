@@ -1,6 +1,6 @@
 <template>
-  <div class="ud-collapse" :style="{'transition-duration': durationSecond}">
-    <div class="ud-collapse-wrapper">
+  <div class="ud-collapse" :style="{height: height, transitionDuration: durationSecond}">
+    <div class="ud-collapse-wrapper" ref="wrapper">
       <slot></slot>
     </div>
   </div>
@@ -10,28 +10,35 @@
 export default {
   name: 'UdCollapse',
   props: {
-    value: { type: Boolean, default: false },
-    duration: { type: Number, default: 0.2 }, // 持續時間
+    modelValue: { type: Boolean, default: false },
+    duration: { type: Number, default: 0.2 }
   },
   data() {
     return {
-      isShow: this.value
+      isShow: this.modelValue,
+      height: '0px'
     }
   },
   computed: {
     durationSecond() {
-      return `${ this.duration }s`
+      return `${this.duration}s`
     }
   },
   watch: {
-    value() {
-      this.isShow = this.value;
+    modelValue(newVal) {
+      this.isShow = newVal;
     },
     isShow() {
       this.$nextTick(() => {
         this.collapse();
+        this.$emit('update:modelValue', this.isShow);
         this.$emit('switch', this.isShow);
       })
+    }
+  },
+  mounted() {
+    if (this.isShow) {
+      this.height = this.$refs.wrapper.clientHeight + 'px';
     }
   },
   methods: {
@@ -41,25 +48,22 @@ export default {
     close() {
       this.isShow = false;
     },
-    switch() {
+    toggle() {
       this.isShow = !this.isShow;
     },
     collapse() {
-      let el = this.$el;
-      if(this.isShow) {
-        el.style.height = el.querySelector('.ud-collapse-wrapper').clientHeight + "px";
-        return;
+      if (this.isShow) {
+        this.height = this.$refs.wrapper.clientHeight + 'px';
+      } else {
+        this.height = '0px';
       }
-      el.style.height = 0;
     }
   }
 }
 </script>
 
-<style lang="sass" scoped>
+<style scoped lang="sass">
 .ud-collapse
-  transition: height .2s ease
-  height: 0
   overflow: hidden
   will-change: auto
 </style>
