@@ -19,8 +19,8 @@ export default {
   props: {
     src: { type: String, default: avatarDefault }, // 背景圖片
     height: { type: Number, default: 100 }, // 高度比例
-    radius: { type: String, default: '0px' }, // 圓角
-    bgSize: { type: String, default: "cover" } // 背景尺寸 (cover, contain, 100%...等)
+    radius: { type: String, default: "0px" }, // 圓角
+    bgSize: { type: String, default: "cover" }, // 背景尺寸 [cover, contain, 100%...等]
   },
   data() {
     return {

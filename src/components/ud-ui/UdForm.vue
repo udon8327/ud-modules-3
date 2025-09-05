@@ -22,19 +22,10 @@ export default {
     }
   },
   props: {
-    model: { // 驗證資料
-      type: Object,
-      required: true
-    },
-    rules: { // 驗證規則
-      type: Object
-    },
-    noErrorMsg: { // 有無錯誤提示
-      type: Boolean
-    },
-    noErrorScroll: { // 驗證時不滾動至錯誤項目
-      type: Boolean
-    },
+    model: { type: Object, default: () => ({}) }, // 驗證資料
+    rules: { type: Object, default: () => ({}) }, // 驗證規則
+    noErrorMsg: { type: Boolean, default: false }, // 有無錯誤提示
+    noErrorScroll: { type: Boolean, default: false }, // 驗證時不滾動至錯誤項目
   },
   methods: {
     registerFormItem(item) {

@@ -6,9 +6,9 @@
 export default {
   name: 'UdCountdown',
   props: {
-    time: { default: 60 }, // 倒數秒數
-    delay: Boolean, // 是否不要立刻開始倒數
-    type: { default: "second" } // 時間格式
+    time: { type: Number, default: 60 }, // 倒數秒數
+    delay: { type: Boolean, default: false }, // 是否不要立刻開始倒數
+    type: { type: String, default: "second" }, // 時間格式
   },
   data() {
     return {

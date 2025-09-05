@@ -23,12 +23,12 @@ export default {
   name: 'UdRadio',
   inheritAttrs: false,
   props: {
-    modelValue: null,
-    options: null, // 選項[object]
-    flex: Boolean, // 是否並排
-    radius: { default: "50px" }, // 圓角
-    labelBy: { default: "label" }, // label替代值
-    valueBy: { default: "value" }, // value替代值
+    modelValue: { default: null }, // 綁定值
+    options: { type: Array, default: () => [] }, // 選項[object]
+    flex: { type: Boolean, default: false }, // 是否並排
+    radius: { type: String, default: "50px" }, // 圓角
+    labelBy: { type: String, default: "label" }, // label替代值
+    valueBy: { type: String, default: "value" }, // value替代值
   },
   computed: {
     value: {

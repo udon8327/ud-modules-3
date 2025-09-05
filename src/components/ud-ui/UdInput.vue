@@ -16,8 +16,8 @@ export default {
   name: 'UdInput',
   inheritAttrs: false,
   props: {
-    modelValue: null,
-    center: Boolean, // 是否置中
+    modelValue: { default: null }, // 綁定值
+    center: { type: Boolean, default: false } , // 是否置中
   },
   computed: {
     value: {

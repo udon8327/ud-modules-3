@@ -10,10 +10,8 @@
 export default {
   name: 'UdCollapse',
   props: {
-    value: false,
-    duration: {
-      default: 0.2
-    }
+    value: { type: Boolean, default: false },
+    duration: { type: Number, default: 0.2 }, // 持續時間
   },
   data() {
     return {

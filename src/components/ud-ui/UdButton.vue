@@ -32,17 +32,17 @@ export default {
   name: 'UdButton',
   inheritAttrs: false,
   props: {
-    type: { default: "button" },
-    icon: { default: "" }, // CSS的icon
-    image: { default: "" }, // 圖片的icon
-    loading: Boolean, // 載入中
-    disabled: Boolean, // 禁止點擊
-    plain: Boolean, // 線條化
-    round: Boolean, // 圓角
-    circle: Boolean, // 圓型
-    throttle: Boolean, // 節流模式
-    debounce: Boolean, // 防抖模式
-    delay: { default: 1000 } // 節流/防抖 時間
+    type: { type: String, default: "button" },
+    icon: { type: String, default: "" }, // CSS的icon
+    image: { type: String, default: "" }, // 圖片的icon
+    loading: { type: Boolean, default: false }, // 載入中
+    disabled: { type: Boolean, default: false }, // 禁止點擊
+    plain: { type: Boolean, default: false }, // 線條化
+    round: { type: Boolean, default: false }, // 圓角
+    circle: { type: Boolean, default: false }, // 圓型
+    throttle: { type: Boolean, default: false }, // 節流模式
+    debounce: { type: Boolean, default: false }, // 防抖模式
+    delay: { type: Number, default: 1000 } // 節流/防抖 時間
   },
   computed: {
     filteredAttrs() {

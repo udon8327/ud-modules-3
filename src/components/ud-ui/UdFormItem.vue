@@ -24,29 +24,13 @@ export default {
   },
   inject: ['registerFormItem', 'unregisterFormItem', 'form'],
   props: {
-    required: { // 必填提示
-      type: Boolean,
-    },
-    icon: { // icon路徑
-      type: String
-    },
-    label: { // 標籤內容
-      type: String,
-    },
-    prop: { // 驗證名稱
-      type: String
-    },
-    flex: { // 是否並排
-      type: Boolean
-    },
-    labelWidth: { // 標籤寬度
-      type: String,
-      default: "30%",
-    },
-    labelAlign: { // 標籤對齊
-      type: String,
-      default: 'left',
-    },
+    required: { type: Boolean, default: false }, // 必填提示
+    icon: { type: String, default: "" }, // icon路徑
+    label: { type: String, default: "" }, // 標籤內容
+    prop: { type: String, default: "" }, // 驗證名稱
+    flex: { type: Boolean, default: false }, // 是否並排
+    labelWidth: { type: String, default: "30%" }, // 標籤寬度
+    labelAlign: { type: String, default: "left" }, // 標籤對齊
   },
   mounted() {
     this.registerFormItem(this);

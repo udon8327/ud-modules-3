@@ -48,7 +48,6 @@
 
   .layout-area
     hr
-    ud-arrow(color="#f00" :size="14" :width="12" direction="down")
     .collapse-wrapper.mb-2
       ud-button(@click="isCollapse = !isCollapse") 摺疊容器
         ud-arrow(color="#fff" :size="4" :width="2" :direction="isCollapse ? 'up' : 'down'")

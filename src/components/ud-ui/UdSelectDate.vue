@@ -13,15 +13,14 @@
 export default {
   name: 'UdSelectDate',
   props: {
-    modelValue: null, // value值
-    placeholder: { // placeholder值 [Array]
-      default: () => {
-        return ["年", "月", "日"];
-      }
+    modelValue: { default: null }, // 綁定值
+    placeholder: { // placeholder值
+      type: Array,
+      default: () => ["年", "月", "日"]
     },
-    third: Boolean, // 是否有第三項
-    flex: Boolean, // 是否並排
-    roc: Boolean // 是否為民國年
+    third: { type: Boolean, default: false }, // 是否有第三項
+    flex: { type: Boolean, default: false }, // 是否並排
+    roc: { type: Boolean, default: false } // 是否為民國年
   },
   computed: {
     value: {

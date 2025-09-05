@@ -14,10 +14,10 @@
 export default {
   name: 'UdArrow',
   props: {
-    color: { default: "#333" }, // 顏色
-    width: { default: "3" }, // 寬度
-    size: { default: "3" }, // 大小
-    direction: { default: "right" } //方向
+    color: { type: String, default: "#333" }, // 顏色
+    width: { type: [Number, String], default: 3 }, // 寬度
+    size: { type: [Number, String], default: 3 }, // 大小
+    direction: { type: String, default: "right" }, //方向 [up, down, left, right]
   }
 }
 </script>

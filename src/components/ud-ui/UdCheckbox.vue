@@ -40,12 +40,12 @@ export default {
   name: 'UdCheckbox',
   inheritAttrs: false,
   props: {
-    modelValue: null, // value值 單個時綁定Boolean 多個時綁定Array
-    options: null, // 選項
-    flex: Boolean, // 是否並排
-    radius: { default: "3px" }, // 圓角
-    labelBy: { default: "label" }, // label替代值
-    valueBy: { default: "value" }, // value替代值
+    modelValue: { default: null }, // 綁定值 (單個時綁定Boolean，多個時綁定Array)
+    options: { default: null }, // 選項
+    flex: { type: Boolean, default: false }, // 是否並排
+    radius: { type: String, default: "3px" }, // 圓角
+    labelBy: { type: String, default: "label" }, // label替代值
+    valueBy: { type: String, default: "value" } // value替代值
   },
   computed: {
     value: {

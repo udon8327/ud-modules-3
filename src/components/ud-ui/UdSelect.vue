@@ -21,22 +21,19 @@ export default {
   name: 'UdSelect',
   inheritAttrs: false,
   props: {
-    modelValue: { default: "" }, // value值
+    modelValue: { default: null }, // 綁定值
     options: { // 選項
-      default: () => {
-        return [
-          { label: "", value: "", disabled: true }
-        ]
-      }
+      type: Array,
+      default: () => [{ label: "", value: "", disabled: true }]
     },
-    placeholder: { default: "請選擇一項" }, // 取代文字
-    combine: Boolean, // 使用value做為label
-    center: Boolean, // 是否置中
-    group: { default: "" }, // 是否群組
-    index: { default: 0 }, // 群組索引
-    labelBy: { default: "label" }, // label替代值
-    valueBy: { default: "value" }, // value替代值
-    childrenBy: { default: "children" }, // children替代值
+    placeholder: { type: String, default: "請選擇一項" }, // 取代文字
+    combine: { type: Boolean, default: false }, // 使用value做為label
+    center: { type: Boolean, default: false }, // 是否置中
+    group: { type: [String, Number, Array], default: "" }, // 是否群組
+    index: { type: Number, default: 0 }, // 群組索引
+    labelBy: { type: String, default: "label" }, // label替代值
+    valueBy: { type: String, default: "value" }, // value替代值
+    childrenBy: { type: String, default: "children" }, // children替代值
   },
   data() {
     return {

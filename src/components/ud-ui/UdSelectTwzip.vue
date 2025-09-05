@@ -11,14 +11,13 @@
 export default {
   name: 'UdSelectTwzip',
   props: {
-    modelValue: null, // value值
-    placeholder: { // placeholder值 [Array]
-      default: () => {
-        return ["請選擇縣市", "請選擇行政區"];
-      }
+    modelValue: { default: null }, // 綁定值
+    placeholder: { // placeholder值
+      type: Array, 
+      default: () => ["請選擇縣市", "請選擇行政區"]
     },
-    flex: Boolean, // 是否並排
-    combine: Boolean, // 是否label直接使用value值
+    flex: { type: Boolean, default: false }, // 是否並排
+    combine: { type: Boolean, default: false }, // 是否label直接使用value值
   },
   data() {
     return {

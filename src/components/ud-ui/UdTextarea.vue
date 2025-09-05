@@ -20,11 +20,11 @@ export default {
   name: 'UdTextarea',
   inheritAttrs: false,
   props: {
-    modelValue: null,
-    rows: { default: 4 }, // 行數
-    showLimit: Boolean, // 是否顯示字數限制
-    limit: { default: 0 }, // 字數限制提示(需限字數請自行加上maxlength屬性)
-    noResize: Boolean // 禁止改變大小
+    modelValue: { default: null }, // 綁定值
+    rows: { type: Number, default: 4 }, // 行數
+    showLimit: { type: Boolean, default: false }, // 是否顯示字數限制
+    limit: { type: Number, default: 0 }, // 字數限制提示(需限字數請自行加上maxlength屬性)
+    noResize: { type: Boolean, default: false }, // 禁止改變大小
   },
   computed: {
     value: {

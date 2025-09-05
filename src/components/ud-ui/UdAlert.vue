@@ -32,10 +32,10 @@ export default {
     confirm: { type: Boolean, default: false }, // 是否有確認+取消鈕
     maskClose: { type: Boolean, default: false }, // 點擊遮罩關閉
     btnClose: { type: Boolean, default: false }, // 右上關閉按鈕
-    scrollLock: { type: Boolean, default: false }, // 是否鎖定背景頁面捲動
+    scrollLock: { type: Boolean, default: true }, // 是否鎖定背景頁面捲動
     title: { type: String, default: "" }, // 標題文字
-    message: { type: String, default: "" }, // 訊息文字(功能同msg，接受html語法)
-    msg: { type: String, default: "" }, // 訊息文字(功能同message，接受html語法)
+    message: { type: String, default: "" }, // 訊息文字 (功能同msg，接受html語法)
+    msg: { type: String, default: "" }, // 訊息文字 (功能同message，接受html語法)
     cancelText: { type: String, default: "取消" }, // 取消鈕文字
     onCancel: { type: Function, default: () => {} }, // 取消鈕callback
     confirmText: { type: String, default: "確定" }, // 確認鈕文字

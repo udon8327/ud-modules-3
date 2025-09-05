@@ -19,7 +19,7 @@ export default {
   name: 'UdSwitch',
   inheritAttrs: false,
   props: {
-    modelValue: { default: false }, // value值
+    modelValue: { default: null }, // 綁定值
   },
   computed: {
     value: {

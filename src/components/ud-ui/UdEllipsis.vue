@@ -8,7 +8,7 @@
 export default {
   name: 'UdEllipsis',
   props: {
-    maxLine: { default: 1, } // 指定省略行數
+    maxLine: { type: Number, default: 1 }, // 指定省略行數
   }
 }
 </script>
