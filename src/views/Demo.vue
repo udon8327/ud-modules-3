@@ -5,16 +5,7 @@
     ud-image.mb-3(src="", alt="")
     ud-button(@click="isModalShow = false" plain) 關閉
 
-  .liff-area
-    .liff-wrapper.mb-2
-      ud-image(:src="profile.pictureUrl", alt="")
-      .profile-wrapper
-        h6 {{ profile.displayName }}
-        p {{ profile.userId }}
-        p {{ profile.info }}
-
   .form-area
-    hr
     ud-form(:rules="rules" :model="formData" ref="form")
       ud-form-item(label="姓名" prop="name" flex)
         ud-input(v-model.trim="formData.name" placeholder="請輸入您的姓名" @keydown="onInput")
@@ -92,6 +83,15 @@
     .button-wrapper.mb-2
       ud-button(@click="getData" plain) GET
       ud-button(@click="postData") POST
+
+  .liff-area
+    hr
+    .liff-wrapper.mb-2
+      ud-image(:src="profile.pictureUrl", alt="")
+      .profile-wrapper
+        h6 {{ profile.displayName }}
+        p {{ profile.userId }}
+        p {{ profile.info }}
 </template>
 
 <script>
@@ -274,7 +274,7 @@ export default {
       });
     },
     timeup() {
-      this.udAlert('時間到！');
+      console.log('時間到！');
     },
     countdown() {
       this.$refs.cd.countdown();
