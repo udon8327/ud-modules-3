@@ -50,7 +50,8 @@
     hr
     .collapse-wrapper.mb-2
       .collapse-button-wrapper
-        ud-arrow(color="#fff" :size="4" :width="2" :direction="isCollapse ? 'down' : 'up'")
+        .arrow-wrapper(:class="{'is-collapse': isCollapse}")
+          ud-arrow(color="#fff" :size="4" :width="2" direction="up")
         ud-button(@click="isCollapse = !isCollapse") 摺疊容器
       ud-collapse(v-model="isCollapse" :duration="0.4")
         ud-image(src="@/assets/images/picture/04.jpg" bg-size="contain")
@@ -397,11 +398,14 @@ export default {
   .collapse-wrapper
     .collapse-button-wrapper
       position: relative
-      .ud-arrow
+      .arrow-wrapper
         position: absolute
         right: 15px
-        top: 18px
+        top: 12px
         z-index: 1
+        transition: all 0.2s ease
+        &.is-collapse
+          transform: rotate(180deg)
   .image-wrapper
     display: flex
     justify-content: space-between
