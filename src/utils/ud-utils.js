@@ -167,10 +167,21 @@ const padStart = (val, length = 2, fillChar = "0") => {
 const imageLoaded = url => {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`圖片載入失敗：${url}`));
+    const cleanup = () => {
+      img.onload = null;
+      img.onerror = null;
+    };
+    img.onload = () => {
+      cleanup();
+      resolve(img);
+    };
+    img.onerror = () => {
+      cleanup();
+      reject(new Error(`圖片載入失敗：${url}`));
+    };
     img.src = url;
     if (img.complete) {
+      cleanup();
       resolve(img);
     }
   });
@@ -214,11 +225,17 @@ const imageDownload = (selector, name = "下載圖片", type = "image/jpeg") => 
     canvas.height = image.naturalHeight;
     const ctx = canvas.getContext("2d");
     ctx.drawImage(image, 0, 0);
-    const url = canvas.toDataURL(type);
-    const a = document.createElement("a");
-    a.download = name;
-    a.href = url;
-    a.click(); // 觸發下載
+    try {
+      const url = canvas.toDataURL(type);
+      const a = document.createElement("a");
+      a.download = name;
+      a.href = url;
+      a.click(); // 觸發下載
+    } catch (e) {
+      // 若跨域造成安全限制，退而求其次直接開啟圖片來源
+      console.warn("Canvas toDataURL 失敗，改為直接開啟圖片：", e);
+      window.open(image.src, "_blank");
+    }
   };
   image.onerror = () => {
     console.error("圖片載入失敗，可能因為跨域或圖片損毀。");
@@ -282,11 +299,29 @@ const typeOf = val => {
 const deepClone = (obj, hash = new WeakMap()) => {
   if (obj === null || typeof obj !== "object") return obj;
   if (obj instanceof Date) return new Date(obj);
-  if (obj instanceof RegExp) return new RegExp(obj);
+  if (obj instanceof RegExp) return new RegExp(obj.source, obj.flags);
   if (obj instanceof Error) {
     const err = new obj.constructor(obj.message);
     err.stack = obj.stack;
     return err;
+  }
+  if (obj instanceof Map) {
+    const result = new Map();
+    hash.set(obj, result);
+    for (const [k, v] of obj.entries()) {
+      const ck = deepClone(k, hash);
+      const cv = deepClone(v, hash);
+      result.set(ck, cv);
+    }
+    return result;
+  }
+  if (obj instanceof Set) {
+    const result = new Set();
+    hash.set(obj, result);
+    for (const v of obj.values()) {
+      result.add(deepClone(v, hash));
+    }
+    return result;
   }
   if (hash.has(obj)) return hash.get(obj);
   const clone = Array.isArray(obj) ? [] : Object.create(Object.getPrototypeOf(obj));
@@ -307,8 +342,8 @@ const deepClone = (obj, hash = new WeakMap()) => {
 const renameKeys = (obj, keys = {}) => {
   if (typeof obj !== "object" || obj === null) return {};
   const result = {};
-  for (const key in obj) {
-    const newKey = keys.hasOwnProperty(key) ? keys[key] : key;
+  for (const key of Object.keys(obj)) {
+    const newKey = Object.prototype.hasOwnProperty.call(keys, key) ? keys[key] : key;
     result[newKey] = obj[key];
   }
   return result;
@@ -346,7 +381,10 @@ const isExistDate = (date, split = "-") => {
 const getDiffDate = (days = 0) => {
   const date = new Date();
   date.setDate(date.getDate() + days);
-  return date.toISOString().split("T")[0];
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 };
 
 /**
@@ -639,8 +677,13 @@ const throttle = (fn, delay = 1000) => {
  * @param {string} url 網址
  * @example queryString("id", "https://foo?id=123") -> "123"
  */
-const queryString = (key, url = location.href) => {
-  const params = new URL(url).searchParams;
+const queryString = (key, url) => {
+  let targetUrl = url;
+  if (!targetUrl) {
+    if (typeof window === "undefined" || typeof location === "undefined") return key ? null : {};
+    targetUrl = location.href;
+  }
+  const params = new URL(targetUrl).searchParams;
   if (!key) {
     return Object.fromEntries(params.entries());
   }
@@ -654,7 +697,7 @@ const queryString = (key, url = location.href) => {
 const isMobile = (os = "") => {
   const ua = navigator.userAgent.toLowerCase();
   const matchers = {
-    apple: /iphone|ipod|ipad|macintosh/i,
+    apple: /iphone|ipod|ipad/i,
     android: /android/i,
     all: /iphone|ipod|ipad|android.*mobile|windows.*phone|blackberry.*mobile/i
   };
