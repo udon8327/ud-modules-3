@@ -53,9 +53,7 @@ const liffLogin = callback => {
         });
     })
     .catch(err => {
-      udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() =>
-        location.reload()
-      );
+      udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() => location.reload());
     });
 };
 

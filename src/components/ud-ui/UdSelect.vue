@@ -9,12 +9,7 @@
       @change="onChange"
     >
       <option value="" disabled selected>{{ placeholder }}</option>
-      <option
-        v-for="option in optionsArr"
-        :value="option[valueBy]"
-        :key="option[valueBy]"
-        :disabled="option.disabled"
-      >
+      <option v-for="option in optionsArr" :value="option[valueBy]" :key="option[valueBy]" :disabled="option.disabled">
         {{ combine ? option[valueBy] : option[labelBy] }}
       </option>
     </select>
@@ -104,9 +99,7 @@ export default {
     centerSelect() {
       let el = this.$refs.select;
       let text = "";
-      el.value
-        ? (text = this.options.find(item => item.value == el.value).label)
-        : (text = this.placeholder);
+      el.value ? (text = this.options.find(item => item.value == el.value).label) : (text = this.placeholder);
       let emptySpace = el.offsetWidth - this.getTextWidth(text, el);
       el.style.textIndent = `${emptySpace / 2 - 10}px`;
     }

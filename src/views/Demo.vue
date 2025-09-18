@@ -251,13 +251,7 @@ export default {
                 liff.getProfile().then(res => {
                   this.profile = res;
                   this.profile.info =
-                    liff.isInClient() +
-                    ", " +
-                    liff.getOS() +
-                    ", " +
-                    liff.getLineVersion() +
-                    ", " +
-                    liff.getLanguage();
+                    liff.isInClient() + ", " + liff.getOS() + ", " + liff.getLineVersion() + ", " + liff.getLanguage();
                 });
               } else {
                 location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${
@@ -391,9 +385,7 @@ export default {
             const [majorVer, minorVer] = (liff.getLineVersion() || "").split(".");
             if (parseInt(majorVer) == 10 && parseInt(minorVer) < 11) {
               // LINE 10.3.0 - 10.10.0
-              this.udAlert(
-                "您的 LINE 版本較舊，可能會造成無法分享成功。若分享失敗，請升級 LINE APP 後再嘗試。"
-              );
+              this.udAlert("您的 LINE 版本較舊，可能會造成無法分享成功。若分享失敗，請升級 LINE APP 後再嘗試。");
               return;
             }
             this.udAlert("已取消分享"); // LINE 10.11.0 -

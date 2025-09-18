@@ -333,11 +333,7 @@ const isExistDate = (date, split = "-") => {
     return false;
   }
   const testDate = new Date(year, month - 1, day);
-  return (
-    testDate.getFullYear() === year &&
-    testDate.getMonth() === month - 1 &&
-    testDate.getDate() === day
-  );
+  return testDate.getFullYear() === year && testDate.getMonth() === month - 1 && testDate.getDate() === day;
 };
 
 /**
@@ -381,10 +377,7 @@ const formatTime = (input = new Date(), format = "yyyy-MM-dd HH:mm:ss") => {
   for (let key in map) {
     if (new RegExp("(" + key + ")").test(format)) {
       const val = map[key] + "";
-      format = format.replace(
-        RegExp.$1,
-        RegExp.$1.length === 1 ? val : val.padStart(RegExp.$1.length, "0")
-      );
+      format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? val : val.padStart(RegExp.$1.length, "0"));
     }
   }
   return format;
@@ -442,9 +435,7 @@ const scrollToTarget = (el = "top", speed = 5, offset = 0, callback = () => {}) 
  */
 const getPageScroll = (type = "height") => {
   if (type === "width") {
-    return (
-      window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0
-    );
+    return window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0;
   }
   if (type === "height") {
     return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -509,9 +500,7 @@ const isVerify = (val, type) => {
       return /^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([/?#][^\s]*)?$/i.test(val);
     // IP地址驗證
     case "ip":
-      return /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
-        val
-      );
+      return /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(val);
     // Hex色碼驗證
     case "hex":
       return /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/.test(val);

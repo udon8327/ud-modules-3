@@ -1,18 +1,8 @@
 <template>
   <div class="ud-select-twzip" :class="{ 'is-flex': flex }">
-    <ud-select
-      v-model="value[0]"
-      :options="firstArr"
-      :placeholder="placeholder[0]"
-      :combine="combine"
-    ></ud-select>
+    <ud-select v-model="value[0]" :options="firstArr" :placeholder="placeholder[0]" :combine="combine"></ud-select>
     <slot></slot>
-    <ud-select
-      v-model="value[1]"
-      :options="secondArr"
-      :placeholder="placeholder[1]"
-      :combine="combine"
-    ></ud-select>
+    <ud-select v-model="value[1]" :options="secondArr" :placeholder="placeholder[1]" :combine="combine"></ud-select>
     <slot name="second"></slot>
   </div>
 </template>

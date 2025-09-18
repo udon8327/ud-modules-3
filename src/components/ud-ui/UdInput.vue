@@ -1,12 +1,6 @@
 <template>
   <div class="ud-input">
-    <input
-      ref="input"
-      v-model="value"
-      v-bind="$attrs"
-      :class="{ 'is-center': center }"
-      @input="onInput"
-    />
+    <input ref="input" v-model="value" v-bind="$attrs" :class="{ 'is-center': center }" @input="onInput" />
     <slot></slot>
   </div>
 </template>

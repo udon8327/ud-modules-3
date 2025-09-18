@@ -66,13 +66,11 @@ export default {
         switch (rule.type) {
           case "required": // 必填驗證
             if (Array.isArray(value) && value.length != 0) {
-              if (value.some(i => i.length === 0))
-                this.errorMessage = rule.message || "此欄位為必填項目";
+              if (value.some(i => i.length === 0)) this.errorMessage = rule.message || "此欄位為必填項目";
             } else if (value === null) {
               this.errorMessage = rule.message || "此欄位為必填項目";
             } else {
-              if (value.length === 0 || value === false)
-                this.errorMessage = rule.message || "此欄位為必填項目";
+              if (value.length === 0 || value === false) this.errorMessage = rule.message || "此欄位為必填項目";
             }
             break;
           case "name": // 姓名驗證
@@ -106,8 +104,7 @@ export default {
               this.errorMessage = rule.message || "日期格式有誤或不存在，例: 2020-03-04";
             break;
           case "number": // 數字驗證
-            if (value && !/^[0-9]+$/.test(value))
-              this.errorMessage = rule.message || "格式有誤，只接受數字";
+            if (value && !/^[0-9]+$/.test(value)) this.errorMessage = rule.message || "格式有誤，只接受數字";
             break;
           case "url": // 網址驗證
             if (value && !/^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([/?#][^\s]*)?$/i.test(value))
@@ -116,9 +113,7 @@ export default {
           case "ip": // IP地址驗證
             if (
               value &&
-              !/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
-                value
-              )
+              !/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value)
             )
               this.errorMessage = rule.message || "IP地址格式有誤，例: 115.28.47.26";
             break;
@@ -133,16 +128,14 @@ export default {
                 this.errorMessage = rule.message || "驗證碼錯誤";
             } else {
               // 區分大小寫
-              if (value && value !== this.form.model[rule.equalTo])
-                this.errorMessage = rule.message || "驗證碼錯誤";
+              if (value && value !== this.form.model[rule.equalTo]) this.errorMessage = rule.message || "驗證碼錯誤";
             }
             break;
           case "schema": // 自定義驗證條件(將rules寫成computed回傳動態驗證函式)
             if (!rule.schema) this.errorMessage = rule.message || "驗證條件不符合";
             break;
           case "regex": // 自訂正則驗證
-            if (!new RegExp(rule.regex).test(value))
-              this.errorMessage = rule.message || "格式有誤，請重新輸入";
+            if (!new RegExp(rule.regex).test(value)) this.errorMessage = rule.message || "格式有誤，請重新輸入";
             break;
           default:
             console.error("預期外的驗證類型: " + rule.type);
@@ -160,11 +153,7 @@ export default {
       this.errorMessage = "";
     },
     typeOf(val) {
-      return val === undefined
-        ? "undefined"
-        : val === null
-          ? "null"
-          : val.constructor.name.toLowerCase();
+      return val === undefined ? "undefined" : val === null ? "null" : val.constructor.name.toLowerCase();
     }
   }
 };

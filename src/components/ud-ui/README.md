@@ -86,14 +86,7 @@
 ### <font color=#ebc600>ud-textarea：多行輸入框</font>
 
 ```html
-<ud-textarea
-  v-model="value"
-  placeholder="請輸入文字"
-  :rows="8"
-  show-limit
-  :limit="99"
-  no-resize
-></ud-textarea>
+<ud-textarea v-model="value" placeholder="請輸入文字" :rows="8" show-limit :limit="99" no-resize></ud-textarea>
 ```
 
 ### props
@@ -322,12 +315,7 @@ data: {
     <ud-input v-model.trim="formData.name" placeholder="請輸入您的姓名"></ud-input>
   </ud-form-item>
   <ud-form-item label="電話" prop="phone" flex>
-    <ud-input
-      v-model.trim="formData.name"
-      placeholder="請輸入您的手機號碼"
-      inputmode="tel"
-      maxlength="10"
-    ></ud-input>
+    <ud-input v-model.trim="formData.name" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10"></ud-input>
   </ud-form-item>
 </ud-form>
 <ud-button @click="formSubmit">送出表單</ud-button>

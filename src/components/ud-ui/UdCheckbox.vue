@@ -1,11 +1,7 @@
 <template>
   <div class="ud-checkbox" :class="{ 'is-flex': flex }">
     <template v-if="options">
-      <label
-        v-for="option in options"
-        :key="option[valueBy]"
-        :class="{ 'is-disabled': option.disabled }"
-      >
+      <label v-for="option in options" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
         <input
           ref="checkbox"
           type="checkbox"
