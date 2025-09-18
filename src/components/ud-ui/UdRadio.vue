@@ -1,14 +1,21 @@
 <template>
-  <div class="ud-radio" :class="{ 'is-flex': flex }">
-    <label v-for="option in options" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
+  <div class="ud-radio" :class="{ 'is-flex': flex }" role="radiogroup">
+    <label
+      v-for="option in options"
+      :key="option[valueBy]"
+      :class="{ 'is-disabled': option.disabled }"
+    >
       <input
         ref="radio"
         type="radio"
         v-model="value"
         v-bind="$attrs"
-        :value="option[valueBy]"
+        :name="groupName"
+        :value="normalizeValue(option[valueBy])"
         :disabled="option.disabled"
         @change="onChange"
+        :aria-checked="value === normalizeValue(option[valueBy])"
+        role="radio"
       />
       <div class="radio-decorator" :style="{ 'border-radius': radius }"></div>
       <p>{{ option[labelBy] }}</p>
@@ -26,7 +33,10 @@ export default {
     flex: { type: Boolean, default: false }, // 是否並排
     radius: { type: String, default: "50px" }, // 圓角
     labelBy: { type: String, default: "label" }, // label替代值
-    valueBy: { type: String, default: "value" } // value替代值
+    valueBy: { type: String, default: "value" }, // value替代值
+    // 將 option 的值轉型，避免嚴格等於造成比對失敗
+    // 可為 'string' | 'number' | (val:any)=>any
+    valueType: { type: [String, Function], default: null }
   },
   computed: {
     value: {
@@ -36,11 +46,28 @@ export default {
       set(val) {
         this.$emit("update:modelValue", val);
       }
+    },
+    groupName() {
+      // 若外部未提供 name，為本組 radio 生成唯一名稱，避免與其它組衝突
+      return this.$attrs && this.$attrs.name ? this.$attrs.name : this._uidName;
     }
   },
+  data() {
+    return {
+      _uidName: `ud-radio-${Math.random().toString(36).slice(2, 8)}`
+    };
+  },
   methods: {
-    onChange() {
-      this.$mitt.emit("validate"); // 通知FormItem校驗
+    normalizeValue(val) {
+      if (this.valueType === "number") return typeof val === "number" ? val : Number(val);
+      if (this.valueType === "string") return val != null ? String(val) : "";
+      if (typeof this.valueType === "function") return this.valueType(val);
+      return val;
+    },
+    onChange(evt) {
+      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
+      const current = evt && evt.target ? evt.target.value : this.modelValue;
+      this.$emit("change", this.normalizeValue(current));
     }
   }
 };
