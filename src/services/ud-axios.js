@@ -4,7 +4,7 @@ import axios from "axios";
 import { udAlert, udLoading } from "@/components/ud-ui";
 
 // axios 全局預設值
-// axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL; // API基礎路徑
+// axios.defaults.baseURL = ``; // API基礎路徑
 // axios.defaults.timeout = 30000; // 請求超時時間
 // axios.defaults.withCredentials = true; // 允許攜帶cookie
 
@@ -63,6 +63,7 @@ udAxios.interceptors.response.use(
   },
   // 狀態碼 3xx: 重新導向, 4xx: 用戶端錯誤, 5xx: 伺服器錯誤
   (error) => {
+    console.log('error: ', error.response.data.message);
     if (!error?.config?.noLoading) {
       ajaxCount--;
       if (ajaxCount === 0) udLoading.close();
@@ -71,16 +72,12 @@ udAxios.interceptors.response.use(
 
     // 定義錯誤訊息
     let errorMsg = "";
-    if (error?.response) {
-      // 請求已發出，有收到錯誤回應
-      errorMsg =
-        statusMsg[error.response.status] || "發生未知的錯誤";
+    if (error?.response) { // 請求已發出，有收到錯誤回應
+      errorMsg = statusMsg[error.response.status] || "發生未知的錯誤";
       if (error.response.data?.message) errorMsg = error.response.data.message;
-    } else if (error?.request) {
-      // 請求已發出，但没有收到回應
+    } else if (error?.request) { // 請求已發出，但没有收到回應
       errorMsg = "請求逾時或伺服器沒有回應";
-    } else {
-      // 請求被取消或發送請求時異常
+    } else { // 請求被取消或發送請求時異常
       errorMsg = "請求被取消或發送請求時異常";
     }
 
@@ -94,15 +91,9 @@ udAxios.interceptors.response.use(
       // 有收到code的錯誤
       switch (code) {
         case "984": // LINE 尚未登入，前台使用
-          udAxios
-            .get(
-              `/api/line/login/verify?url=${encodeURIComponent(
-                window.location
-              )}`,
-              {
-                default: true,
-              }
-            )
+          udAxios.get(`/api/line/login/verify?url=${ encodeURIComponent(window.location) }`, {
+            default: true
+          })
             .then(() => console.log("已登入"))
             .catch((err) => (location.href = err?.response?.data?.data?.url));
           break;
@@ -114,8 +105,7 @@ udAxios.interceptors.response.use(
             udAlert(alertConfig);
           }
       }
-    } else {
-      // 沒收到code的錯誤
+    } else { // 沒收到code的錯誤
       if (!error?.config?.noAlert) udAlert(alertConfig);
     }
     // 拋回錯誤
