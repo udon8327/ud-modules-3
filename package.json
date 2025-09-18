@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@line/liff": "^2.26.1",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.4",
     "portfinder": "^1.0.37",
+    "prettier": "^3.6.2",
     "pug": "^3.0.3",
     "sass": "^1.89.2",
     "vite": "^6.3.5"
