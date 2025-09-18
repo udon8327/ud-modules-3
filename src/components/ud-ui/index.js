@@ -5,7 +5,7 @@ Form
   ud-input：輸入框 (ok AI)
   ud-textarea：多行輸入框 (ok AI)
   ud-radio：單選框 (ok AI)
-  ud-checkbox：多選框 (ok TODO：單一框時的disabled處理)
+  ud-checkbox：多選框 (ok AI)
   ud-select：下拉框 (ok AI)
   ud-select-date：日期連動下拉框 (ok)
   ud-select-twzip：台灣行政區連動下拉框 (ok)
