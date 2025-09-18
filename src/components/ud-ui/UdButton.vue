@@ -9,7 +9,7 @@
         'is-disabled': disabled || loading,
         'is-plain': plain,
         'is-round': round,
-        'is-circle': circle,
+        'is-circle': circle
       }"
       @click="onClick"
     >
@@ -18,7 +18,7 @@
         <div class="ud-button-icon" v-if="loading || icon || image">
           <div class="ud-icon-loading" v-if="loading"></div>
           <i :class="icon" v-if="icon && !loading"></i>
-          <img :src="image" alt="" v-if="image && !loading">
+          <img :src="image" alt="" v-if="image && !loading" />
         </div>
       </div>
     </button>
@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import { throttle } from 'lodash';
+import { throttle } from "lodash";
 
 export default {
-  name: 'UdButton',
+  name: "UdButton",
   inheritAttrs: false,
   props: {
     type: { type: String, default: "button" },
@@ -52,19 +52,18 @@ export default {
   },
   methods: {
     onClick(evt) {
-      if(this.throttle) return;
-      this.$emit('click', evt);
-    },
+      if (this.throttle) return;
+      this.$emit("click", evt);
+    }
   },
   mounted() {
-    if(!this.throttle) return;
-    this.$el.addEventListener('click', throttle(
-        evt => this.$emit('click', evt),
-        this.delay
-      )
+    if (!this.throttle) return;
+    this.$el.addEventListener(
+      "click",
+      throttle(evt => this.$emit("click", evt), this.delay)
     );
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>
@@ -115,7 +114,7 @@ export default {
           @keyframes spin
             0%
               transform: rotate(0deg)
-            100% 
+            100%
               transform: rotate(360deg)
     &:hover, &:focus
       opacity: 0.85

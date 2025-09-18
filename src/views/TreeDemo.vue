@@ -16,7 +16,7 @@ import Tree from "@/components/Tree.vue";
 export default {
   name: "TreeDemo",
   components: {
-    Tree,
+    Tree
   },
   data() {
     return {
@@ -27,38 +27,38 @@ export default {
           name: "條件",
           days: 1,
           condition: {},
-          children: [],
+          children: []
         }
-      ],
+      ]
     };
   },
   mounted() {
     document.querySelector(".container").style.maxWidth = "100%";
-    this.$mitt.on("addItem", (val) => {
+    this.$mitt.on("addItem", val => {
       // console.log("addItem", val);
       val.item.push({
         type: "",
         name: "條件",
         days: 1,
         condition: {},
-        children: [],
+        children: []
       });
     });
-    this.$mitt.on("addChildren", (val) => {
+    this.$mitt.on("addChildren", val => {
       // console.log("addChildren", val);
       val.item.children.push({
         type: "",
         name: "條件",
         days: 1,
         condition: {},
-        children: [],
+        children: []
       });
     });
-    this.$mitt.on("removeItem", (val) => {
+    this.$mitt.on("removeItem", val => {
       // console.log("removeItem", val);
       val.item.splice(val.index, 1);
     });
-    this.$mitt.on("testItem", (val) => {
+    this.$mitt.on("testItem", val => {
       // console.log("testItem", val);
       val.item.days++;
     });
@@ -66,8 +66,7 @@ export default {
   unmounted() {
     document.querySelector(".container").style.maxWidth = "460px";
   },
-  methods: {
-  },
+  methods: {}
 };
 </script>
 

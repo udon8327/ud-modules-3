@@ -1,38 +1,38 @@
 <template>
-  <span class="ud-countdown" ref="count">{{formatCountTime}}</span>
+  <span class="ud-countdown" ref="count">{{ formatCountTime }}</span>
 </template>
 
 <script>
 export default {
-  name: 'UdCountdown',
+  name: "UdCountdown",
   props: {
     time: { type: Number, default: 60 }, // 倒數秒數
     delay: { type: Boolean, default: false }, // 是否不要立刻開始倒數
-    type: { type: String, default: "second" }, // 時間格式
+    type: { type: String, default: "second" } // 時間格式
   },
   data() {
     return {
       countInterval: {},
       countTime: this.time
-    }
+    };
   },
   computed: {
     formatCountTime() {
-      if(this.type === "second") {
-        return this.countTime
-      }else if(this.type === "minute"){
+      if (this.type === "second") {
+        return this.countTime;
+      } else if (this.type === "minute") {
         let min = Math.floor(this.countTime / 60);
-        let sec = this.countTime - (min * 60);
+        let sec = this.countTime - min * 60;
         return `${min}:${this.padStart(sec)}`;
       }
     }
   },
   mounted() {
-    if(!this.delay) this.countdown();
+    if (!this.delay) this.countdown();
   },
   methods: {
-    countdown(){
-      if(this.countInterval) clearInterval(this.countInterval);
+    countdown() {
+      if (this.countInterval) clearInterval(this.countInterval);
       this.countInterval = setInterval(() => {
         this.countTime -= 1;
         if (this.countTime <= 0) {
@@ -42,18 +42,17 @@ export default {
         }
       }, 1000);
     },
-    reset(){
-      if(this.countInterval) clearInterval(this.countInterval);
+    reset() {
+      if (this.countInterval) clearInterval(this.countInterval);
       this.countTime = this.time;
       this.countdown();
     },
-    padStart(val, length = 2, fillChar = '0') {
-      if (val == null) return '';
+    padStart(val, length = 2, fillChar = "0") {
+      if (val == null) return "";
       return val.toString().padStart(length, fillChar.toString());
-    },
+    }
   }
-}
+};
 </script>
 
-<style lang="sass" scoped>
-</style>
+<style lang="sass" scoped></style>

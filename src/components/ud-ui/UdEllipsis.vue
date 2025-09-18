@@ -1,16 +1,16 @@
 <template>
-  <p class="ud-ellipsis" :style="{webkitLineClamp: maxLine}">
+  <p class="ud-ellipsis" :style="{ webkitLineClamp: maxLine }">
     <slot></slot>
   </p>
 </template>
 
 <script>
 export default {
-  name: 'UdEllipsis',
+  name: "UdEllipsis",
   props: {
-    maxLine: { type: Number, default: 1 }, // 指定省略行數
+    maxLine: { type: Number, default: 1 } // 指定省略行數
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

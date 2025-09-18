@@ -23,48 +23,46 @@
 
 <script>
 export default {
-  name: 'Tree',
+  name: "Tree",
   props: {
     data: {
       type: Array,
       default() {
         return [];
       }
-    },
-  },
-  data() {
-    return {
     }
   },
-  mounted() {
+  data() {
+    return {};
   },
+  mounted() {},
   methods: {
     addItem(index) {
       this.$mitt.emit("addItem", {
         item: this.data,
-        index,
+        index
       });
     },
     addChildren(index, item) {
       this.$mitt.emit("addChildren", {
         item,
-        index,
+        index
       });
     },
     removeItem(index) {
       this.$mitt.emit("removeItem", {
         item: this.data,
-        index,
+        index
       });
     },
     testItem(index, item) {
       this.$mitt.emit("testItem", {
         item,
-        index,
+        index
       });
-    },
+    }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

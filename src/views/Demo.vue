@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import image02 from '@/assets/images/picture/02.jpg'
+import image02 from "@/assets/images/picture/02.jpg";
 import liff from "@line/liff";
 
 export default {
@@ -111,7 +111,7 @@ export default {
         userId: "",
         displayName: "",
         pictureUrl: "",
-        info: "",
+        info: ""
       },
       formData: {
         name: "",
@@ -126,60 +126,92 @@ export default {
         twzip: ["", ""],
         date: ["", "", ""],
         isActive: false,
-        isAgree: false,
+        isAgree: false
       },
       rules: {
-        name: [{type: "required"}, {type: "name"}],
-        phone: [{type: "required"}, {type: "phone"}],
-        email: [{type: "required"}, {type: "email"}],
-        age: [{type: "required"}, {type: "number"}],
-        radio: [{type: "required"}],
-        checkbox: [{type: "required"}],
-        select: [{type: "required"}],
-        selectGroup: [{type: "required"}],
-        twzip: [{type: "required"}],
-        date: [{type: "required"}],
-        isAgree: [{type: "required", message: "請先同意相關使用條款"},],
+        name: [{ type: "required" }, { type: "name" }],
+        phone: [{ type: "required" }, { type: "phone" }],
+        email: [{ type: "required" }, { type: "email" }],
+        age: [{ type: "required" }, { type: "number" }],
+        radio: [{ type: "required" }],
+        checkbox: [{ type: "required" }],
+        select: [{ type: "required" }],
+        selectGroup: [{ type: "required" }],
+        twzip: [{ type: "required" }],
+        date: [{ type: "required" }],
+        isAgree: [{ type: "required", message: "請先同意相關使用條款" }]
       },
       options: [
-        {label: "甲", value: "a"},
-        {label: "乙", value: "b"},
-        {label: "丙", value: "c", disabled: true},
+        { label: "甲", value: "a" },
+        { label: "乙", value: "b" },
+        { label: "丙", value: "c", disabled: true }
       ],
       storeOptions: [
-        {label: "台北市", value: "taipei", children: [
-          {label: "中正區", value: "100", children: [
-            {label: "2023-12-01", value: "1" },
-            {label: "2023-12-02", value: "2", disabled: "true" }
-          ]},
-          {label: "大安區", value: "106", disabled: true, children: [
-            {label: "2023-12-03", value: "3" },
-            {label: "2023-12-04", value: "4" },
-          ]},
-          {label: "信義區", value: "110", children: [
-            {label: "2023-12-05", value: "5" },
-            {label: "2023-12-06", value: "6" },
-          ]},
-        ]},
-        {label: "新北市", value: "newTaipei", children: [
-          {label: "板橋區", value: "220", children: [
-            {label: "2023-12-07", value: "7" },
-            {label: "2023-12-08", value: "8" },
-          ]},
-          {label: "永和區", value: "234", children: [
-            {label: "2023-12-09", value: "9" },
-            {label: "2023-12-10", value: "10", disabled: true },
-          ]},
-          {label: "新店區", value: "231", children: [
-            {label: "2023-12-11", value: "11", disabled: true },
-            {label: "2023-12-12", value: "12", disabled: true },
-          ]},
-        ]},
-      ],
+        {
+          label: "台北市",
+          value: "taipei",
+          children: [
+            {
+              label: "中正區",
+              value: "100",
+              children: [
+                { label: "2023-12-01", value: "1" },
+                { label: "2023-12-02", value: "2", disabled: "true" }
+              ]
+            },
+            {
+              label: "大安區",
+              value: "106",
+              disabled: true,
+              children: [
+                { label: "2023-12-03", value: "3" },
+                { label: "2023-12-04", value: "4" }
+              ]
+            },
+            {
+              label: "信義區",
+              value: "110",
+              children: [
+                { label: "2023-12-05", value: "5" },
+                { label: "2023-12-06", value: "6" }
+              ]
+            }
+          ]
+        },
+        {
+          label: "新北市",
+          value: "newTaipei",
+          children: [
+            {
+              label: "板橋區",
+              value: "220",
+              children: [
+                { label: "2023-12-07", value: "7" },
+                { label: "2023-12-08", value: "8" }
+              ]
+            },
+            {
+              label: "永和區",
+              value: "234",
+              children: [
+                { label: "2023-12-09", value: "9" },
+                { label: "2023-12-10", value: "10", disabled: true }
+              ]
+            },
+            {
+              label: "新店區",
+              value: "231",
+              children: [
+                { label: "2023-12-11", value: "11", disabled: true },
+                { label: "2023-12-12", value: "12", disabled: true }
+              ]
+            }
+          ]
+        }
+      ]
     };
   },
-  computed: {
-  },
+  computed: {},
   mounted() {
     this.udLoading.open();
     setTimeout(() => {
@@ -189,7 +221,7 @@ export default {
   },
   methods: {
     onInput(e) {
-      console.log('e: ', e);
+      console.log("e: ", e);
     },
     test() {
       console.log(getRandom());
@@ -203,7 +235,7 @@ export default {
     liffLogin() {
       liff
         .init({
-          liffId: import.meta.env.VITE_APP_LINE_LIFF_ID,
+          liffId: import.meta.env.VITE_APP_LINE_LIFF_ID
         })
         .then(() => {
           // 檢查是否登入
@@ -214,16 +246,19 @@ export default {
           // 檢查是否好友
           liff
             .getFriendship()
-            .then((data) => {
+            .then(data => {
               if (data.friendFlag) {
-                liff.getProfile().then((res) => {
+                liff.getProfile().then(res => {
                   this.profile = res;
-                  this.profile.info = 
-                    liff.isInClient() + ", " + 
-                    liff.getOS() + ", " + 
-                    liff.getLineVersion() + ", " + 
+                  this.profile.info =
+                    liff.isInClient() +
+                    ", " +
+                    liff.getOS() +
+                    ", " +
+                    liff.getLineVersion() +
+                    ", " +
                     liff.getLanguage();
-                })
+                });
               } else {
                 location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${
                   LINE_LOGIN_CHANNEL_ID
@@ -238,44 +273,52 @@ export default {
               });
             });
         })
-        .catch((err) => {
+        .catch(err => {
           this.udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() => {
-            location.href = LINE_OA_URL
+            location.href = LINE_OA_URL;
           });
         });
     },
     getData() {
-      this.udAxios.get('test/400/失敗了', {
-        noAlert: false
-      })
-        .then(res => {
-          console.log('res: ', res);
+      this.udAxios
+        .get("test/400/失敗了", {
+          noAlert: false
         })
+        .then(res => {
+          console.log("res: ", res);
+        });
     },
     postData() {
-      this.udAxios.post('test', {
-        name: "UDON"
-      }, {
-        noLoading: true
-      })
+      this.udAxios
+        .post(
+          "test",
+          {
+            name: "UDON"
+          },
+          {
+            noLoading: true
+          }
+        )
         .then(res => {
-          console.log('res: ', res);
-        })
+          console.log("res: ", res);
+        });
     },
     alert() {
       this.udAlert({
         msg: "這是一個警告訊息",
         title: "警告",
         confirm: true,
-        btnClose: true,
-      }).then(() => {
-        console.log("確定");
-      }).catch(() => {
-        console.log("取消");
-      });
+        btnClose: true
+      })
+        .then(() => {
+          console.log("確定");
+        })
+        .catch(() => {
+          console.log("取消");
+        });
     },
     timeup() {
-      console.log('時間到！');
+      console.log("時間到！");
     },
     countdown() {
       this.$refs.cd.countdown();
@@ -289,7 +332,7 @@ export default {
       });
     },
     submit() {
-      this.udAlert({msg: "驗證成功!!"});
+      this.udAlert({ msg: "驗證成功!!" });
     },
     clearVerify() {
       this.$refs.form.clearValidate();
@@ -304,51 +347,50 @@ export default {
       }, 1000);
     },
     sendMessage() {
-      liff.sendMessages([
-        {
-          "type": "text",
-          "text": "Hello, World!(sendMessages)"
-        }
-      ])
+      liff
+        .sendMessages([
+          {
+            type: "text",
+            text: "Hello, World!(sendMessages)"
+          }
+        ])
         .then(() => {
-            console.log('Message sent successfully!');
+          console.log("Message sent successfully!");
         })
-        .catch((err) => {
-            console.error('Error sending message:', err);
+        .catch(err => {
+          console.error("Error sending message:", err);
         });
     },
     shareTargetPicker() {
-      if (!liff.isApiAvailable('shareTargetPicker')) {
-        this.udAlert(
-          "您的設備不支援好友分享功能\n請更新手機系統或LINE版本"
-        ).then(() => {
+      if (!liff.isApiAvailable("shareTargetPicker")) {
+        this.udAlert("您的設備不支援好友分享功能\n請更新手機系統或LINE版本").then(() => {
           location.href = LINE_OA_URL;
         });
         return;
       }
       // shareTargetPicker只能在LIFF或外部瀏覽器(除了LINE內建瀏覽器)使用
       if (!liff.isInClient() && liff.getLineVersion()) {
-        this.udAlert(
-          "請點擊活動LIFF連結進入頁面\n才可使用好友分享功能"
-        ).then(() => {
+        this.udAlert("請點擊活動LIFF連結進入頁面\n才可使用好友分享功能").then(() => {
           location.href = LINE_OA_URL;
         });
         return;
       }
-      liff.shareTargetPicker([
-        {
-          "type": "text",
-          "text": "Hello, World!(shareTargetPicker)"
-        }
-      ])
-        .then((res) => {
+      liff
+        .shareTargetPicker([
+          {
+            type: "text",
+            text: "Hello, World!(shareTargetPicker)"
+          }
+        ])
+        .then(res => {
           if (res) {
             this.udAlert("分享成功！").then(() => {
               liff.closeWindow();
-            })
+            });
           } else {
-            const [majorVer, minorVer] = (liff.getLineVersion() || "").split('.');
-            if (parseInt(majorVer) == 10 && parseInt(minorVer) < 11) { // LINE 10.3.0 - 10.10.0
+            const [majorVer, minorVer] = (liff.getLineVersion() || "").split(".");
+            if (parseInt(majorVer) == 10 && parseInt(minorVer) < 11) {
+              // LINE 10.3.0 - 10.10.0
               this.udAlert(
                 "您的 LINE 版本較舊，可能會造成無法分享成功。若分享失敗，請升級 LINE APP 後再嘗試。"
               );
@@ -357,15 +399,15 @@ export default {
             this.udAlert("已取消分享"); // LINE 10.11.0 -
           }
         })
-        .catch((error) => {
+        .catch(error => {
           this.udAlert({
-            msg: `${error.code === 'EXCEPTION_IN_SUBWINDOW' ? '請在 LINE APP中 開啟活動\n以便使用好友分享功能' : '訊息分享失敗，請稍後再試'}\n[${error.code}] ${error.message}`,
+            msg: `${error.code === "EXCEPTION_IN_SUBWINDOW" ? "請在 LINE APP中 開啟活動\n以便使用好友分享功能" : "訊息分享失敗，請稍後再試"}\n[${error.code}] ${error.message}`
           }).then(() => {
             location.href = LINE_OA_URL;
-          })
+          });
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

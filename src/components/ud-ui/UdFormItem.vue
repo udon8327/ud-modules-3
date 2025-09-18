@@ -1,10 +1,20 @@
 <template>
-  <div class="ud-form-item" :class="{'is-error': errorMessage, 'is-flex': flex}">
-    <div class="ud-form-item-left" :v-if="label" :style="{ 'flex-basis': labelWidth }"
-      :class="{ 'label-align-left': labelAlign === 'left', 'label-align-center': labelAlign === 'center', 'label-align-right': labelAlign === 'right' }"
+  <div class="ud-form-item" :class="{ 'is-error': errorMessage, 'is-flex': flex }">
+    <div
+      class="ud-form-item-left"
+      :v-if="label"
+      :style="{ 'flex-basis': labelWidth }"
+      :class="{
+        'label-align-left': labelAlign === 'left',
+        'label-align-center': labelAlign === 'center',
+        'label-align-right': labelAlign === 'right'
+      }"
     >
-      <img :src="icon" v-if="icon">
-      <label v-if="label" :style="{ 'text-align': labelAlign }"><span v-if="required">*</span>{{ label }}</label>
+      <img :src="icon" v-if="icon" />
+      <label v-if="label" :style="{ 'text-align': labelAlign }">
+        <span v-if="required">*</span>
+        {{ label }}
+      </label>
     </div>
     <div class="ud-form-item-right">
       <slot></slot>
@@ -15,14 +25,14 @@
 
 <script>
 export default {
-  name: 'UdFormItem',
+  name: "UdFormItem",
   data() {
     return {
-      errorMessage: '',
-      lock: false,
-    }
+      errorMessage: "",
+      lock: false
+    };
   },
-  inject: ['registerFormItem', 'unregisterFormItem', 'form'],
+  inject: ["registerFormItem", "unregisterFormItem", "form"],
   props: {
     required: { type: Boolean, default: false }, // 必填提示
     icon: { type: String, default: "" }, // icon路徑
@@ -30,7 +40,7 @@ export default {
     prop: { type: String, default: "" }, // 驗證名稱
     flex: { type: Boolean, default: false }, // 是否並排
     labelWidth: { type: String, default: "30%" }, // 標籤寬度
-    labelAlign: { type: String, default: "left" }, // 標籤對齊
+    labelAlign: { type: String, default: "left" } // 標籤對齊
   },
   mounted() {
     this.registerFormItem(this);
@@ -51,61 +61,88 @@ export default {
       const value = this.form.model[this.prop]; // 獲取數據
 
       if (!rules) return;
-      this.errorMessage = '';
+      this.errorMessage = "";
       for (let rule of rules) {
         switch (rule.type) {
           case "required": // 必填驗證
             if (Array.isArray(value) && value.length != 0) {
-              if (value.some(i => i.length === 0)) this.errorMessage = rule.message || "此欄位為必填項目";
+              if (value.some(i => i.length === 0))
+                this.errorMessage = rule.message || "此欄位為必填項目";
             } else if (value === null) {
               this.errorMessage = rule.message || "此欄位為必填項目";
             } else {
-              if (value.length === 0 || value === false) this.errorMessage = rule.message || "此欄位為必填項目";
+              if (value.length === 0 || value === false)
+                this.errorMessage = rule.message || "此欄位為必填項目";
             }
             break;
           case "name": // 姓名驗證
-            if(value && !/^[\p{sc=Han}a-zA-Z·\s]+$/u.test(value)) this.errorMessage = rule.message || "姓名格式有誤，不接受特殊符號";
+            if (value && !/^[\p{sc=Han}a-zA-Z·\s]+$/u.test(value))
+              this.errorMessage = rule.message || "姓名格式有誤，不接受特殊符號";
             break;
           case "phone": // 電話驗證
-            let valueAfter = this.typeOf(value) === 'array' ? value.join("") : value;
-            if(valueAfter && !/^09[0-9]{8}$/.test(valueAfter)) this.errorMessage = rule.message || "電話格式有誤，例: 0929123456";
+            let valueAfter = this.typeOf(value) === "array" ? value.join("") : value;
+            if (valueAfter && !/^09[0-9]{8}$/.test(valueAfter))
+              this.errorMessage = rule.message || "電話格式有誤，例: 0929123456";
             break;
           case "email": // 電子郵件驗證
-            if(value && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) this.errorMessage = rule.message || "Email格式有誤，需包含'@'符號";
+            if (value && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value))
+              this.errorMessage = rule.message || "Email格式有誤，需包含'@'符號";
             break;
           case "uniform": // 統一編號驗證
-            if(value && !/^[0-9]{8}$/.test(value)) this.errorMessage = rule.message || "統一編號格式有誤，例: 12345678";
+            if (value && !/^[0-9]{8}$/.test(value))
+              this.errorMessage = rule.message || "統一編號格式有誤，例: 12345678";
             break;
           case "idcard": // 身分證字號驗證
-            if(value && !/^[A-Z](1|2)[0-9]{8}$/.test(value)) this.errorMessage = rule.message || "身分證字號格式有誤，例: A123456789";
+            if (value && !/^[A-Z](1|2)[0-9]{8}$/.test(value))
+              this.errorMessage = rule.message || "身分證字號格式有誤，例: A123456789";
             break;
           case "date": // 日期驗證
-            if(value && !/^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/.test(value)) this.errorMessage = rule.message || "日期格式有誤或不存在，例: 2020-03-04";
+            if (
+              value &&
+              !/^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)$/.test(
+                value
+              )
+            )
+              this.errorMessage = rule.message || "日期格式有誤或不存在，例: 2020-03-04";
             break;
           case "number": // 數字驗證
-            if(value && !/^[0-9]+$/.test(value)) this.errorMessage = rule.message || "格式有誤，只接受數字";
+            if (value && !/^[0-9]+$/.test(value))
+              this.errorMessage = rule.message || "格式有誤，只接受數字";
             break;
           case "url": // 網址驗證
-            if(value && !/^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([/?#][^\s]*)?$/i.test(value)) this.errorMessage = rule.message || "網址格式有誤，例: https://www.google.com";
+            if (value && !/^https?:\/\/([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([/?#][^\s]*)?$/i.test(value))
+              this.errorMessage = rule.message || "網址格式有誤，例: https://www.google.com";
             break;
           case "ip": // IP地址驗證
-            if(value && !/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value)) this.errorMessage = rule.message || "IP地址格式有誤，例: 115.28.47.26";
+            if (
+              value &&
+              !/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+                value
+              )
+            )
+              this.errorMessage = rule.message || "IP地址格式有誤，例: 115.28.47.26";
             break;
           case "hex": // Hex色碼驗證
-            if(value && !/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/.test(value)) this.errorMessage = rule.message || "Hex色碼格式有誤，例: #ff0000";
+            if (value && !/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/.test(value))
+              this.errorMessage = rule.message || "Hex色碼格式有誤，例: #ff0000";
             break;
           case "equal": // 相等驗證
-            if(rule.caseIgnore){ // 不區分大小寫
-              if(value && value.toLowerCase() !== this.form.model[rule.equalTo].toLowerCase()) this.errorMessage = rule.message || "驗證碼錯誤";
-            }else{ // 區分大小寫
-              if(value && value !== this.form.model[rule.equalTo]) this.errorMessage = rule.message || "驗證碼錯誤";
+            if (rule.caseIgnore) {
+              // 不區分大小寫
+              if (value && value.toLowerCase() !== this.form.model[rule.equalTo].toLowerCase())
+                this.errorMessage = rule.message || "驗證碼錯誤";
+            } else {
+              // 區分大小寫
+              if (value && value !== this.form.model[rule.equalTo])
+                this.errorMessage = rule.message || "驗證碼錯誤";
             }
             break;
           case "schema": // 自定義驗證條件(將rules寫成computed回傳動態驗證函式)
             if (!rule.schema) this.errorMessage = rule.message || "驗證條件不符合";
             break;
           case "regex": // 自訂正則驗證
-            if(!new RegExp(rule.regex).test(value)) this.errorMessage = rule.message || "格式有誤，請重新輸入";
+            if (!new RegExp(rule.regex).test(value))
+              this.errorMessage = rule.message || "格式有誤，請重新輸入";
             break;
           default:
             console.error("預期外的驗證類型: " + rule.type);
@@ -120,13 +157,17 @@ export default {
       });
     },
     clearValidate() {
-      this.errorMessage = '';
+      this.errorMessage = "";
     },
     typeOf(val) {
-      return val === undefined ? 'undefined' : val === null ? 'null' : val.constructor.name.toLowerCase();
-    },
+      return val === undefined
+        ? "undefined"
+        : val === null
+          ? "null"
+          : val.constructor.name.toLowerCase();
+    }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

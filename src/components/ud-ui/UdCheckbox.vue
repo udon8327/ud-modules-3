@@ -1,7 +1,11 @@
 <template>
-  <div class="ud-checkbox" :class="{'is-flex': flex}">
+  <div class="ud-checkbox" :class="{ 'is-flex': flex }">
     <template v-if="options">
-      <label v-for="option in options" :key="option[valueBy]" :class="{'is-disabled': option.disabled}">
+      <label
+        v-for="option in options"
+        :key="option[valueBy]"
+        :class="{ 'is-disabled': option.disabled }"
+      >
         <input
           ref="checkbox"
           type="checkbox"
@@ -10,25 +14,15 @@
           :value="option[valueBy]"
           :disabled="option.disabled"
           @change="onChange"
-        >
-        <div class="checkbox-decorator"
-          :style="{'border-radius': radius}"
-        ></div>
+        />
+        <div class="checkbox-decorator" :style="{ 'border-radius': radius }"></div>
         <p>{{ option[labelBy] }}</p>
       </label>
     </template>
     <template v-else>
       <label>
-        <input
-          ref="checkbox"
-          type="checkbox"
-          v-model="value"
-          v-bind="$attrs"
-          @change="onChange"
-        >
-        <div class="checkbox-decorator"
-          :style="{'border-radius': radius}"
-        ></div>
+        <input ref="checkbox" type="checkbox" v-model="value" v-bind="$attrs" @change="onChange" />
+        <div class="checkbox-decorator" :style="{ 'border-radius': radius }"></div>
         <p><slot></slot></p>
       </label>
     </template>
@@ -37,7 +31,7 @@
 
 <script>
 export default {
-  name: 'UdCheckbox',
+  name: "UdCheckbox",
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值 (單個時綁定Boolean，多個時綁定Array)
@@ -49,8 +43,12 @@ export default {
   },
   computed: {
     value: {
-      get(){ return this.modelValue },
-      set(val){ this.$emit('update:modelValue', val) }
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val);
+      }
     }
   },
   methods: {
@@ -58,7 +56,7 @@ export default {
       this.$mitt.emit("validate"); // 通知FormItem校驗
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

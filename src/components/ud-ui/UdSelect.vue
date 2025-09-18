@@ -1,15 +1,20 @@
 <template>
   <div class="ud-select">
-    <select 
+    <select
       ref="select"
-      v-model="value" 
+      v-model="value"
       v-bind="$attrs"
       :data-placeholder-selected="value.length === 0"
-      :class="{hasValue: value.length !== 0}"
+      :class="{ hasValue: value.length !== 0 }"
       @change="onChange"
     >
       <option value="" disabled selected>{{ placeholder }}</option>
-      <option v-for="option in optionsArr" :value="option[valueBy]" :key="option[valueBy]" :disabled="option.disabled">
+      <option
+        v-for="option in optionsArr"
+        :value="option[valueBy]"
+        :key="option[valueBy]"
+        :disabled="option.disabled"
+      >
         {{ combine ? option[valueBy] : option[labelBy] }}
       </option>
     </select>
@@ -18,11 +23,12 @@
 
 <script>
 export default {
-  name: 'UdSelect',
+  name: "UdSelect",
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值
-    options: { // 選項
+    options: {
+      // 選項
       type: Array,
       default: () => [{ label: "", value: "", disabled: true }]
     },
@@ -33,24 +39,28 @@ export default {
     index: { type: Number, default: 0 }, // 群組索引
     labelBy: { type: String, default: "label" }, // label替代值
     valueBy: { type: String, default: "value" }, // value替代值
-    childrenBy: { type: String, default: "children" }, // children替代值
+    childrenBy: { type: String, default: "children" } // children替代值
   },
   data() {
     return {
       groupWatch: []
-    }
+    };
   },
   computed: {
     value: {
-      get(){ return this.modelValue },
-      set(val){ this.$emit('update:modelValue', val) }
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val);
+      }
     },
     optionsArr() {
       this.groupWatch = [...this.group];
       let temp = this.options;
-      if(this.index === 0) return temp;
-      if(this.group[this.index - 1]) {
-        for(let i = 0; i < this.index; i++) {
+      if (this.index === 0) return temp;
+      if (this.group[this.index - 1]) {
+        for (let i = 0; i < this.index; i++) {
           temp = temp.find(option => option.value === this.group[i])[this.childrenBy];
         }
         return temp;
@@ -61,30 +71,30 @@ export default {
   watch: {
     groupWatch(newVal, oldVal) {
       let target;
-      for(let i = 0; i < this.group.length; i++) {
-        if(newVal[i] !== oldVal[i]) target = i;
+      for (let i = 0; i < this.group.length; i++) {
+        if (newVal[i] !== oldVal[i]) target = i;
       }
-      if(this.index > target) this.$emit('input', "");
+      if (this.index > target) this.$emit("input", "");
     }
   },
   mounted() {
-    if(this.center) this.centerSelect();
-    if(this.center) window.addEventListener("resize", this.centerSelect);
+    if (this.center) this.centerSelect();
+    if (this.center) window.addEventListener("resize", this.centerSelect);
   },
   destroyed() {
-    if(this.center) window.removeEventListener("resize", this.centerSelect);
+    if (this.center) window.removeEventListener("resize", this.centerSelect);
   },
   methods: {
     onChange() {
-      if(this.center) this.centerSelect();
+      if (this.center) this.centerSelect();
       this.$mitt.emit("validate"); // 通知FormItem校驗
-      this.$emit('change', this.$refs.select.value);
+      this.$emit("change", this.$refs.select.value);
     },
     getTextWidth(text, target) {
-      let el = document.createElement('span');
-      let fontSize = window.getComputedStyle(target).fontSize || '14px';
+      let el = document.createElement("span");
+      let fontSize = window.getComputedStyle(target).fontSize || "14px";
       el.textContent = text;
-      el.style.display = 'inline-block';
+      el.style.display = "inline-block";
       el.style.fontSize = fontSize;
       document.body.appendChild(el);
       let elmWidth = el.offsetWidth;
@@ -94,12 +104,14 @@ export default {
     centerSelect() {
       let el = this.$refs.select;
       let text = "";
-      el.value ? text = this.options.find(item => item.value == el.value).label : text = this.placeholder;
+      el.value
+        ? (text = this.options.find(item => item.value == el.value).label)
+        : (text = this.placeholder);
       let emptySpace = el.offsetWidth - this.getTextWidth(text, el);
-      el.style.textIndent = `${ ( emptySpace / 2 ) - 10 }px`;
+      el.style.textIndent = `${emptySpace / 2 - 10}px`;
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

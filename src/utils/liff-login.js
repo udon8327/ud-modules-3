@@ -2,10 +2,10 @@ import liff from "@line/liff";
 import request from "@/services/ud-axios.js";
 import { udAlert } from "@/components/ud-ui";
 
-const liffLogin = (callback) => {
+const liffLogin = callback => {
   liff
     .init({
-      liffId: import.meta.env.VITE_APP_LINE_LIFF_ID,
+      liffId: import.meta.env.VITE_APP_LINE_LIFF_ID
     })
     .then(() => {
       // 檢查是否登入
@@ -16,7 +16,7 @@ const liffLogin = (callback) => {
       // 檢查是否好友
       liff
         .getFriendship()
-        .then((data) => {
+        .then(data => {
           if (data.friendFlag) {
             // 檢查有無Token
             if (!sessionStorage.getItem("token")) {
@@ -24,17 +24,15 @@ const liffLogin = (callback) => {
                 url: `/line-crm-main/api/frontend/v1/line-liff/token`,
                 method: "post",
                 data: {
-                  id_token: liff.getIDToken(),
-                },
+                  id_token: liff.getIDToken()
+                }
               })
-                .then((res) => {
+                .then(res => {
                   sessionStorage.setItem("token", res.data.token);
                   callback();
                 })
                 .catch(() => {
-                  udAlert("Token取得失敗，請稍後再試").then(() =>
-                    location.reload()
-                  );
+                  udAlert("Token取得失敗，請稍後再試").then(() => location.reload());
                 });
             } else {
               callback();
@@ -54,9 +52,9 @@ const liffLogin = (callback) => {
           location.reload();
         });
     })
-    .catch((err) => {
-      udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(
-        () => location.reload()
+    .catch(err => {
+      udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() =>
+        location.reload()
       );
     });
 };

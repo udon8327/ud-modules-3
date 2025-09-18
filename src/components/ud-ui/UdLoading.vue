@@ -1,12 +1,12 @@
 <template>
   <transition name="loading">
-    <div class="ud-loading" v-show="isShow" :class="{'theme-white': theme === 'white'}">
+    <div class="ud-loading" v-show="isShow" :class="{ 'theme-white': theme === 'white' }">
       <div class="ud-modal-wrapper">
         <div class="ud-modal-content">
           <div class="ud-modal-header">
             <div v-if="iconType === 'css'" class="icon-css"></div>
             <i v-else-if="iconType === 'font'" class="icon-font" :class="iconFont"></i>
-            <img v-else class="icon-img" :src="iconImg">
+            <img v-else class="icon-img" :src="iconImg" />
           </div>
           <div class="ud-modal-body">
             <p v-html="nl2br(displayMessage)"></p>
@@ -18,23 +18,23 @@
 </template>
 
 <script>
-import { nl2br } from '@/utils/ud-utils'
+import { nl2br } from "@/utils/ud-utils";
 
 export default {
-  name: 'UdLoading',
+  name: "UdLoading",
   props: {
     fixed: { type: Boolean, default: true }, // 是否固定body
-    theme: { type: String, default: '' }, // 戴入主題 [white]
-    iconType: { type: String, default: 'css' }, // icon類型 [css:CSS, font:字型, img:圖片]
-    iconFont: { type: String, default: 'fas fa-spinner fa-pulse' }, // 字型icon的class
-    iconImg: { type: String, default: 'https://image.flaticon.com/icons/svg/553/553265.svg' }, // 圖片icon的路徑
-    message: { type: String, default: '' }, // 載入訊息 (功能同msg，接受html語法)
-    msg: { type: String, default: '' }, // 載入訊息 (功能同message，接受html語法)
+    theme: { type: String, default: "" }, // 戴入主題 [white]
+    iconType: { type: String, default: "css" }, // icon類型 [css:CSS, font:字型, img:圖片]
+    iconFont: { type: String, default: "fas fa-spinner fa-pulse" }, // 字型icon的class
+    iconImg: { type: String, default: "https://image.flaticon.com/icons/svg/553/553265.svg" }, // 圖片icon的路徑
+    message: { type: String, default: "" }, // 載入訊息 (功能同msg，接受html語法)
+    msg: { type: String, default: "" } // 載入訊息 (功能同message，接受html語法)
   },
   data() {
     return {
-      isShow: false,
-    }
+      isShow: false
+    };
   },
   computed: {
     displayMessage() {
@@ -53,9 +53,9 @@ export default {
   methods: {
     nl2br(val) {
       return nl2br(val);
-    },
+    }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>
@@ -103,7 +103,7 @@ export default {
           @keyframes spin
             0%
               transform: rotate(0deg)
-            100% 
+            100%
               transform: rotate(360deg)
         .icon-font
           font-size: 24px
@@ -115,7 +115,7 @@ export default {
           @keyframes spin
             0%
               transform: rotate(0deg)
-            100% 
+            100%
               transform: rotate(360deg)
       .ud-modal-body
         p

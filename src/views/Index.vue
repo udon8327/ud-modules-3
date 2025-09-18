@@ -9,15 +9,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 const router = useRouter();
 
 const test = ref("");
-const toUrl = (url) => {
+const toUrl = url => {
   router.push(url);
-}
+};
 </script>
 
-<style lang="sass" scoped>
-</style>
+<style lang="sass" scoped></style>

@@ -6,27 +6,30 @@
       v-bind="$attrs"
       :class="{ 'is-center': center }"
       @input="onInput"
-    >
+    />
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'UdInput',
+  name: "UdInput",
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值
-    center: { type: Boolean, default: false } , // 是否置中
+    center: { type: Boolean, default: false } // 是否置中
   },
   computed: {
     value: {
-      get(){ return this.modelValue },
-      set(val){ this.$emit('update:modelValue', val) }
-    },
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val);
+      }
+    }
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     onInput() {
       this.$mitt.emit("validate"); // 通知FormItem校驗
@@ -38,7 +41,7 @@ export default {
       this.$refs.input.blur();
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

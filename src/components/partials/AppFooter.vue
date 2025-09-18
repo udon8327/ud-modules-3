@@ -13,10 +13,10 @@ export default {
   computed: {
     brandName() {
       return import.meta.env.VITE_API_BRAND_NAME;
-    },
+    }
   },
   mounted() {},
-  methods: {},
+  methods: {}
 };
 </script>
 

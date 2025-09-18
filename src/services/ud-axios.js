@@ -22,7 +22,7 @@ import { udAlert, udLoading } from "@/components/ud-ui";
 // udAxios 自定義預設值
 const udAxios = axios.create({
   baseURL: import.meta.env.VITE_APP_API_BASE_URL, // API基礎路徑
-  timeout: 30000, // 請求超時時間,
+  timeout: 30000 // 請求超時時間,
   // withCredentials: true, // 允許攜帶cookie
   // headers: { // 自定義headers
   //   'Authorization': 'Bearer token',
@@ -34,14 +34,14 @@ let ajaxCount = 0; // 計算ajax數量
 
 // 請求攔截器
 udAxios.interceptors.request.use(
-  (config) => {
+  config => {
     if (!config?.noLoading) {
       if (ajaxCount === 0) udLoading.open(config?.loading);
       ajaxCount++;
     }
     return config;
   },
-  (error) => {
+  error => {
     if (!error?.config?.noLoading) {
       if (ajaxCount > 0) ajaxCount--;
       if (ajaxCount === 0) udLoading.close();
@@ -54,7 +54,7 @@ udAxios.interceptors.request.use(
 // 回應攔截器
 udAxios.interceptors.response.use(
   // 狀態碼 2xx: 回應成功
-  (response) => {
+  response => {
     if (!response?.config?.noLoading) {
       ajaxCount--;
       if (ajaxCount === 0) udLoading.close();
@@ -62,8 +62,8 @@ udAxios.interceptors.response.use(
     return response?.config?.fullRes ? response : response?.data;
   },
   // 狀態碼 3xx: 重新導向, 4xx: 用戶端錯誤, 5xx: 伺服器錯誤
-  (error) => {
-    console.log('error: ', error.response.data.message);
+  error => {
+    console.log("error: ", error.response.data.message);
     if (!error?.config?.noLoading) {
       ajaxCount--;
       if (ajaxCount === 0) udLoading.close();
@@ -72,12 +72,15 @@ udAxios.interceptors.response.use(
 
     // 定義錯誤訊息
     let errorMsg = "";
-    if (error?.response) { // 請求已發出，有收到錯誤回應
+    if (error?.response) {
+      // 請求已發出，有收到錯誤回應
       errorMsg = statusMsg[error.response.status] || "發生未知的錯誤";
       if (error.response.data?.message) errorMsg = error.response.data.message;
-    } else if (error?.request) { // 請求已發出，但没有收到回應
+    } else if (error?.request) {
+      // 請求已發出，但没有收到回應
       errorMsg = "請求逾時或伺服器沒有回應";
-    } else { // 請求被取消或發送請求時異常
+    } else {
+      // 請求被取消或發送請求時異常
       errorMsg = "請求被取消或發送請求時異常";
     }
 
@@ -91,21 +94,20 @@ udAxios.interceptors.response.use(
       // 有收到code的錯誤
       switch (code) {
         case "984": // LINE 尚未登入，前台使用
-          udAxios.get(`/api/line/login/verify?url=${ encodeURIComponent(window.location) }`, {
-            default: true
-          })
+          udAxios
+            .get(`/api/line/login/verify?url=${encodeURIComponent(window.location)}`, {
+              default: true
+            })
             .then(() => console.log("已登入"))
-            .catch((err) => (location.href = err?.response?.data?.data?.url));
+            .catch(err => (location.href = err?.response?.data?.data?.url));
           break;
         default:
-          if (
-            !error?.config?.noAlertCode?.includes(code) &&
-            !error?.config?.noAlert
-          ) {
+          if (!error?.config?.noAlertCode?.includes(code) && !error?.config?.noAlert) {
             udAlert(alertConfig);
           }
       }
-    } else { // 沒收到code的錯誤
+    } else {
+      // 沒收到code的錯誤
       if (!error?.config?.noAlert) udAlert(alertConfig);
     }
     // 拋回錯誤
@@ -148,5 +150,5 @@ const statusMsg = {
   502: "無效的回應",
   503: "服務無法使用",
   504: "閘道逾時",
-  505: "不支援的HTTP版本",
+  505: "不支援的HTTP版本"
 };

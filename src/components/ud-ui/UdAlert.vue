@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import { nl2br } from '@/utils/ud-utils'
-import UdButton from './UdButton.vue'
-import { render, createVNode } from 'vue'
+import { nl2br } from "@/utils/ud-utils";
+import UdButton from "./UdButton.vue";
+import { render, createVNode } from "vue";
 
 export default {
-  name: 'UdAlert',
+  name: "UdAlert",
   components: { UdButton },
   props: {
     confirm: { type: Boolean, default: false }, // 是否有確認+取消鈕
@@ -39,14 +39,14 @@ export default {
     cancelText: { type: String, default: "取消" }, // 取消鈕文字
     onCancel: { type: Function, default: () => {} }, // 取消鈕callback
     confirmText: { type: String, default: "確定" }, // 確認鈕文字
-    onConfirm: { type: Function, default: () => {} }, // 確認鈕callback
+    onConfirm: { type: Function, default: () => {} } // 確認鈕callback
   },
   data() {
     return {
       isShow: false, // 是否顯示
       resolve: null, // 保存resolve
-      reject: null, // 保存reject
-    }
+      reject: null // 保存reject
+    };
   },
   computed: {
     displayMessage() {
@@ -54,7 +54,7 @@ export default {
     }
   },
   mounted() {
-    if(this.scrollLock) document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+    if (this.scrollLock) document.getElementsByTagName("body")[0].style.overflowY = "hidden";
   },
   methods: {
     show() {
@@ -62,19 +62,19 @@ export default {
       return new Promise((resolve, reject) => {
         this.resolve = resolve;
         this.reject = reject;
-      })
+      });
     },
     nl2br(val) {
       return nl2br(val);
     },
     confirmHandler() {
       this.onConfirm();
-      this.resolve('confirm');
+      this.resolve("confirm");
       this.destroy();
     },
     cancelHandler() {
       this.onCancel();
-      this.reject('cancel');
+      this.reject("cancel");
       this.destroy();
     },
     maskHandler() {
@@ -82,14 +82,14 @@ export default {
     },
     destroy() {
       this.isShow = false;
-      if (this.scrollLock) document.body.style.overflowY = 'auto';
+      if (this.scrollLock) document.body.style.overflowY = "auto";
       // 卸載 vnode
       if (this.$el && this.$el.parentNode) {
         render(null, this.$el.parentNode);
       }
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

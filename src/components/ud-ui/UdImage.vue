@@ -1,38 +1,41 @@
 <template>
   <div class="ud-image">
-    <div class="ud-image-bg" :style="{
-      backgroundImage: `url(${currentSrc})`,
-      paddingBottom: height + '%',
-      borderRadius: radius,
-      backgroundSize: bgSize
-    }">
+    <div
+      class="ud-image-bg"
+      :style="{
+        backgroundImage: `url(${currentSrc})`,
+        paddingBottom: height + '%',
+        borderRadius: radius,
+        backgroundSize: bgSize
+      }"
+    >
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
-import avatarDefault from '@/assets/images/picture/default.jpg'
+import avatarDefault from "@/assets/images/picture/default.jpg";
 
 export default {
-  name: 'UdImage',
+  name: "UdImage",
   props: {
     src: { type: String, default: avatarDefault }, // 背景圖片
     height: { type: Number, default: 100 }, // 高度比例
     radius: { type: String, default: "0px" }, // 圓角
-    bgSize: { type: String, default: "cover" }, // 背景尺寸 [cover, contain, 100%...等]
+    bgSize: { type: String, default: "cover" } // 背景尺寸 [cover, contain, 100%...等]
   },
   data() {
     return {
       avatarDefault,
       currentSrc: avatarDefault
-    }
+    };
   },
   watch: {
     src: {
       immediate: true,
       handler(val) {
-        this.loadImage(val)
+        this.loadImage(val);
       }
     }
   },
@@ -43,23 +46,27 @@ export default {
         return;
       }
       // 處理 "@/assets/..." 開頭路徑
-      let resolved = src.startsWith('@/assets')
+      let resolved = src.startsWith("@/assets")
         ? (() => {
             try {
-              return new URL(src.replace('@/', '/src/'), import.meta.url).href;
+              return new URL(src.replace("@/", "/src/"), import.meta.url).href;
             } catch {
               return this.avatarDefault;
             }
           })()
-        : src
+        : src;
 
       const img = new Image();
       img.src = resolved;
-      img.onload = () => { this.currentSrc = resolved };
-      img.onerror = () => { this.currentSrc = this.avatarDefault };
+      img.onload = () => {
+        this.currentSrc = resolved;
+      };
+      img.onerror = () => {
+        this.currentSrc = this.avatarDefault;
+      };
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

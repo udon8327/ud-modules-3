@@ -7,8 +7,7 @@
       :rows="rows"
       :class="{ 'is-no-resize': noResize }"
       @input="onInput"
-    >
-    </textarea>
+    ></textarea>
     <div class="textarea-limit" v-if="showLimit" :class="{ 'limit-input': value.length > 0 }">
       <span>{{ valueLength }}/{{ limit }}</span>
     </div>
@@ -17,23 +16,27 @@
 
 <script>
 export default {
-  name: 'UdTextarea',
+  name: "UdTextarea",
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值
     rows: { type: Number, default: 4 }, // 行數
     showLimit: { type: Boolean, default: false }, // 是否顯示字數限制
     limit: { type: Number, default: 0 }, // 字數限制提示(需限字數請自行加上maxlength屬性)
-    noResize: { type: Boolean, default: false }, // 禁止改變大小
+    noResize: { type: Boolean, default: false } // 禁止改變大小
   },
   computed: {
     value: {
-      get(){ return this.modelValue },
-      set(val){ this.$emit('update:modelValue', val) }
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val);
+      }
     },
     valueLength() {
       return this.value.length;
-    },
+    }
   },
   methods: {
     onInput() {
@@ -46,7 +49,7 @@ export default {
       this.$refs.textarea.blur();
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

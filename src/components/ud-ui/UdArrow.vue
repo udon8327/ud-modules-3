@@ -1,25 +1,25 @@
 <template>
-  <i 
+  <i
     class="ud-arrow"
-    :class=[direction]
+    :class="[direction]"
     :style="{
       borderColor: color,
       borderWidth: '0 ' + width + 'px ' + width + 'px 0',
-      padding: size + 'px',
-    }">
-  </i>
+      padding: size + 'px'
+    }"
+  ></i>
 </template>
 
 <script>
 export default {
-  name: 'UdArrow',
+  name: "UdArrow",
   props: {
     color: { type: String, default: "#333" }, // 顏色
     width: { type: [Number, String], default: 3 }, // 寬度
     size: { type: [Number, String], default: 3 }, // 大小
-    direction: { type: String, default: "right" }, //方向 [up, down, left, right]
+    direction: { type: String, default: "right" } //方向 [up, down, left, right]
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

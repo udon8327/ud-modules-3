@@ -1,20 +1,40 @@
 <template>
-  <div class="ud-select-date" :class="{'is-flex': flex}">
-    <ud-select v-model="value[0]" :options="firstArr" :placeholder="placeholder[0]" combine @validate="validate"></ud-select>
+  <div class="ud-select-date" :class="{ 'is-flex': flex }">
+    <ud-select
+      v-model="value[0]"
+      :options="firstArr"
+      :placeholder="placeholder[0]"
+      combine
+      @validate="validate"
+    ></ud-select>
     <slot></slot>
-    <ud-select v-model="value[1]" :options="secondArr" :placeholder="placeholder[1]" combine @validate="validate"></ud-select>
+    <ud-select
+      v-model="value[1]"
+      :options="secondArr"
+      :placeholder="placeholder[1]"
+      combine
+      @validate="validate"
+    ></ud-select>
     <slot name="second"></slot>
-    <ud-select v-model="value[2]" :options="thirdArr" :placeholder="placeholder[2]" combine v-if="third" @validate="validate"></ud-select>
+    <ud-select
+      v-model="value[2]"
+      :options="thirdArr"
+      :placeholder="placeholder[2]"
+      combine
+      v-if="third"
+      @validate="validate"
+    ></ud-select>
     <slot name="third"></slot>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'UdSelectDate',
+  name: "UdSelectDate",
   props: {
     modelValue: { default: null }, // 綁定值
-    placeholder: { // placeholder值
+    placeholder: {
+      // placeholder值
       type: Array,
       default: () => ["年", "月", "日"]
     },
@@ -24,8 +44,12 @@ export default {
   },
   computed: {
     value: {
-      get(){ return this.modelValue },
-      set(val){ this.$emit('update:modelValue', val) }
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val);
+      }
     },
     firstValue() {
       return this.value[0];
@@ -40,53 +64,53 @@ export default {
       let temp = [];
       let time = new Date();
       let year = time.getFullYear();
-      if(this.roc) year = year - 1911;
+      if (this.roc) year = year - 1911;
       let yearAfter = year - 120;
-      if(this.roc && yearAfter <= 0) yearAfter = 1;
-      for(let i = year; i >= yearAfter; i--){
-        temp.push({value: i});
+      if (this.roc && yearAfter <= 0) yearAfter = 1;
+      for (let i = year; i >= yearAfter; i--) {
+        temp.push({ value: i });
       }
       return temp;
     },
     secondArr() {
       let temp = [];
-      if(this.firstValue){
-        for(let i = 1; i <= 12; i++){
-          temp.push({value: i});
+      if (this.firstValue) {
+        for (let i = 1; i <= 12; i++) {
+          temp.push({ value: i });
         }
       }
       return temp;
     },
     thirdArr() {
       let temp = [];
-      if(this.firstValue && this.secondValue){
+      if (this.firstValue && this.secondValue) {
         let year = parseInt(this.firstValue);
-        if(this.roc) year = year + 1911;
+        if (this.roc) year = year + 1911;
         let date = new Date(year, this.secondValue, 0).getDate();
-        for(let i = 1; i <= date; i++){
-          temp.push({value: i});
+        for (let i = 1; i <= date; i++) {
+          temp.push({ value: i });
         }
       }
       return temp;
-    },
+    }
   },
   watch: {
     firstValue() {
       this.value.splice(1, 1, "");
     },
     secondValue() {
-      if(this.third) this.value.splice(2, 1, "");
-    },
+      if (this.third) this.value.splice(2, 1, "");
+    }
   },
   mounted() {},
   methods: {
     validate() {
       this.$nextTick(() => {
         this.$mitt.emit("validate"); // 通知FormItem校驗
-      })
-    },
-  },
-}
+      });
+    }
+  }
+};
 </script>
 
 <style lang="sass" scoped>

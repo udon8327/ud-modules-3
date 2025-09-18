@@ -1,11 +1,7 @@
 <template>
   <div class="ud-switch">
     <label>
-      <input 
-        type="checkbox"
-        v-model="value"
-        v-bind="$attrs"
-      >
+      <input type="checkbox" v-model="value" v-bind="$attrs" />
       <div class="switch-decorator">
         <div class="circle"></div>
       </div>
@@ -16,18 +12,22 @@
 
 <script>
 export default {
-  name: 'UdSwitch',
+  name: "UdSwitch",
   inheritAttrs: false,
   props: {
-    modelValue: { default: null }, // 綁定值
+    modelValue: { default: null } // 綁定值
   },
   computed: {
     value: {
-      get(){ return this.modelValue },
-      set(val){ this.$emit('update:modelValue', val) }
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val);
+      }
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

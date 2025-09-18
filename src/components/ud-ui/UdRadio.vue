@@ -1,6 +1,10 @@
 <template>
-  <div class="ud-radio" :class="{'is-flex': flex}">
-    <label v-for="option in options" :key="option[valueBy]" :class="{'is-disabled': option.disabled}">
+  <div class="ud-radio" :class="{ 'is-flex': flex }">
+    <label
+      v-for="option in options"
+      :key="option[valueBy]"
+      :class="{ 'is-disabled': option.disabled }"
+    >
       <input
         ref="radio"
         type="radio"
@@ -9,10 +13,8 @@
         :value="option[valueBy]"
         :disabled="option.disabled"
         @change="onChange"
-      >
-      <div class="radio-decorator"
-        :style="{'border-radius': radius}"
-      ></div>
+      />
+      <div class="radio-decorator" :style="{ 'border-radius': radius }"></div>
       <p>{{ option[labelBy] }}</p>
     </label>
   </div>
@@ -20,7 +22,7 @@
 
 <script>
 export default {
-  name: 'UdRadio',
+  name: "UdRadio",
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值
@@ -28,12 +30,16 @@ export default {
     flex: { type: Boolean, default: false }, // 是否並排
     radius: { type: String, default: "50px" }, // 圓角
     labelBy: { type: String, default: "label" }, // label替代值
-    valueBy: { type: String, default: "value" }, // value替代值
+    valueBy: { type: String, default: "value" } // value替代值
   },
   computed: {
     value: {
-      get(){ return this.modelValue },
-      set(val){ this.$emit('update:modelValue', val) }
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val);
+      }
     }
   },
   methods: {
@@ -41,7 +47,7 @@ export default {
       this.$mitt.emit("validate"); // 通知FormItem校驗
     }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>

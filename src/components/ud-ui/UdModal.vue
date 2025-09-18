@@ -1,6 +1,12 @@
 <template>
   <transition name="fade">
-    <div class="ud-modal" v-if="isShow" @click.self="maskHandler" :class="{ 'full-screen': fullScreen }" :style="{ zIndex: zIndex }">
+    <div
+      class="ud-modal"
+      v-if="isShow"
+      @click.self="maskHandler"
+      :class="{ 'full-screen': fullScreen }"
+      :style="{ zIndex: zIndex }"
+    >
       <div class="ud-modal-wrapper" :class="{ 'no-bg': noBg }">
         <div class="ud-modal-close" v-if="btnClose" @click="isShow = false">
           <i class="icon-close"></i>
@@ -24,7 +30,7 @@
 
 <script>
 export default {
-  name: 'UdModal',
+  name: "UdModal",
   props: {
     title: { type: String, default: "通用標題" }, // 通用標題
     message: { type: String, default: "通用訊息" }, // 通用訊息
@@ -33,20 +39,24 @@ export default {
     btnClose: { type: Boolean, default: false }, // 按鈕關閉
     fullScreen: { type: Boolean, default: false }, // 是否全螢幕
     zIndex: { type: Number, default: 100 }, // z-index層級
-    noBg: { type: Boolean, default: false }, // 背景是否透明
+    noBg: { type: Boolean, default: false } // 背景是否透明
   },
   computed: {
     isShow: {
-      get(){ return this.modelValue },
-      set(val){ this.$emit('update:modelValue', val) }
+      get() {
+        return this.modelValue;
+      },
+      set(val) {
+        this.$emit("update:modelValue", val);
+      }
     }
   },
   methods: {
     maskHandler() {
-      if(this.maskClose) this.isShow = false;
-    },
+      if (this.maskClose) this.isShow = false;
+    }
   }
-}
+};
 </script>
 
 <style lang="sass" scoped>
@@ -134,4 +144,4 @@ export default {
   opacity: 0
 .fade-enter-to, .fade-leave-from
   opacity: 1
-</style> 
+</style>

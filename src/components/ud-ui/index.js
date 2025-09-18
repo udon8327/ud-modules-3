@@ -29,30 +29,30 @@ Tools
   ud-countdown：倒數計時 (ok)
 */
 
-import { createVNode, render } from "vue"
-import udAxios from '@/services/ud-axios'
-import * as udUtils from '@/utils/ud-utils'
+import { createVNode, render } from "vue";
+import udAxios from "@/services/ud-axios";
+import * as udUtils from "@/utils/ud-utils";
 
-import UdAlert from "./UdAlert.vue"
-import UdArrow from "./UdArrow.vue"
-import UdButton from "./UdButton.vue"
-import UdCheckbox from "./UdCheckbox.vue"
-import UdCollapse from "./UdCollapse.vue"
-import UdCountdown from "./UdCountdown.vue"
-import UdEllipsis from "./UdEllipsis.vue"
-import UdForm from "./UdForm.vue"
-import UdFormItem from "./UdFormItem.vue"
-import UdHtml from "./UdHtml.vue"
-import UdImage from "./UdImage.vue"
-import UdInput from "./UdInput.vue"
-import UdLoading from "./UdLoading.vue"
-import UdModal from "./UdModal.vue"
-import UdRadio from "./UdRadio.vue"
-import UdSelect from "./UdSelect.vue"
-import UdSelectDate from "./UdSelectDate.vue"
-import UdSelectTwzip from "./UdSelectTwzip.vue"
-import UdSwitch from "./UdSwitch.vue"
-import UdTextarea from "./UdTextarea.vue"
+import UdAlert from "./UdAlert.vue";
+import UdArrow from "./UdArrow.vue";
+import UdButton from "./UdButton.vue";
+import UdCheckbox from "./UdCheckbox.vue";
+import UdCollapse from "./UdCollapse.vue";
+import UdCountdown from "./UdCountdown.vue";
+import UdEllipsis from "./UdEllipsis.vue";
+import UdForm from "./UdForm.vue";
+import UdFormItem from "./UdFormItem.vue";
+import UdHtml from "./UdHtml.vue";
+import UdImage from "./UdImage.vue";
+import UdInput from "./UdInput.vue";
+import UdLoading from "./UdLoading.vue";
+import UdModal from "./UdModal.vue";
+import UdRadio from "./UdRadio.vue";
+import UdSelect from "./UdSelect.vue";
+import UdSelectDate from "./UdSelectDate.vue";
+import UdSelectTwzip from "./UdSelectTwzip.vue";
+import UdSwitch from "./UdSwitch.vue";
+import UdTextarea from "./UdTextarea.vue";
 
 // 組件註冊列表
 const udComponents = [
@@ -75,16 +75,16 @@ const udComponents = [
   UdSelectDate,
   UdSelectTwzip,
   UdSwitch,
-  UdTextarea,
-]
+  UdTextarea
+];
 
 // 組件呼叫方法
 // udAlert
-const udAlert = (options) => {
-  const container = document.createElement('div');
+const udAlert = options => {
+  const container = document.createElement("div");
   document.body.appendChild(container);
 
-  const props = typeof options === 'string' ? { message: options } : options;
+  const props = typeof options === "string" ? { message: options } : options;
   const vnode = createVNode(UdAlert, props);
 
   render(vnode, container);
@@ -94,13 +94,13 @@ const udAlert = (options) => {
 
   const originalDestroy = instance.destroy;
   instance.destroy = (...args) => {
-    originalDestroy?.(...args)
+    originalDestroy?.(...args);
     render(null, container);
     container.parentNode?.removeChild(container);
-  }
+  };
 
   return instance.show?.();
-}
+};
 export { udAlert };
 
 // udLoading
@@ -128,16 +128,16 @@ const udLoading = {
       this.instance = null;
     }
   }
-}
+};
 export { udLoading };
 
 // ud-ui插件註冊方法
-const install = (app) => {
-  Object.keys(udUtils).forEach(item => app.config.globalProperties[item] = udUtils[item]);
+const install = app => {
+  Object.keys(udUtils).forEach(item => (app.config.globalProperties[item] = udUtils[item]));
   udComponents.forEach(item => app.component(item.name, item));
   app.config.globalProperties.udAxios = udAxios;
   app.config.globalProperties.udAlert = udAlert;
   app.config.globalProperties.udLoading = udLoading;
-}
+};
 
-export default install
+export default install;
