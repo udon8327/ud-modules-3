@@ -2,9 +2,9 @@
 ==================== ud-modules 常用組件 ====================
 Form
   ud-button：按鈕 (ok AI)
-  ud-input：輸入框 (ok)
-  ud-textarea：多行輸入框 (ok)
-  ud-radio：單選框 (ok)
+  ud-input：輸入框 (ok AI)
+  ud-textarea：多行輸入框 (ok AI)
+  ud-radio：單選框 (ok AI)
   ud-checkbox：多選框 (ok TODO：單一框時的disabled處理)
   ud-select：下拉框 (ok AI)
   ud-select-date：日期連動下拉框 (ok)
