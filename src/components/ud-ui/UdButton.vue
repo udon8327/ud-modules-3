@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { throttle } from "lodash";
+import { throttle, debounce } from "lodash";
 
 export default {
   name: "UdButton",
@@ -50,18 +50,37 @@ export default {
       return attrs;
     }
   },
+  data() {
+    return {
+      _wrappedEmit: null
+    };
+  },
   methods: {
+    _createWrappedEmit() {
+      const base = (evt) => this.$emit("click", evt);
+      if (this.throttle) return throttle(base, this.delay, { trailing: false });
+      if (this.debounce) return debounce(base, this.delay);
+      return base;
+    },
     onClick(evt) {
-      if (this.throttle) return;
-      this.$emit("click", evt);
+      if (this.disabled || this.loading) return;
+      if (!this._wrappedEmit) this._wrappedEmit = this._createWrappedEmit();
+      this._wrappedEmit(evt);
+    }
+  },
+  watch: {
+    throttle() {
+      this._wrappedEmit = this._createWrappedEmit();
+    },
+    debounce() {
+      this._wrappedEmit = this._createWrappedEmit();
+    },
+    delay() {
+      this._wrappedEmit = this._createWrappedEmit();
     }
   },
   mounted() {
-    if (!this.throttle) return;
-    this.$el.addEventListener(
-      "click",
-      throttle(evt => this.$emit("click", evt), this.delay)
-    );
+    this._wrappedEmit = this._createWrappedEmit();
   }
 };
 </script>
