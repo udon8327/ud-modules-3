@@ -4,11 +4,11 @@
       ref="select"
       v-model="value"
       v-bind="$attrs"
-      :data-placeholder-selected="value.length === 0"
-      :class="{ hasValue: value.length !== 0 }"
+      :data-placeholder-selected="isEmpty"
+      :class="{ hasValue: !isEmpty }"
       @change="onChange"
     >
-      <option value="" disabled selected>{{ placeholder }}</option>
+      <option v-if="!isMultiple" value="" disabled>{{ placeholder }}</option>
       <option v-for="option in optionsArr" :value="option[valueBy]" :key="option[valueBy]" :disabled="option.disabled">
         {{ combine ? option[valueBy] : option[labelBy] }}
       </option>
@@ -42,6 +42,15 @@ export default {
     };
   },
   computed: {
+    isMultiple() {
+      return Boolean(this.$attrs && this.$attrs.multiple !== undefined);
+    },
+    isEmpty() {
+      const val = this.modelValue;
+      if (val === null || val === undefined) return true;
+      if (Array.isArray(val)) return val.length === 0;
+      return String(val) === "";
+    },
     value: {
       get() {
         return this.modelValue;
@@ -51,12 +60,20 @@ export default {
       }
     },
     optionsArr() {
-      this.groupWatch = [...this.group];
+      const groupArr = Array.isArray(this.group)
+        ? this.group
+        : this.group === null || this.group === undefined || this.group === ""
+        ? []
+        : [this.group];
+      this.groupWatch = [...groupArr];
       let temp = this.options;
       if (this.index === 0) return temp;
-      if (this.group[this.index - 1]) {
+      if (groupArr[this.index - 1]) {
         for (let i = 0; i < this.index; i++) {
-          temp = temp.find(option => option.value === this.group[i])[this.childrenBy];
+          const currentValue = groupArr[i];
+          const node = Array.isArray(temp) ? temp.find(option => option[this.valueBy] === currentValue) : undefined;
+          if (!node || !node[this.childrenBy]) return [];
+          temp = node[this.childrenBy];
         }
         return temp;
       }
@@ -69,14 +86,16 @@ export default {
       for (let i = 0; i < this.group.length; i++) {
         if (newVal[i] !== oldVal[i]) target = i;
       }
-      if (this.index > target) this.$emit("input", "");
+      if (target !== undefined && this.index > target) {
+        this.$emit("update:modelValue", this.isMultiple ? [] : "");
+      }
     }
   },
   mounted() {
     if (this.center) this.centerSelect();
     if (this.center) window.addEventListener("resize", this.centerSelect);
   },
-  destroyed() {
+  unmounted() {
     if (this.center) window.removeEventListener("resize", this.centerSelect);
   },
   methods: {
@@ -99,7 +118,18 @@ export default {
     centerSelect() {
       let el = this.$refs.select;
       let text = "";
-      el.value ? (text = this.options.find(item => item.value == el.value).label) : (text = this.placeholder);
+      if (el.value) {
+        const match = Array.isArray(this.options)
+          ? this.options.find(item => item[this.valueBy] == el.value)
+          : null;
+        if (match) {
+          text = this.combine ? match[this.valueBy] : match[this.labelBy];
+        } else {
+          text = this.placeholder;
+        }
+      } else {
+        text = this.placeholder;
+      }
       let emptySpace = el.offsetWidth - this.getTextWidth(text, el);
       el.style.textIndent = `${emptySpace / 2 - 10}px`;
     }

@@ -6,7 +6,7 @@ Form
   ud-textarea：多行輸入框 (ok)
   ud-radio：單選框 (ok)
   ud-checkbox：多選框 (ok TODO：單一框時的disabled處理)
-  ud-select：下拉框 (ok TODO：連動功能bug)
+  ud-select：下拉框 (ok)
   ud-select-date：日期連動下拉框 (ok)
   ud-select-twzip：台灣行政區連動下拉框 (ok)
   ud-switch：開關 (ok)
