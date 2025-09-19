@@ -6,6 +6,8 @@
       @click.self="maskHandler"
       :class="{ 'full-screen': fullScreen }"
       :style="{ zIndex: zIndex }"
+      role="dialog"
+      aria-modal="true"
     >
       <div class="ud-modal-wrapper" :class="{ 'no-bg': noBg }">
         <div class="ud-modal-close" v-if="btnClose" @click="isShow = false">
@@ -39,7 +41,8 @@ export default {
     btnClose: { type: Boolean, default: false }, // 按鈕關閉
     fullScreen: { type: Boolean, default: false }, // 是否全螢幕
     zIndex: { type: Number, default: 100 }, // z-index層級
-    noBg: { type: Boolean, default: false } // 背景是否透明
+    noBg: { type: Boolean, default: false }, // 背景是否透明
+    scrollLock: { type: Boolean, default: true } // 是否鎖定背景捲動
   },
   computed: {
     isShow: {
@@ -49,6 +52,36 @@ export default {
       set(val) {
         this.$emit("update:modelValue", val);
       }
+    }
+  },
+  data() {
+    return {
+      _prevOverflowY: "",
+      
+    };
+  },
+  watch: {
+    isShow(newVal) {
+      // 鎖定/還原背景卷動
+      if (!this.scrollLock) return;
+      if (newVal) {
+        this._prevOverflowY = document.body.style.overflowY || "";
+        document.body.style.overflowY = "hidden";
+      } else {
+        document.body.style.overflowY = this._prevOverflowY;
+      }
+    }
+  },
+  mounted() {
+    // 初始狀態若為開啟，套用鎖定
+    if (this.scrollLock && this.isShow) {
+      this._prevOverflowY = document.body.style.overflowY || "";
+      document.body.style.overflowY = "hidden";
+    }
+  },
+  beforeUnmount() {
+    if (this.scrollLock) {
+      document.body.style.overflowY = this._prevOverflowY;
     }
   },
   methods: {
