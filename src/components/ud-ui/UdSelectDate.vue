@@ -1,7 +1,8 @@
 <template>
   <div class="ud-select-date" :class="{ 'is-flex': flex }">
     <ud-select
-      v-model="value[0]"
+      :modelValue="value[0]"
+      @update:modelValue="onPartChange(0, $event)"
       :options="firstArr"
       :placeholder="placeholder[0]"
       combine
@@ -9,7 +10,8 @@
     ></ud-select>
     <slot></slot>
     <ud-select
-      v-model="value[1]"
+      :modelValue="value[1]"
+      @update:modelValue="onPartChange(1, $event)"
       :options="secondArr"
       :placeholder="placeholder[1]"
       combine
@@ -17,7 +19,8 @@
     ></ud-select>
     <slot name="second"></slot>
     <ud-select
-      v-model="value[2]"
+      :modelValue="value[2]"
+      @update:modelValue="onPartChange(2, $event)"
       :options="thirdArr"
       :placeholder="placeholder[2]"
       combine
@@ -43,13 +46,13 @@ export default {
     roc: { type: Boolean, default: false } // 是否為民國年
   },
   computed: {
-    value: {
-      get() {
-        return this.modelValue;
-      },
-      set(val) {
-        this.$emit("update:modelValue", val);
+    value() {
+      if (Array.isArray(this.modelValue)) {
+        const arr = this.modelValue.slice(0, 3);
+        while (arr.length < 3) arr.push("");
+        return arr;
       }
+      return ["", "", ""];
     },
     firstValue() {
       return this.value[0];
@@ -74,7 +77,7 @@ export default {
     },
     secondArr() {
       let temp = [];
-      if (this.firstValue) {
+      if (this.firstValue !== "" && this.firstValue !== null && this.firstValue !== undefined) {
         for (let i = 1; i <= 12; i++) {
           temp.push({ value: i });
         }
@@ -84,29 +87,37 @@ export default {
     thirdArr() {
       let temp = [];
       if (this.firstValue && this.secondValue) {
-        let year = parseInt(this.firstValue);
+        let year = parseInt(this.firstValue, 10);
         if (this.roc) year = year + 1911;
-        let date = new Date(year, this.secondValue, 0).getDate();
-        for (let i = 1; i <= date; i++) {
-          temp.push({ value: i });
+        const month = parseInt(this.secondValue, 10);
+        if (!isNaN(year) && !isNaN(month)) {
+          let date = new Date(year, month, 0).getDate();
+          for (let i = 1; i <= date; i++) {
+            temp.push({ value: i });
+          }
         }
       }
       return temp;
     }
   },
-  watch: {
-    firstValue() {
-      this.value.splice(1, 1, "");
-    },
-    secondValue() {
-      if (this.third) this.value.splice(2, 1, "");
-    }
-  },
+  watch: {},
   mounted() {},
   methods: {
+    onPartChange(index, val) {
+      const next = this.value.slice(0, 3);
+      next[index] = val;
+      if (index === 0) {
+        next[1] = "";
+        next[2] = "";
+      } else if (index === 1 && this.third) {
+        next[2] = "";
+      }
+      this.$emit("update:modelValue", next);
+      this.validate();
+    },
     validate() {
       this.$nextTick(() => {
-        this.$mitt.emit("validate"); // 通知FormItem校驗
+        this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
       });
     }
   }
