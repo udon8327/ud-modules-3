@@ -16,7 +16,7 @@ Form
 Layout
   ud-arrow：CSS箭頭 (ok AI)
   ud-collapse：摺疊容器 (ok AI)
-  ud-image：等比例自適應圖片 (ok)
+  ud-image：等比例自適應圖片 (ok AI)
 
 Notice
   ud-alert：警告彈窗 (ok)
