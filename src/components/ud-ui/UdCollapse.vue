@@ -11,7 +11,9 @@ export default {
   name: "UdCollapse",
   props: {
     modelValue: { type: Boolean, default: false },
-    duration: { type: Number, default: 0.2 }
+    duration: { type: Number, default: 0.2 },
+    // 是否在展開時偵測內容高度變化並同步高度（不影響收合動畫）
+    observe: { type: Boolean, default: false }
   },
   data() {
     return {
@@ -40,6 +42,20 @@ export default {
     if (this.isShow) {
       this.height = this.$refs.wrapper.clientHeight + "px";
     }
+    if (this.observe && typeof ResizeObserver !== "undefined") {
+      this._ro = new ResizeObserver(() => {
+        if (this.isShow && this.$refs.wrapper) {
+          this.height = this.$refs.wrapper.clientHeight + "px";
+        }
+      });
+      this._ro.observe(this.$refs.wrapper);
+    }
+  },
+  beforeUnmount() {
+    if (this._ro) {
+      this._ro.disconnect();
+      this._ro = null;
+    }
   },
   methods: {
     open() {
@@ -56,6 +72,12 @@ export default {
         this.height = this.$refs.wrapper.clientHeight + "px";
       } else {
         this.height = "0px";
+      }
+    },
+    // 對外提供手動刷新高度，不改變動畫行為
+    refresh() {
+      if (this.$refs.wrapper) {
+        this.height = this.$refs.wrapper.clientHeight + "px";
       }
     }
   }
