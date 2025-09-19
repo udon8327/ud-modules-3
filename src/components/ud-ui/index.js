@@ -8,7 +8,7 @@ Form
   ud-checkbox：多選框 (ok AI)
   ud-select：下拉框 (ok AI)
   ud-select-date：日期連動下拉框 (ok AI)
-  ud-select-twzip：台灣行政區連動下拉框 (ok)
+  ud-select-twzip：台灣行政區連動下拉框 (ok AI)
   ud-switch：開關 (ok)
   ud-form-item：表單驗證容器 (ok)
   ud-form：表單驗證 (ok)

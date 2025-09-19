@@ -1,8 +1,22 @@
 <template>
   <div class="ud-select-twzip" :class="{ 'is-flex': flex }">
-    <ud-select v-model="value[0]" :options="firstArr" :placeholder="placeholder[0]" :combine="combine"></ud-select>
+    <ud-select
+      :modelValue="value[0]"
+      @update:modelValue="onPartChange(0, $event)"
+      :options="firstArr"
+      :placeholder="placeholder[0]"
+      :combine="combine"
+      @validate="validate"
+    ></ud-select>
     <slot></slot>
-    <ud-select v-model="value[1]" :options="secondArr" :placeholder="placeholder[1]" :combine="combine"></ud-select>
+    <ud-select
+      :modelValue="value[1]"
+      @update:modelValue="onPartChange(1, $event)"
+      :options="secondArr"
+      :placeholder="placeholder[1]"
+      :combine="combine"
+      @validate="validate"
+    ></ud-select>
     <slot name="second"></slot>
   </div>
 </template>
@@ -526,13 +540,13 @@ export default {
     };
   },
   computed: {
-    value: {
-      get() {
-        return this.modelValue;
-      },
-      set(val) {
-        this.$emit("update:modelValue", val);
+    value() {
+      if (Array.isArray(this.modelValue)) {
+        const arr = this.modelValue.slice(0, 2);
+        while (arr.length < 2) arr.push("");
+        return arr;
       }
+      return ["", ""];
     },
     firstValue() {
       return this.value[0];
@@ -540,39 +554,37 @@ export default {
     secondValue() {
       return this.value[1];
     },
-    thirdValue() {
-      return this.value[2];
-    },
     firstArr() {
       let temp = this.options;
       return temp;
     },
     secondArr() {
       let temp = [];
-      if (this.value[0]) {
-        temp = this.options.find(option => option.value === this.value[0]).children;
-      }
-      return temp;
-    },
-    thirdArr() {
-      let temp = [];
-      if (this.value[1]) {
-        temp = this.secondArr.find(option => option.value === this.value[1]).children;
+      if (this.firstValue !== "" && this.firstValue !== null && this.firstValue !== undefined) {
+        const node = this.options.find(option => option.value === this.firstValue);
+        temp = node && Array.isArray(node.children) ? node.children : [];
       }
       return temp;
     }
   },
-  watch: {
-    firstValue() {
-      this.value.splice(1, 1, "");
-    },
-    secondValue() {
-      if (this.third) this.value.splice(2, 1, "");
-    }
-  },
+  watch: {},
   methods: {
     onChange() {
-      this.$mitt.emit("validate"); // 通知FormItem校驗
+      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
+    },
+    onPartChange(index, val) {
+      const next = this.value.slice(0, 2);
+      next[index] = val;
+      if (index === 0) {
+        next[1] = "";
+      }
+      this.$emit("update:modelValue", next);
+      this.validate();
+    },
+    validate() {
+      this.$nextTick(() => {
+        this.$mitt && this.$mitt.emit && this.$mitt.emit("validate");
+      });
     }
   },
   mounted() {
