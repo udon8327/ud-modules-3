@@ -14,7 +14,7 @@ Form
   ud-form：表單驗證 (ok AI)
 
 Layout
-  ud-arrow：CSS箭頭 (ok)
+  ud-arrow：CSS箭頭 (ok AI)
   ud-collapse：摺疊容器 (ok)
   ud-image：等比例自適應圖片 (ok)
 
