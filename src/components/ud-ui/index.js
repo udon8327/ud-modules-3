@@ -24,7 +24,7 @@ Notice
   ud-loading：載入中 (ok AI)
 
 Tools
-  ud-html：用戶自定義訊息 (ok)
+  ud-html：用戶自定義訊息 (ok AI)
   ud-ellipsis：文字省略 (ok)
   ud-countdown：倒數計時 (ok)
 */
