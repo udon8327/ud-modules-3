@@ -19,7 +19,7 @@ Layout
   ud-image：等比例自適應圖片 (ok AI)
 
 Notice
-  ud-alert：警告彈窗 (ok)
+  ud-alert：警告彈窗 (ok AI)
   ud-modal：通用彈窗 (ok)
   ud-loading：載入中 (ok)
 

@@ -23,7 +23,7 @@
 <script>
 import { nl2br } from "@/utils/ud-utils";
 import UdButton from "./UdButton.vue";
-import { render, createVNode } from "vue";
+import { render } from "vue";
 
 export default {
   name: "UdAlert",
@@ -45,7 +45,8 @@ export default {
     return {
       isShow: false, // 是否顯示
       resolve: null, // 保存resolve
-      reject: null // 保存reject
+      reject: null, // 保存reject
+      _prevOverflowY: ""
     };
   },
   computed: {
@@ -54,10 +55,17 @@ export default {
     }
   },
   mounted() {
-    if (this.scrollLock) document.getElementsByTagName("body")[0].style.overflowY = "hidden";
+    if (this.scrollLock && this.isShow) {
+      this._prevOverflowY = document.body.style.overflowY || "";
+      document.body.style.overflowY = "hidden";
+    }
   },
   methods: {
     show() {
+      if (this.scrollLock) {
+        this._prevOverflowY = document.body.style.overflowY || "";
+        document.body.style.overflowY = "hidden";
+      }
       this.isShow = true;
       return new Promise((resolve, reject) => {
         this.resolve = resolve;
@@ -68,13 +76,13 @@ export default {
       return nl2br(val);
     },
     confirmHandler() {
-      this.onConfirm();
-      this.resolve("confirm");
+      try { this.onConfirm(); } catch (e) { console.error("[UdAlert] onConfirm error:", e); }
+      this.resolve && this.resolve("confirm");
       this.destroy();
     },
     cancelHandler() {
-      this.onCancel();
-      this.reject("cancel");
+      try { this.onCancel(); } catch (e) { console.error("[UdAlert] onCancel error:", e); }
+      this.reject && this.reject("cancel");
       this.destroy();
     },
     maskHandler() {
@@ -82,7 +90,7 @@ export default {
     },
     destroy() {
       this.isShow = false;
-      if (this.scrollLock) document.body.style.overflowY = "auto";
+      if (this.scrollLock) document.body.style.overflowY = this._prevOverflowY;
       // 卸載 vnode
       if (this.$el && this.$el.parentNode) {
         render(null, this.$el.parentNode);
@@ -122,7 +130,7 @@ export default {
       font-size: 16px
       margin-bottom: 0
       color: #333
-    .modal-close
+    .ud-modal-close
       position: absolute
       width: 26px
       height: 26px
