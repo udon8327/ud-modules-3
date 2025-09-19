@@ -26,7 +26,7 @@ Notice
 Tools
   ud-html：用戶自定義訊息 (ok AI)
   ud-ellipsis：文字省略 (ok AI)
-  ud-countdown：倒數計時 (ok)
+  ud-countdown：倒數計時 (ok AI)
 */
 
 import { createVNode, render } from "vue";

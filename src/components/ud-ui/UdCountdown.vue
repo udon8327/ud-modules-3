@@ -8,11 +8,11 @@ export default {
   props: {
     time: { type: Number, default: 60 }, // 倒數秒數
     delay: { type: Boolean, default: false }, // 是否不要立刻開始倒數
-    type: { type: String, default: "second" } // 時間格式
+    type: { type: String, default: "second" } // 時間格式 [second|minute]
   },
   data() {
     return {
-      countInterval: {},
+      countInterval: null,
       countTime: this.time
     };
   },
@@ -25,10 +25,14 @@ export default {
         let sec = this.countTime - min * 60;
         return `${min}:${this.padStart(sec)}`;
       }
+      return this.countTime;
     }
   },
   mounted() {
     if (!this.delay) this.countdown();
+  },
+  beforeUnmount() {
+    if (this.countInterval) clearInterval(this.countInterval);
   },
   methods: {
     countdown() {
