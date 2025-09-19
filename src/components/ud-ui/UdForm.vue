@@ -29,9 +29,7 @@ export default {
   },
   methods: {
     registerFormItem(item) {
-      if (item && !this.formItems.includes(item)) {
-        this.formItems.push(item);
-      }
+      this.formItems.push(item);
     },
     unregisterFormItem(item) {
       this.formItems = this.formItems.filter(i => i !== item);
@@ -45,32 +43,22 @@ export default {
       }
     ) {
       this.submitLock = false;
-      const tasks = this.formItems.filter(item => item && item.prop).map(item => item.validate(true));
-      return Promise.all(tasks)
+      const tasks = this.formItems.filter(item => item.prop).map(item => item.validate(true));
+      // console.log('tasks: ', tasks);
+      Promise.all(tasks)
         .then(() => {
-          try {
-            successCb();
-          } finally {
-            this.submitLock = true;
-          }
-          return true;
+          successCb();
         })
         .catch(error => {
-          try {
-            if (error) console.error("發生錯誤：", error);
-            if (!this.noErrorScroll) {
-              this.$nextTick(() => {
-                const firstError = document.querySelector(".is-error");
-                if (firstError) {
-                  this.scrollTo(firstError, 5, -10);
-                }
-              });
-            }
-            failedCb();
-          } finally {
-            this.submitLock = true;
+          if (error) return console.error("發生錯誤：", error);
+          if (!this.noErrorScroll) {
+            this.$nextTick(() => {
+              if (document.querySelector(".is-error")) {
+                this.scrollTo(document.querySelector(".is-error"), 5, -10);
+              }
+            });
           }
-          return false;
+          failedCb();
         });
     },
     clearValidate() {
@@ -104,6 +92,7 @@ export default {
         target = current + rect.top + offset;
       }
 
+      // Clamp to valid range
       target = Math.max(0, Math.min(target, scroller.scrollHeight - window.innerHeight));
 
       const step = () => {
