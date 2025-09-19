@@ -96,8 +96,7 @@ udAxios.interceptors.response.use(
       switch (code) {
         case "984": // LINE 尚未登入，前台使用
           udAxios
-            .get(`/api/line/login/verify?url=${encodeURIComponent(window.location?.href || "")}`,
-              {
+            .get(`/api/line/login/verify?url=${encodeURIComponent(window.location?.href || "")}`, {
               default: true
             })
             .then(() => console.log("已登入"))

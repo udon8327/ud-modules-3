@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     _createWrappedEmit() {
-      const base = (evt) => this.$emit("click", evt);
+      const base = evt => this.$emit("click", evt);
       if (this.throttle) return throttle(base, this.delay, { trailing: false });
       if (this.debounce) return debounce(base, this.delay);
       return base;

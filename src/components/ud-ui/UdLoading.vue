@@ -34,7 +34,10 @@ export default {
     theme: { type: String, default: "" }, // 戴入主題 [white]
     iconType: { type: String, default: "css" }, // icon類型 [css:CSS, font:字型, img:圖片]
     iconFont: { type: String, default: "fas fa-spinner fa-pulse" }, // 字型icon的class
-    iconImg: { type: String, default: "https://image.flaticon.com/icons/svg/553/553265.svg" }, // 圖片icon的路徑
+    iconImg: {
+      type: String,
+      default: "https://image.flaticon.com/icons/svg/553/553265.svg"
+    }, // 圖片icon的路徑
     message: { type: String, default: "" }, // 載入訊息 (功能同msg，接受html語法)
     msg: { type: String, default: "" } // 載入訊息 (功能同message，接受html語法)
   },

@@ -12,7 +12,9 @@
           <p v-html="nl2br(displayMessage)"></p>
         </div>
         <div class="ud-modal-footer">
-          <ud-button @click="cancelHandler" plain v-if="confirm">{{ cancelText }}</ud-button>
+          <ud-button @click="cancelHandler" plain v-if="confirm">
+            {{ cancelText }}
+          </ud-button>
           <ud-button @click="confirmHandler">{{ confirmText }}</ud-button>
         </div>
       </div>
@@ -76,12 +78,20 @@ export default {
       return nl2br(val);
     },
     confirmHandler() {
-      try { this.onConfirm(); } catch (e) { console.error("[UdAlert] onConfirm error:", e); }
+      try {
+        this.onConfirm();
+      } catch (e) {
+        console.error("[UdAlert] onConfirm error:", e);
+      }
       this.resolve && this.resolve("confirm");
       this.destroy();
     },
     cancelHandler() {
-      try { this.onCancel(); } catch (e) { console.error("[UdAlert] onCancel error:", e); }
+      try {
+        this.onCancel();
+      } catch (e) {
+        console.error("[UdAlert] onCancel error:", e);
+      }
       this.reject && this.reject("cancel");
       this.destroy();
     },

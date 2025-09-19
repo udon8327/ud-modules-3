@@ -63,8 +63,8 @@ export default {
       const groupArr = Array.isArray(this.group)
         ? this.group
         : this.group === null || this.group === undefined || this.group === ""
-        ? []
-        : [this.group];
+          ? []
+          : [this.group];
       this.groupWatch = [...groupArr];
       let temp = this.options;
       if (this.index === 0) return temp;
@@ -119,9 +119,7 @@ export default {
       let el = this.$refs.select;
       let text = "";
       if (el.value) {
-        const match = Array.isArray(this.options)
-          ? this.options.find(item => item[this.valueBy] == el.value)
-          : null;
+        const match = Array.isArray(this.options) ? this.options.find(item => item[this.valueBy] == el.value) : null;
         if (match) {
           text = this.combine ? match[this.valueBy] : match[this.labelBy];
         } else {

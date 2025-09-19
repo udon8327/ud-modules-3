@@ -34,9 +34,7 @@ export default {
   computed: {
     value: {
       get() {
-        return this.modelValue === null || this.modelValue === undefined
-          ? ""
-          : String(this.modelValue);
+        return this.modelValue === null || this.modelValue === undefined ? "" : String(this.modelValue);
       },
       set(val) {
         this.$emit("update:modelValue", val);

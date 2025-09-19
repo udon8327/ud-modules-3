@@ -1,10 +1,5 @@
 <template>
-  <i
-    class="ud-arrow"
-    :class="[safeDirection]"
-    :style="elementStyle"
-    aria-hidden="true"
-  ></i>
+  <i class="ud-arrow" :class="[safeDirection]" :style="elementStyle" aria-hidden="true"></i>
 </template>
 
 <script>

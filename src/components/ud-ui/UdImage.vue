@@ -70,16 +70,19 @@ export default {
           this.loadImage(val);
           return;
         }
-        this._io = new IntersectionObserver(entries => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              this.loadImage(val);
-              this._io && this._io.disconnect();
-              this._io = null;
-              break;
+        this._io = new IntersectionObserver(
+          entries => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                this.loadImage(val);
+                this._io && this._io.disconnect();
+                this._io = null;
+                break;
+              }
             }
-          }
-        }, { rootMargin: "100px" });
+          },
+          { rootMargin: "100px" }
+        );
         this._io.observe(el);
       });
     },

@@ -287,12 +287,9 @@ export default {
     },
     postData() {
       this.udAxios
-        .post(
-          "test",
-          {
-            name: "UDON"
-          },
-        )
+        .post("test", {
+          name: "UDON"
+        })
         .then(res => {
           console.log("res: ", res);
         });
@@ -301,7 +298,7 @@ export default {
       this.udAlert({
         msg: "這是一個警告訊息",
         title: "警告",
-        confirm: true,
+        confirm: true
       })
         .then(() => {
           console.log("確定");

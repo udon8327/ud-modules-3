@@ -1,10 +1,6 @@
 <template>
   <div class="ud-radio" :class="{ 'is-flex': flex }" role="radiogroup">
-    <label
-      v-for="option in options"
-      :key="option[valueBy]"
-      :class="{ 'is-disabled': option.disabled }"
-    >
+    <label v-for="option in options" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
       <input
         ref="radio"
         type="radio"

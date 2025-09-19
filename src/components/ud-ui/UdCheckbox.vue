@@ -1,11 +1,7 @@
 <template>
   <div class="ud-checkbox" :class="{ 'is-flex': flex }" role="group">
     <template v-if="Array.isArray(options) && options.length">
-      <label
-        v-for="option in options"
-        :key="option[valueBy]"
-        :class="{ 'is-disabled': option.disabled }"
-      >
+      <label v-for="option in options" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
         <input
           ref="checkbox"
           type="checkbox"

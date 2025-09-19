@@ -56,8 +56,7 @@ export default {
   },
   data() {
     return {
-      _prevOverflowY: "",
-      
+      _prevOverflowY: ""
     };
   },
   watch: {
