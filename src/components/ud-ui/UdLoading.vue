@@ -1,6 +1,13 @@
 <template>
   <transition name="loading">
-    <div class="ud-loading" v-show="isShow" :class="{ 'theme-white': theme === 'white' }">
+    <div
+      class="ud-loading"
+      v-show="isShow"
+      :class="{ 'theme-white': theme === 'white' }"
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+    >
       <div class="ud-modal-wrapper">
         <div class="ud-modal-content">
           <div class="ud-modal-header">
@@ -33,7 +40,9 @@ export default {
   },
   data() {
     return {
-      isShow: false
+      isShow: false,
+      _prevOverflowY: "",
+      _locked: false
     };
   },
   computed: {
@@ -43,12 +52,17 @@ export default {
   },
   mounted() {
     this.isShow = true;
-    if (this.fixed) {
+    if (this.fixed && typeof document !== "undefined") {
+      this._prevOverflowY = document.body.style.overflowY || "";
       document.body.style.overflowY = "hidden";
+      this._locked = true;
     }
   },
   unmounted() {
-    document.body.style.overflowY = "";
+    if (this._locked && typeof document !== "undefined") {
+      document.body.style.overflowY = this._prevOverflowY;
+      this._locked = false;
+    }
   },
   methods: {
     nl2br(val) {
