@@ -56,16 +56,17 @@ udAxios.interceptors.response.use(
   // 狀態碼 2xx: 回應成功
   response => {
     if (!response?.config?.noLoading) {
-      ajaxCount--;
+      ajaxCount = Math.max(ajaxCount - 1, 0);
       if (ajaxCount === 0) udLoading.close();
     }
     return response?.config?.fullRes ? response : response?.data;
   },
   // 狀態碼 3xx: 重新導向, 4xx: 用戶端錯誤, 5xx: 伺服器錯誤
   error => {
-    console.log("error: ", error.response.data.message);
+    const respMsg = error?.response?.data?.message;
+    if (respMsg) console.log("error:", respMsg);
     if (!error?.config?.noLoading) {
-      ajaxCount--;
+      ajaxCount = Math.max(ajaxCount - 1, 0);
       if (ajaxCount === 0) udLoading.close();
     }
     if (error?.config?.default) return Promise.reject(error);
@@ -95,7 +96,8 @@ udAxios.interceptors.response.use(
       switch (code) {
         case "984": // LINE 尚未登入，前台使用
           udAxios
-            .get(`/api/line/login/verify?url=${encodeURIComponent(window.location)}`, {
+            .get(`/api/line/login/verify?url=${encodeURIComponent(window.location?.href || "")}`,
+              {
               default: true
             })
             .then(() => console.log("已登入"))

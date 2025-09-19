@@ -292,9 +292,6 @@ export default {
           {
             name: "UDON"
           },
-          {
-            noLoading: true
-          }
         )
         .then(res => {
           console.log("res: ", res);
