@@ -29,7 +29,9 @@ export default {
   },
   methods: {
     registerFormItem(item) {
-      this.formItems.push(item);
+      if (item && !this.formItems.includes(item)) {
+        this.formItems.push(item);
+      }
     },
     unregisterFormItem(item) {
       this.formItems = this.formItems.filter(i => i !== item);
@@ -43,22 +45,32 @@ export default {
       }
     ) {
       this.submitLock = false;
-      const tasks = this.formItems.filter(item => item.prop).map(item => item.validate(true));
-      // console.log('tasks: ', tasks);
-      Promise.all(tasks)
+      const tasks = this.formItems.filter(item => item && item.prop).map(item => item.validate(true));
+      return Promise.all(tasks)
         .then(() => {
-          successCb();
+          try {
+            successCb();
+          } finally {
+            this.submitLock = true;
+          }
+          return true;
         })
         .catch(error => {
-          if (error) return console.error("發生錯誤：", error);
-          if (!this.noErrorScroll) {
-            this.$nextTick(() => {
-              if (document.querySelector(".is-error")) {
-                this.scrollTo(document.querySelector(".is-error"), 5, -10);
-              }
-            });
+          try {
+            if (error) console.error("發生錯誤：", error);
+            if (!this.noErrorScroll) {
+              this.$nextTick(() => {
+                const firstError = document.querySelector(".is-error");
+                if (firstError) {
+                  this.scrollTo(firstError, 5, -10);
+                }
+              });
+            }
+            failedCb();
+          } finally {
+            this.submitLock = true;
           }
-          failedCb();
+          return false;
         });
     },
     clearValidate() {
@@ -69,36 +81,42 @@ export default {
       });
     },
     scrollTo(el = "top", speed = 5, offset = 0, callback = () => {}) {
-      let scrollTop = document.scrollingElement.scrollTop;
-      let top = 0;
+      const scroller = document.scrollingElement || document.documentElement || document.body;
+      let current = scroller.scrollTop;
+      let target = 0;
 
       if (typeof el === "number") {
-        top = el + offset;
+        target = el + offset;
       } else if (typeof el === "string") {
         if (el === "top") {
-          top = 0 + offset;
+          target = 0 + offset;
         } else if (el === "bottom") {
-          top = document.body.scrollHeight - document.body.clientHeight + offset;
+          target = scroller.scrollHeight - window.innerHeight + offset;
         } else {
           const found = document.querySelector(el);
           if (found) {
-            top = found.offsetTop + offset;
+            const rect = found.getBoundingClientRect();
+            target = current + rect.top + offset;
           }
         }
       } else if (el instanceof HTMLElement) {
-        top = el.offsetTop + offset;
+        const rect = el.getBoundingClientRect();
+        target = current + rect.top + offset;
       }
-      const scroll = () => {
-        scrollTop = scrollTop + (top - scrollTop) / speed;
-        if (Math.abs(scrollTop - top) <= 1) {
-          document.scrollingElement.scrollTop = top;
+
+      target = Math.max(0, Math.min(target, scroller.scrollHeight - window.innerHeight));
+
+      const step = () => {
+        current += (target - current) / speed;
+        if (Math.abs(current - target) <= 1) {
+          scroller.scrollTop = target;
           callback && callback();
           return;
         }
-        document.scrollingElement.scrollTop = scrollTop;
-        requestAnimationFrame(scroll);
+        scroller.scrollTop = current;
+        requestAnimationFrame(step);
       };
-      scroll();
+      step();
     }
   }
 };
