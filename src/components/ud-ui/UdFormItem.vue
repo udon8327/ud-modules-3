@@ -2,7 +2,7 @@
   <div class="ud-form-item" :class="{ 'is-error': errorMessage, 'is-flex': flex }">
     <div
       class="ud-form-item-left"
-      :v-if="label"
+      v-if="label"
       :style="{ 'flex-basis': labelWidth }"
       :class="{
         'label-align-left': labelAlign === 'left',
@@ -43,16 +43,16 @@ export default {
     labelAlign: { type: String, default: "left" } // 標籤對齊
   },
   mounted() {
-    this.registerFormItem(this);
+    this.registerFormItem && this.registerFormItem(this);
     this.validateHandler = () => {
       if (!this.prop) return;
       this.validate(false);
     };
-    this.$mitt.on("validate", this.validateHandler);
+    this.$mitt && this.$mitt.on && this.$mitt.on("validate", this.validateHandler);
   },
   beforeUnmount() {
-    this.unregisterFormItem(this);
-    this.$mitt.off("validate", this.validateHandler);
+    this.unregisterFormItem && this.unregisterFormItem(this);
+    this.$mitt && this.$mitt.off && this.$mitt.off("validate", this.validateHandler);
   },
   methods: {
     validate(submit) {
@@ -65,13 +65,7 @@ export default {
       for (let rule of rules) {
         switch (rule.type) {
           case "required": // 必填驗證
-            if (Array.isArray(value) && value.length != 0) {
-              if (value.some(i => i.length === 0)) this.errorMessage = rule.message || "此欄位為必填項目";
-            } else if (value === null) {
-              this.errorMessage = rule.message || "此欄位為必填項目";
-            } else {
-              if (value.length === 0 || value === false) this.errorMessage = rule.message || "此欄位為必填項目";
-            }
+            if (this.isEmptyValue(value)) this.errorMessage = rule.message || "此欄位為必填項目";
             break;
           case "name": // 姓名驗證
             if (value && !/^[\p{sc=Han}a-zA-Z·\s]+$/u.test(value))
@@ -154,6 +148,15 @@ export default {
     },
     typeOf(val) {
       return val === undefined ? "undefined" : val === null ? "null" : val.constructor.name.toLowerCase();
+    },
+    isEmptyValue(val) {
+      if (val === null || val === undefined) return true;
+      if (typeof val === "string") return val.trim().length === 0;
+      if (typeof val === "boolean") return val === false;
+      if (typeof val === "number") return false;
+      if (Array.isArray(val)) return val.length === 0 || val.some(v => this.isEmptyValue(v));
+      if (typeof val === "object") return Object.keys(val).length === 0;
+      return false;
     }
   }
 };
