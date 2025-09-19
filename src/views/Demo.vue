@@ -38,7 +38,7 @@
           template(v-slot:third)
             p 日
       ud-form-item(label="是否啟用" prop="isActive" flex)
-        ud-switch(v-model="formData.isActive")
+        ud-switch(v-model="formData.isActive" activeValue="Y" inactiveValue="N")
       ud-form-item(label="" prop="isAgree")
         ud-checkbox(v-model="formData.isAgree")
           p 我同意#[a(href="https://www.google.com.tw/") 使用者條款]
@@ -125,7 +125,7 @@ export default {
         selectGroup: ["", "", ""],
         twzip: ["", ""],
         date: ["", "", ""],
-        isActive: false,
+        isActive: "N",
         isAgree: false
       },
       rules: {
