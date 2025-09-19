@@ -3,6 +3,9 @@
   ud-modal(v-model="isModalShow" mask-close btn-close)
     h4.mb-2 通用彈窗
     ud-image.mb-3(src="", alt="")
+    .button-wrapper.mb-2
+      ud-button(@click="alert()") Alert
+      ud-button(@click="showLoading") Loading
     ud-button(@click="isModalShow = false" plain) 關閉
 
   .form-area
@@ -302,7 +305,6 @@ export default {
         msg: "這是一個警告訊息",
         title: "警告",
         confirm: true,
-        btnClose: true
       })
         .then(() => {
           console.log("確定");
