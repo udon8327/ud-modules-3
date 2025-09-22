@@ -58,7 +58,7 @@ const statusMsg = {
 // udAxios 自定義預設值
 const udAxios = axios.create({
   baseURL: import.meta.env.VITE_APP_API_BASE_URL, // API基礎路徑
-  timeout: 30000, // 請求超時時間
+  timeout: 30000 // 請求超時時間
   // withCredentials: true, // 允許攜帶cookie
   // headers: { // 自定義headers
   //   'Authorization': 'Bearer token',
@@ -102,12 +102,12 @@ udAxios.interceptors.response.use(
   error => {
     const respMsg = error?.response?.data?.message;
     if (respMsg) console.error("API錯誤:", respMsg);
-    
+
     if (!error?.config?.noLoading) {
       ajaxCount = Math.max(ajaxCount - 1, 0);
       if (ajaxCount === 0) udLoading.close();
     }
-    
+
     if (error?.config?.default) return Promise.reject(error);
 
     // 定義錯誤訊息
@@ -119,7 +119,7 @@ udAxios.interceptors.response.use(
     } else if (error?.request) {
       // 請求已發出，但没有收到回應
       errorMsg = "請求逾時或伺服器沒有回應";
-    } else if (error.code === 'ECONNABORTED') {
+    } else if (error.code === "ECONNABORTED") {
       // 請求超時
       errorMsg = "請求超時，請稍候再試";
     } else {
@@ -162,9 +162,9 @@ udAxios.interceptors.response.use(
       // 沒收到code的錯誤
       if (!error?.config?.noAlert) udAlert(alertConfig);
     }
-    
+
     // 拋回錯誤
-    console.error(`errorCode: ${code || 'N/A'}, errorMsg: ${errorMsg}`);
+    console.error(`errorCode: ${code || "N/A"}, errorMsg: ${errorMsg}`);
     return Promise.reject(error);
   }
 );
