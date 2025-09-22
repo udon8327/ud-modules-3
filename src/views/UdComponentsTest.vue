@@ -180,12 +180,26 @@
           </div>
           
           <div class="input-item">
-            <label>lazy 修飾子（失焦時更新）：</label>
+            <label>對比測試 - 普通輸入（即時更新）：</label>
+            <ud-input 
+              v-model="normalInput" 
+              placeholder="輸入時立即更新"
+              @input="handleInputEvent('普通輸入', $event)"
+              @change="handleChangeEvent('普通輸入', $event)"
+            />
+            <div class="input-value">值：{{ normalInput }}</div>
+          </div>
+          
+          <div class="input-item">
+            <label>對比測試 - lazy 修飾子（失焦時更新）：</label>
             <ud-input 
               v-model.lazy="lazyInput" 
               placeholder="輸入後失焦查看更新"
+              @input="handleInputEvent('Lazy輸入', $event)"
+              @change="handleChangeEvent('Lazy輸入', $event)"
             />
             <div class="input-value">值：{{ lazyInput }}</div>
+            <div class="input-tip">💡 輸入文字後點擊其他地方（失焦）才會更新值</div>
           </div>
         </div>
       </div>
@@ -735,6 +749,7 @@ export default {
       telInput: "",
       trimInput: "",
       numberModifierInput: "",
+      normalInput: "",
       lazyInput: "",
       
       // Textarea 測試

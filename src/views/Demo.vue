@@ -9,15 +9,17 @@
     ud-button(@click="isModalShow = false" plain) 關閉
 
   .form-area
+    ud-button.mb-3(@click="test") 測試
     ud-form(:rules="rules" :model="formData" ref="form")
       ud-form-item(label="姓名" prop="name" flex)
         ud-input(v-model.trim="formData.name" placeholder="請輸入您的姓名" @keydown="onInput")
+        p {{ formData.name }}
       ud-form-item(label="電話" prop="phone" flex)
         ud-input(v-model.trim="formData.phone" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10")
       ud-form-item(label="Email" prop="email" flex)
         ud-input(v-model.trim="formData.email" placeholder="請輸入您的Email" inputmode="email")
       ud-form-item(label="年齡" prop="age" flex)
-        ud-input(v-model.trim="formData.age" placeholder="請輸入您的年齡" inputmode="numeric")
+        ud-input(v-model.trim.number="formData.age" placeholder="請輸入您的年齡" inputmode="numeric")
       ud-form-item(label="備註" prop="note" flex)
         ud-textarea(v-model="formData.note" placeholder="請輸入您的備註" show-limit :limit="100" max-length="100" @keydown="onInput")
       ud-form-item(label="單選" prop="radio" flex)
@@ -227,7 +229,7 @@ export default {
       console.log("e: ", e);
     },
     test() {
-      console.log(getRandom());
+      console.log(this.getRandom());
     },
     openExternal() {
       location.href = "https://liff.line.me/1655285115-w926gzYP";

@@ -10,6 +10,7 @@
 
 ### props
 
+- type: 按鈕類型 | String("button")
 - icon: CSS的icon，直接帶入class | String
   ```html
   <ud-button icon="el-icon-refresh">按鈕</ud-button>
@@ -46,9 +47,9 @@
   ```html
   <ud-button throttle @click="test">按鈕</ud-button>
   ```
-- throttle: 防抖模式，幾秒間隔內最多觸發一次 | Boolean(false)
+- debounce: 防抖模式，幾秒間隔內最多觸發一次 | Boolean(false)
   ```html
-  <ud-button throttle @click="test">按鈕</ud-button>
+  <ud-button debounce @click="test">按鈕</ud-button>
   ```
 - delay: 函式節流間隔時間(ms) | Number(1000)
   ```html
