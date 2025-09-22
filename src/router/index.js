@@ -27,6 +27,11 @@ const router = createRouter({
       name: "CameraDemo",
       component: () => import("@/views/CameraDemo.vue")
     },
+    {
+      path: "/test",
+      name: "Test",
+      component: () => import("@/views/UdComponentsTest.vue")
+    },
 
     // 錯誤頁
     {
