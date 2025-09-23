@@ -12,7 +12,7 @@
     ud-button.mb-3(@click="test") 測試
     ud-form(:rules="rules" :model="formData" ref="form")
       ud-form-item(label="姓名" prop="name" flex)
-        ud-input(ref="name" v-model.trim="formData.name" placeholder="請輸入您的姓名" center)
+        ud-input(ref="name" v-model.trim="formData.name" placeholder="請輸入您的姓名")
       ud-form-item(label="電話" prop="phone" flex)
         ud-input(v-model.trim="formData.phone" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10")
       ud-form-item(label="Email" prop="email" flex)
@@ -97,6 +97,27 @@
         h6 {{ profile.displayName }}
         p {{ profile.userId }}
         p {{ profile.info }}
+
+  .advanced-form-area
+    hr
+    h4.mb-3 進階驗證規則測試
+    ud-form(:rules="advancedRules" :model="advancedFormData" ref="advancedForm")
+      ud-form-item(label="密碼" prop="password" flex)
+        ud-input(v-model.trim="advancedFormData.password" placeholder="請輸入密碼" type="password")
+      ud-form-item(label="確認密碼" prop="confirmPassword" flex)
+        ud-input(v-model.trim="advancedFormData.confirmPassword" placeholder="請再次輸入密碼" type="password")
+      ud-form-item(label="自定義正則" prop="customRegex" flex)
+        ud-input(v-model.trim="advancedFormData.customRegex" placeholder="只能輸入英文字母")
+      ud-form-item(label="自定義驗證" prop="customValidation" flex)
+        ud-input(v-model.trim="advancedFormData.customValidation" placeholder="輸入 'test' 通過驗證")
+      ud-form-item(label="數字範圍" prop="numberRange" flex)
+        ud-input(v-model.trim="advancedFormData.numberRange" placeholder="輸入 1-100 之間的數字")
+      ud-form-item(label="特殊字符檢查" prop="specialChars" flex)
+        ud-input(v-model.trim="advancedFormData.specialChars" placeholder="不能包含 < > \" ' & 字符")
+    .button-wrapper.mb-2
+      ud-button(@click="clearAdvancedVerify" plain) 清除進階驗證
+      ud-button(@click="submitAdvancedVerify") 送出進階表單
+
 </template>
 
 <script>
@@ -132,6 +153,14 @@ export default {
         isActive: "N",
         isAgree: false
       },
+      advancedFormData: {
+        password: "",
+        confirmPassword: "",
+        customRegex: "",
+        customValidation: "",
+        numberRange: "",
+        specialChars: ""
+      },
       rules: {
         name: [{ type: "required" }, { type: "name" }],
         phone: [{ type: "required" }, { type: "phone" }],
@@ -145,6 +174,48 @@ export default {
         twzip: [{ type: "required" }],
         date: [{ type: "required" }],
         isAgree: [{ type: "required", message: "請先同意相關使用條款" }]
+      },
+      advancedRules: {
+        password: [
+          { type: "required", message: "密碼為必填項目" },
+          { type: "regex", regex: "^.{6,}$", message: "密碼至少需要6個字符" }
+        ],
+        confirmPassword: [
+          { type: "required", message: "確認密碼為必填項目" },
+          { 
+            type: "equal", 
+            equalTo: "password", 
+            message: "兩次輸入的密碼不一致" 
+          }
+        ],
+        customRegex: [
+          { type: "regex", regex: "^[a-zA-Z]+$", message: "只能輸入英文字母" }
+        ],
+        customValidation: [
+          { 
+            type: "schema", 
+            schema: (value) => value === "test",
+            message: "請輸入 'test' 來通過驗證" 
+          }
+        ],
+        numberRange: [
+          { type: "number", message: "只能輸入數字" },
+          { 
+            type: "schema", 
+            schema: (value) => {
+              const num = parseInt(value);
+              return num >= 1 && num <= 100;
+            },
+            message: "數字必須在 1-100 之間" 
+          }
+        ],
+        specialChars: [
+          { 
+            type: "regex", 
+            regex: "^[^<>\"'&]*$", 
+            message: "不能包含特殊字符 < > \" ' &" 
+          }
+        ]
       },
       options: [
         { label: "甲", value: 1 },
@@ -332,6 +403,17 @@ export default {
     },
     clearVerify() {
       this.$refs.form.clearValidate();
+    },
+    submitAdvancedVerify() {
+      this.$refs.advancedForm.validate(() => {
+        this.submitAdvanced();
+      });
+    },
+    submitAdvanced() {
+      this.udAlert({ msg: "進階驗證成功!!" });
+    },
+    clearAdvancedVerify() {
+      this.$refs.advancedForm.clearValidate();
     },
     toUrl(url) {
       location.href = url;

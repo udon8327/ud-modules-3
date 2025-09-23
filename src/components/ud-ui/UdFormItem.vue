@@ -52,17 +52,22 @@ export default {
   },
   beforeUnmount() {
     this.unregisterFormItem && this.unregisterFormItem(this);
-    this.$mitt && this.$mitt.off && this.$mitt.off("validate", this.validateHandler);
+    if (this.validateHandler && this.$mitt && this.$mitt.off) {
+      this.$mitt.off("validate", this.validateHandler);
+    }
   },
   methods: {
     validate(submit) {
-      if (this.form.submitLock) return;
+      if (!this.form || this.form.submitLock) return;
       const rules = this.form.rules[this.prop]; // 獲取校驗規則
       const value = this.form.model[this.prop]; // 獲取數據
 
       if (!rules) return;
       this.errorMessage = "";
-      for (let rule of rules) {
+      this._lastError = null; // 清除之前的錯誤
+      
+      try {
+        for (let rule of rules) {
         switch (rule.type) {
           case "required": // 必填驗證
             if (this.isEmptyValue(value)) this.errorMessage = rule.message || "此欄位為必填項目";
@@ -116,19 +121,38 @@ export default {
               this.errorMessage = rule.message || "Hex色碼格式有誤，例: #ff0000";
             break;
           case "equal": // 相等驗證
+            if (!rule.equalTo) {
+              this.errorMessage = rule.message || "缺少比較對象";
+              break;
+            }
+            const compareValue = this.form.model[rule.equalTo];
             if (rule.caseIgnore) {
               // 不區分大小寫
-              if (value && value.toLowerCase() !== this.form.model[rule.equalTo].toLowerCase())
+              if (value && value.toLowerCase() !== compareValue?.toLowerCase())
                 this.errorMessage = rule.message || "驗證碼錯誤";
             } else {
               // 區分大小寫
-              if (value && value !== this.form.model[rule.equalTo]) this.errorMessage = rule.message || "驗證碼錯誤";
+              if (value && value !== compareValue) this.errorMessage = rule.message || "驗證碼錯誤";
             }
             break;
           case "schema": // 自定義驗證條件(將rules寫成computed回傳動態驗證函式)
-            if (!rule.schema) this.errorMessage = rule.message || "驗證條件不符合";
+            if (!rule.schema) {
+              this.errorMessage = rule.message || "缺少驗證函式";
+              break;
+            }
+            if (typeof rule.schema === "function") {
+              if (!rule.schema(value)) {
+                this.errorMessage = rule.message || "驗證條件不符合";
+              }
+            } else {
+              this.errorMessage = rule.message || "驗證函式格式錯誤";
+            }
             break;
           case "regex": // 自訂正則驗證
+            if (!rule.regex) {
+              this.errorMessage = rule.message || "缺少正則表達式";
+              break;
+            }
             if (!new RegExp(rule.regex).test(value)) this.errorMessage = rule.message || "格式有誤，請重新輸入";
             break;
           default:
@@ -136,18 +160,33 @@ export default {
             break;
         }
         if (this.errorMessage) break;
+        }
+      } catch (error) {
+        // 捕獲整個驗證過程中的程式錯誤
+        this.errorMessage = "驗證過程中發生錯誤";
+        this._lastError = error;
       }
 
       if (!submit) return;
       return new Promise((resolve, reject) => {
-        this.errorMessage ? reject() : resolve();
+        if (this.errorMessage) {
+          // 如果有保存的錯誤對象，則傳遞該錯誤
+          reject(this._lastError || new Error(this.errorMessage));
+        } else {
+          resolve();
+        }
       });
     },
     clearValidate() {
       this.errorMessage = "";
     },
     typeOf(val) {
-      return val === undefined ? "undefined" : val === null ? "null" : val.constructor.name.toLowerCase();
+      if (val === undefined) return "undefined";
+      if (val === null) return "null";
+      if (val.constructor && val.constructor.name) {
+        return val.constructor.name.toLowerCase();
+      }
+      return typeof val;
     },
     isEmptyValue(val) {
       if (val === null || val === undefined) return true;

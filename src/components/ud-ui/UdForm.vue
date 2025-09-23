@@ -27,12 +27,20 @@ export default {
     noErrorMsg: { type: Boolean, default: false }, // 有無錯誤提示
     noErrorScroll: { type: Boolean, default: false } // 驗證時不滾動至錯誤項目
   },
+  beforeUnmount() {
+    // 清理所有表單項目
+    this.formItems = [];
+  },
   methods: {
     registerFormItem(item) {
-      this.formItems.push(item);
+      if (item && !this.formItems.includes(item)) {
+        this.formItems.push(item);
+      }
     },
     unregisterFormItem(item) {
-      this.formItems = this.formItems.filter(i => i !== item);
+      if (item) {
+        this.formItems = this.formItems.filter(i => i !== item);
+      }
     },
     validate(
       successCb = () => {
@@ -50,11 +58,14 @@ export default {
           successCb();
         })
         .catch(error => {
-          if (error) return console.error("發生錯誤：", error);
+          if (error && error !== undefined) {
+            console.error("驗證過程中發生錯誤：", error);
+          }
           if (!this.noErrorScroll) {
             this.$nextTick(() => {
-              if (document.querySelector(".is-error")) {
-                this.scrollTo(document.querySelector(".is-error"), 5, -10);
+              const firstError = document.querySelector(".is-error");
+              if (firstError) {
+                this.scrollTo(firstError, 5, -10);
               }
             });
           }
@@ -63,7 +74,7 @@ export default {
     },
     clearValidate() {
       this.formItems.forEach(item => {
-        if (typeof item.clearValidate === "function") {
+        if (item && typeof item.clearValidate === "function") {
           item.clearValidate();
         }
       });
@@ -94,6 +105,12 @@ export default {
 
       // Clamp to valid range
       target = Math.max(0, Math.min(target, scroller.scrollHeight - window.innerHeight));
+
+      // 如果目標位置與當前位置相同，直接執行回調
+      if (Math.abs(current - target) <= 1) {
+        callback && callback();
+        return;
+      }
 
       const step = () => {
         current += (target - current) / speed;
