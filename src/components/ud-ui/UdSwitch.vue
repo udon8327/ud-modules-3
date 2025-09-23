@@ -26,8 +26,8 @@ export default {
   props: {
     modelValue: { default: null }, // 綁定值（可為任意型別，透過 activeValue/inactiveValue 映射）
     disabled: { type: Boolean, default: false },
-    activeValue: { default: true },
-    inactiveValue: { default: false }
+    activeValue: { default: true }, // 開啟的值
+    inactiveValue: { default: false } // 關閉的值
   },
   computed: {
     value: {
@@ -42,11 +42,20 @@ export default {
   },
   methods: {
     onChange(evt) {
-      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
+      // 如果組件被禁用，不處理事件
+      if (this.disabled) return;
+      
       const checked = evt && evt.target ? !!evt.target.checked : this.value;
       const out = checked ? this.activeValue : this.inactiveValue;
+      
+      // 發送更新事件
       this.$emit("update:modelValue", out);
       this.$emit("change", out);
+      
+      // 在值改變後觸發驗證
+      this.$nextTick(() => {
+        this.$mitt && this.$mitt.emit && this.$mitt.emit("validate");
+      });
     }
   }
 };

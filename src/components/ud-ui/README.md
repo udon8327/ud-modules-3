@@ -295,8 +295,8 @@ data: {
 ### props
 
 - placeholder: 替代文字 | Array
-- flex: 是否並排 | Boolean(false)
-- combine: 是否label直接使用value值 | Boolean(false)
+- activeValue: 開啟的值 | String
+- inactiveValue: 關閉的值 | String
 
 ### <font color=#ebc600>ud-form-item：表單驗證容器</font>
 
