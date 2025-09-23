@@ -32,8 +32,6 @@
           ud-select(v-model="formData.selectGroup[0]" :options="storeOptions" :group="formData.selectGroup" :index="0" placeholder="縣市")
           ud-select(v-model="formData.selectGroup[1]" :options="storeOptions" :group="formData.selectGroup" :index="1" placeholder="櫃點")
           ud-select(v-model="formData.selectGroup[2]" :options="storeOptions" :group="formData.selectGroup" :index="2" placeholder="時段")
-      ud-form-item(label="地址" prop="twzip" flex)
-        ud-select-twzip(ref="zip" v-model="formData.twzip" flex)
       ud-form-item(label="預約日期" prop="date" flex)
         ud-select-date(v-model="formData.date" flex third roc)
           p 年
@@ -41,6 +39,8 @@
             p 月
           template(v-slot:third)
             p 日
+      ud-form-item(label="地址" prop="twzip" flex)
+        ud-select-twzip(ref="zip" v-model="formData.twzip" flex)
       ud-form-item(label="是否啟用" prop="isActive" flex)
         ud-switch(v-model="formData.isActive" activeValue="Y" inactiveValue="N")
       ud-form-item(label="" prop="isAgree")

@@ -257,6 +257,7 @@ data: {
 ### <font color=#ebc600>ud-select-date：日期連動下拉框</font>
 
 會自動更新年份
+中間要加東西可使用slot如範例
 
 ```html
 <ud-select-date v-model="formData.date" flex third roc>
@@ -268,10 +269,11 @@ data: {
 
 ### props
 
-- placeholder: 替代文字 | Array
+- placeholder: 替代文字 | Array(["年", "月", "日"])
 - third: 是否有第三項(日) | Boolean(false)
 - flex: 是否並排 | Boolean(false)
 - roc: 是否為民國年 | Boolean(false)
+- yearRange: 年份範圍 | Number(120)
 
 ### <font color=#ebc600>ud-select-twzip：台灣行政區連動下拉框</font>
 
