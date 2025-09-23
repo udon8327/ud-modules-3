@@ -20,7 +20,7 @@
       ud-form-item(label="年齡" prop="age" flex)
         ud-input(v-model.trim.number="formData.age" placeholder="請輸入您的年齡" inputmode="numeric")
       ud-form-item(label="備註" prop="note" flex)
-        ud-textarea(v-model="formData.note" placeholder="請輸入您的備註" show-limit :limit="100" max-length="100")
+        ud-textarea(ref="note" v-model="formData.note" placeholder="請輸入您的備註" show-limit maxlength="100")
       ud-form-item(label="單選" prop="radio" flex)
         ud-radio(v-model="formData.radio" :options="options" flex)
       ud-form-item(label="多選" prop="checkbox" flex)
@@ -137,6 +137,7 @@ export default {
         phone: [{ type: "required" }, { type: "phone" }],
         email: [{ type: "required" }, { type: "email" }],
         age: [{ type: "required" }, { type: "number" }],
+        note: [{ type: "required" }],
         radio: [{ type: "required" }],
         checkbox: [{ type: "required" }],
         select: [{ type: "required" }],

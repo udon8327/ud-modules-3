@@ -94,8 +94,8 @@
 
 - placeholder: 替代文字 | String
 - rows: 預設行數 | Number(4)
-- showLimit: 是否顯示字數限制(與limit併用) | Boolean(false)
-- limit: 字數限制 | Number(null)
+- showLimit: 是否顯示字數限制 | Boolean(false)
+- maxlength: 字數限制 | Number(null)
 - noResize: 禁止改變大小 | Boolean(false)
 
 ### methods

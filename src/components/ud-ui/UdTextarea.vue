@@ -5,15 +5,17 @@
       v-model="value"
       v-bind="$attrs"
       :rows="rows"
+      :maxlength="maxlength"
       :class="{ 'is-no-resize': noResize }"
       @input="onInput"
       @change="onChange"
       @keydown.enter="onEnter"
       @compositionstart="onCompositionStart"
+      @compositionupdate="onCompositionUpdate"
       @compositionend="onCompositionEnd"
     ></textarea>
     <div class="textarea-limit" v-if="showLimit" :class="{ 'limit-input': valueLength > 0 }">
-      <span>{{ valueLength }}/{{ limit }}</span>
+      <span>{{ valueLength }}/{{ maxlength }}</span>
     </div>
   </div>
 </template>
@@ -24,9 +26,10 @@ export default {
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值
-    rows: { type: Number, default: 4 }, // 行數
+    rows: { type: Number, default: 4 }, // 預設行數
     showLimit: { type: Boolean, default: false }, // 是否顯示字數限制
-    limit: { type: Number, default: 0 }, // 字數限制提示(需限字數請自行加上maxlength屬性)
+    limit: { type: Number, default: 0 }, // 字數限制
+    maxlength: { type: [Number, String], default: null }, // 最大字數限制
     noResize: { type: Boolean, default: false }, // 禁止改變大小
     // 支援 v-model 修飾子：trim / number / lazy
     modelModifiers: { type: Object, default: () => ({}) }
@@ -77,9 +80,14 @@ export default {
     onCompositionStart() {
       this._isComposing = true;
     },
+    onCompositionUpdate() {
+      // compositionupdate 期間保持 _isComposing 為 true
+      this._isComposing = true;
+    },
     onCompositionEnd(evt) {
       this._isComposing = false;
-      // 組字結束後補一次 input 同步
+      // 中文輸入法結束後，觸發數據更新和驗證
+      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate");
       const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
       const mods = this.modelModifiers || {};
       if (!mods.lazy) {
