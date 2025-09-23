@@ -13,7 +13,6 @@
     ud-form(:rules="rules" :model="formData" ref="form")
       ud-form-item(label="姓名" prop="name" flex)
         ud-input(v-model.trim="formData.name" placeholder="請輸入您的姓名")
-        p {{ formData.name }}
       ud-form-item(label="電話" prop="phone" flex)
         ud-input(v-model.trim="formData.phone" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10")
       ud-form-item(label="Email" prop="email" flex)

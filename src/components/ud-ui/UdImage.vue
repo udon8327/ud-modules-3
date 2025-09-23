@@ -52,6 +52,12 @@ export default {
       }
     }
   },
+  beforeUnmount() {
+    if (this._io) {
+      this._io.disconnect();
+      this._io = null;
+    }
+  },
   methods: {
     setupLazy(val) {
       // 若已存在 observer，先解除

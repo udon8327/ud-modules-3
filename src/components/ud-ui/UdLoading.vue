@@ -61,7 +61,7 @@ export default {
       this._locked = true;
     }
   },
-  unmounted() {
+  beforeUnmount() {
     if (this._locked && typeof document !== "undefined") {
       document.body.style.overflowY = this._prevOverflowY;
       this._locked = false;

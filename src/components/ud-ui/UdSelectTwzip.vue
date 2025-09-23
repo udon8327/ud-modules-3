@@ -104,7 +104,7 @@ export default {
           ]
         },
         {
-          label: "桃園縣",
+          label: "桃園市",
           value: "04",
           children: [
             { label: "中壢市", value: "320" },
