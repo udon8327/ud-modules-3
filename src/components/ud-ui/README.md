@@ -285,7 +285,6 @@ data: {
 
 - placeholder: 替代文字 | Array
 - flex: 是否並排 | Boolean(false)
-- combine: 是否label直接使用value值 | Boolean(false)
 
 ### <font color=#ebc600>ud-switch：開關</font>
 

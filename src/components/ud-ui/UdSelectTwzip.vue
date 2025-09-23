@@ -5,7 +5,6 @@
       @update:modelValue="onPartChange(0, $event)"
       :options="firstArr"
       :placeholder="placeholder[0]"
-      :combine="combine"
       @validate="validate"
     ></ud-select>
     <slot></slot>
@@ -14,7 +13,6 @@
       @update:modelValue="onPartChange(1, $event)"
       :options="secondArr"
       :placeholder="placeholder[1]"
-      :combine="combine"
       @validate="validate"
     ></ud-select>
     <slot name="second"></slot>
@@ -31,8 +29,7 @@ export default {
       type: Array,
       default: () => ["請選擇縣市", "請選擇行政區"]
     },
-    flex: { type: Boolean, default: false }, // 是否並排
-    combine: { type: Boolean, default: false } // 是否label直接使用value值
+    flex: { type: Boolean, default: false } // 是否並排
   },
   data() {
     return {
@@ -51,7 +48,7 @@ export default {
           ]
         },
         {
-          label: "台北市",
+          label: "臺北市",
           value: "02",
           children: [
             { label: "中正區", value: "100" },
@@ -107,19 +104,19 @@ export default {
           label: "桃園市",
           value: "04",
           children: [
-            { label: "中壢市", value: "320" },
-            { label: "平鎮市", value: "324" },
-            { label: "龍潭鄉", value: "325" },
-            { label: "楊梅市", value: "326" },
-            { label: "新屋鄉", value: "327" },
-            { label: "觀音鄉", value: "328" },
-            { label: "桃園市", value: "330" },
-            { label: "龜山鄉", value: "333" },
-            { label: "八德市", value: "334" },
-            { label: "大溪鎮", value: "335" },
-            { label: "復興鄉", value: "336" },
-            { label: "大園鄉", value: "337" },
-            { label: "蘆竹鄉", value: "338" }
+            { label: "中壢區", value: "320" },
+            { label: "平鎮區", value: "324" },
+            { label: "龍潭區", value: "325" },
+            { label: "楊梅區", value: "326" },
+            { label: "新屋區", value: "327" },
+            { label: "觀音區", value: "328" },
+            { label: "桃園區", value: "330" },
+            { label: "龜山區", value: "333" },
+            { label: "八德區", value: "334" },
+            { label: "大溪區", value: "335" },
+            { label: "復興區", value: "336" },
+            { label: "大園區", value: "337" },
+            { label: "蘆竹區", value: "338" }
           ]
         },
         {
@@ -155,7 +152,7 @@ export default {
           value: "07",
           children: [
             { label: "竹南鎮", value: "350" },
-            { label: "頭份鎮", value: "351" },
+            { label: "頭份市", value: "351" },
             { label: "三灣鄉", value: "352" },
             { label: "南庄鄉", value: "353" },
             { label: "獅潭鄉", value: "354" },
@@ -175,7 +172,7 @@ export default {
           ]
         },
         {
-          label: "台中市",
+          label: "臺中市",
           value: "08",
           children: [
             { label: "中區", value: "400" },
@@ -222,7 +219,7 @@ export default {
             { label: "線西鄉", value: "507" },
             { label: "和美鎮", value: "508" },
             { label: "伸港鄉", value: "509" },
-            { label: "員林鎮", value: "510" },
+            { label: "員林市", value: "510" },
             { label: "社頭鄉", value: "511" },
             { label: "永靖鄉", value: "512" },
             { label: "埔心鄉", value: "513" },
@@ -270,7 +267,7 @@ export default {
             { label: "土庫鎮", value: "633" },
             { label: "褒忠鄉", value: "634" },
             { label: "東勢鄉", value: "635" },
-            { label: "台西鄉", value: "636" },
+            { label: "臺西鄉", value: "636" },
             { label: "崙背鄉", value: "637" },
             { label: "麥寮鄉", value: "638" },
             { label: "斗六市", value: "640" },
@@ -319,7 +316,7 @@ export default {
           ]
         },
         {
-          label: "台南市",
+          label: "臺南市",
           value: "14",
           children: [
             { label: "中西區", value: "700" },
@@ -411,7 +408,7 @@ export default {
           children: [
             { label: "屏東市", value: "900" },
             { label: "三地門鄉", value: "901" },
-            { label: "霧台鄉", value: "902" },
+            { label: "霧臺鄉", value: "902" },
             { label: "瑪家鄉", value: "903" },
             { label: "九如鄉", value: "904" },
             { label: "里港鄉", value: "905" },
@@ -445,10 +442,10 @@ export default {
           ]
         },
         {
-          label: "台東縣",
+          label: "臺東縣",
           value: "17",
           children: [
-            { label: "台東市", value: "950" },
+            { label: "臺東市", value: "950" },
             { label: "綠島鄉", value: "951" },
             { label: "蘭嶼鄉", value: "952" },
             { label: "延平鄉", value: "953" },
@@ -481,7 +478,8 @@ export default {
             { label: "瑞穗鄉", value: "978" },
             { label: "萬榮鄉", value: "979" },
             { label: "玉里鎮", value: "981" },
-            { label: "卓溪鄉", value: "982" }
+            { label: "卓溪鄉", value: "982" },
+            { label: "富里鄉", value: "983" }
           ]
         },
         {
@@ -555,23 +553,35 @@ export default {
       return this.value[1];
     },
     firstArr() {
-      let temp = this.options;
-      return temp;
+      // 過濾掉無效的選項
+      return this.options.filter(option => 
+        option && 
+        option.label !== undefined && 
+        option.label !== null && 
+        option.value !== undefined && 
+        option.value !== null
+      );
     },
     secondArr() {
       let temp = [];
       if (this.firstValue !== "" && this.firstValue !== null && this.firstValue !== undefined) {
         const node = this.options.find(option => option.value === this.firstValue);
-        temp = node && Array.isArray(node.children) ? node.children : [];
+        if (node && Array.isArray(node.children)) {
+          // 過濾掉無效的子選項
+          temp = node.children.filter(child => 
+            child && 
+            child.label !== undefined && 
+            child.label !== null && 
+            child.value !== undefined && 
+            child.value !== null
+          );
+        }
       }
       return temp;
     }
   },
   watch: {},
   methods: {
-    onChange() {
-      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
-    },
     onPartChange(index, val) {
       const next = this.value.slice(0, 2);
       next[index] = val;
