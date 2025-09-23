@@ -120,7 +120,9 @@ options: [
 
 - options: 選項 | Array
 - flex: 是否並排 | Boolean(false)
-- combine: 使用value做為label | Boolean(false)
+- radius: 圓角 | String("50px")
+- labelBy: label替代值 | String("label")
+- valueBy: value替代值 | String("value")
 
 ### <font color=#ebc600>ud-checkbox：多選框</font>
 

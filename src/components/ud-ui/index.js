@@ -4,7 +4,7 @@ Form
   ud-button：按鈕 (ok AI Tested)
   ud-input：輸入框 (ok AI Tested TODO：lazy修飾子無效)
   ud-textarea：多行輸入框 (ok AI Tested TODO：lazy修飾子無效)
-  ud-radio：單選框 (ok AI)
+  ud-radio：單選框 (ok AI Tested)
   ud-checkbox：多選框 (ok AI)
   ud-select：下拉框 (ok AI)
   ud-select-date：日期連動下拉框 (ok AI)

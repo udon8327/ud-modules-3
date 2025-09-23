@@ -147,9 +147,9 @@ export default {
         isAgree: [{ type: "required", message: "請先同意相關使用條款" }]
       },
       options: [
-        { label: "甲", value: "a" },
-        { label: "乙", value: "b" },
-        { label: "丙", value: "c", disabled: true }
+        { label: "甲", value: 1 },
+        { label: "乙", value: "2" },
+        { label: "丙", value: "3", disabled: true }
       ],
       storeOptions: [
         {

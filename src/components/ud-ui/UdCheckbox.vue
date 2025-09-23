@@ -98,11 +98,13 @@ export default {
     display: flex
     align-items: center
     &.is-disabled
+      cursor: not-allowed
       p
         color: #ccc
       .checkbox-decorator
         border: 1px solid #e3e3e3
         background-color: #f3f3f3
+        cursor: not-allowed
     p
       font-size: 16px
     input

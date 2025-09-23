@@ -178,4 +178,7 @@ export default {
     &[multiple]
       option:nth-of-type(1)
         color: #aaa
+    &:disabled
+      background-color: #efefef
+      cursor: not-allowed
 </style>
