@@ -1,13 +1,12 @@
 <template>
   <div class="ud-checkbox" :class="{ 'is-flex': flex }" role="group">
     <template v-if="Array.isArray(options) && options.length">
-      <label v-for="option in options" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
+      <label v-for="option in validOptions" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
         <input
-          ref="checkbox"
           type="checkbox"
           v-model="value"
           v-bind="$attrs"
-          :value="normalizeValue(option[valueBy])"
+          :value="option[valueBy]"
           :disabled="option.disabled"
           @change="onChange"
         />
@@ -18,7 +17,6 @@
     <template v-else>
       <label :class="{ 'is-disabled': disabled }">
         <input
-          ref="checkbox"
           type="checkbox"
           v-model="value"
           v-bind="$attrs"
@@ -45,16 +43,13 @@ export default {
     radius: { type: String, default: "3px" }, // 圓角
     labelBy: { type: String, default: "label" }, // label替代值
     valueBy: { type: String, default: "value" }, // value替代值
-    // 單一選項模式的 disabled（無 options 時生效）
-    disabled: { type: Boolean, default: false },
-    // 正規化 options 的值型別，避免 '1' 與 1 在包含/勾選時不一致
-    valueType: { type: [String, Function], default: null }
+    disabled: { type: Boolean, default: false } // 單一選項模式的禁用
   },
   computed: {
     value: {
       get() {
         if (Array.isArray(this.options) && this.options.length) {
-          return Array.isArray(this.modelValue) ? this.modelValue.map(this.normalizeValue) : [];
+          return Array.isArray(this.modelValue) ? this.modelValue : [];
         }
         // 單個 checkbox：回傳布林
         return Boolean(this.modelValue);
@@ -62,23 +57,32 @@ export default {
       set(val) {
         this.$emit("update:modelValue", val);
       }
+    },
+    validOptions() {
+      // 過濾掉無效的選項
+      return this.options.filter(option => 
+        option && 
+        option[this.valueBy] !== undefined && 
+        option[this.valueBy] !== null
+      );
     }
   },
   methods: {
-    normalizeValue(val) {
-      if (this.valueType === "number") return typeof val === "number" ? val : Number(val);
-      if (this.valueType === "string") return val != null ? String(val) : "";
-      if (typeof this.valueType === "function") return this.valueType(val);
-      return val;
-    },
     onChange(evt) {
+      // 如果選項被禁用，不處理事件
+      if (evt && evt.target && evt.target.disabled) return;
+      
       this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
-      const current = evt && evt.target ? evt.target.value : undefined;
+      
       // 多個：回傳陣列；單個：回傳布林
       if (Array.isArray(this.options) && this.options.length) {
-        this.$emit("change", Array.isArray(this.value) ? this.value.map(this.normalizeValue) : []);
+        const currentValue = Array.isArray(this.value) ? this.value : [];
+        this.$emit("update:modelValue", currentValue);
+        this.$emit("change", currentValue);
       } else {
-        this.$emit("change", Boolean(this.value));
+        const currentValue = Boolean(this.value);
+        this.$emit("update:modelValue", currentValue);
+        this.$emit("change", currentValue);
       }
     }
   }

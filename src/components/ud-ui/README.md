@@ -146,7 +146,7 @@ options: [
 <!-- options可帶入字串 -->
 <ud-checkbox v-model="value" options="我同意使用者條款"></ud-checkbox>
 
-<!-- options也可不帶改用slot塞入任意內容 -->
+<!-- options也可不帶改用slot塞入任意內容(推薦作法) -->
 <ud-checkbox v-model="value">
   <p>
     我同意
@@ -159,8 +159,10 @@ options: [
 
 - options: 選項 | String、Array
 - flex: 是否並排 | Boolean(false)
-- combine: 使用value做為label | Boolean(false)
-- solid: 打勾改為實心 | Boolean(false)
+- radius: 圓角 | String("3px")
+- labelBy: label替代值 | String("label")
+- valueBy: value替代值 | String("value")
+- disabled: 單一選項模式的禁用 | Boolean(false)
 
 ### <font color=#ebc600>ud-select：下拉框</font>
 
