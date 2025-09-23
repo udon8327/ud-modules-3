@@ -9,8 +9,8 @@
       @change="onChange"
     >
       <option v-if="!isMultiple" value="" disabled>{{ placeholder }}</option>
-      <option v-for="option in optionsArr" :value="option[valueBy]" :key="option[valueBy]" :disabled="option.disabled">
-        {{ combine ? option[valueBy] : option[labelBy] }}
+      <option v-for="option in validOptions" :value="option[valueBy]" :key="option[valueBy]" :disabled="option.disabled">
+        {{ option[labelBy] }}
       </option>
     </select>
   </div>
@@ -22,16 +22,14 @@ export default {
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值
-    options: {
-      // 選項
+    options: { // 選項
       type: Array,
       default: () => [{ label: "", value: "", disabled: true }]
     },
     placeholder: { type: String, default: "請選擇一項" }, // 取代文字
-    combine: { type: Boolean, default: false }, // 使用value做為label
-    center: { type: Boolean, default: false }, // 是否置中
-    group: { type: [String, Number, Array], default: "" }, // 是否群組
-    index: { type: Number, default: 0 }, // 群組索引
+    center: { type: Boolean, default: false }, // 文字是否置中
+    group: { type: [String, Number, Array], default: "" }, // 組成群組(雙向綁定的值所組成的陣列)
+    index: { type: Number, default: 0 }, // 群組索引(由0開始的數字)
     labelBy: { type: String, default: "label" }, // label替代值
     valueBy: { type: String, default: "value" }, // value替代值
     childrenBy: { type: String, default: "children" } // children替代值
@@ -67,23 +65,36 @@ export default {
           : [this.group];
       this.groupWatch = [...groupArr];
       let temp = this.options;
+      
+      // 如果沒有選項或不是數組，返回空數組
+      if (!Array.isArray(temp)) return [];
+      
       if (this.index === 0) return temp;
       if (groupArr[this.index - 1]) {
         for (let i = 0; i < this.index; i++) {
           const currentValue = groupArr[i];
-          const node = Array.isArray(temp) ? temp.find(option => option[this.valueBy] === currentValue) : undefined;
-          if (!node || !node[this.childrenBy]) return [];
+          const node = temp.find(option => option && option[this.valueBy] === currentValue);
+          if (!node || !node[this.childrenBy] || !Array.isArray(node[this.childrenBy])) return [];
           temp = node[this.childrenBy];
         }
         return temp;
       }
       return [];
+    },
+    validOptions() {
+      // 過濾掉無效的選項
+      return this.optionsArr.filter(option => 
+        option && 
+        option[this.valueBy] !== undefined && 
+        option[this.valueBy] !== null
+      );
     }
   },
   watch: {
     groupWatch(newVal, oldVal) {
       let target;
-      for (let i = 0; i < this.group.length; i++) {
+      const groupArr = Array.isArray(this.group) ? this.group : [this.group];
+      for (let i = 0; i < groupArr.length; i++) {
         if (newVal[i] !== oldVal[i]) target = i;
       }
       if (target !== undefined && this.index > target) {
@@ -102,7 +113,9 @@ export default {
     onChange() {
       if (this.center) this.centerSelect();
       this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
-      this.$emit("change", this.$refs.select?.value);
+      const currentValue = this.$refs.select?.value;
+      this.$emit("update:modelValue", currentValue);
+      this.$emit("change", currentValue);
     },
     getTextWidth(text, target) {
       let el = document.createElement("span");
@@ -120,9 +133,9 @@ export default {
       if (!el) return;
       let text = "";
       if (el.value) {
-        const match = Array.isArray(this.options) ? this.options.find(item => item[this.valueBy] == el.value) : null;
+        const match = Array.isArray(this.optionsArr) ? this.optionsArr.find(item => item[this.valueBy] == el.value) : null;
         if (match) {
-          text = this.combine ? match[this.valueBy] : match[this.labelBy];
+          text = match[this.labelBy];
         } else {
           text = this.placeholder;
         }

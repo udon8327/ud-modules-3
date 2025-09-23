@@ -160,7 +160,7 @@ export default {
               label: "中正區",
               value: "100",
               children: [
-                { label: "2023-12-01", value: "1" },
+                { label: "2023-12-01", value: 1 },
                 { label: "2023-12-02", value: "2", disabled: "true" }
               ]
             },
