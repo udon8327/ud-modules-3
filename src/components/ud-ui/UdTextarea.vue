@@ -71,7 +71,7 @@ export default {
       const mods = this.modelModifiers || {};
       if (this._isComposing) return; // 中文輸入組字中不更新
       if (mods.lazy) return; // lazy 僅在 change 同步
-      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea.value;
+      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
       this.$emit("update:modelValue", this.normalize(raw));
     },
     onCompositionStart() {
@@ -80,28 +80,32 @@ export default {
     onCompositionEnd(evt) {
       this._isComposing = false;
       // 組字結束後補一次 input 同步
-      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea.value;
+      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
       const mods = this.modelModifiers || {};
       if (!mods.lazy) {
         this.$emit("update:modelValue", this.normalize(raw));
       }
     },
     onChange(evt) {
-      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea.value;
+      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
       const val = this.normalize(raw);
-      this.$emit("update:modelValue", val);
+      const mods = this.modelModifiers || {};
+      // lazy 模式下，change 事件觸發 update:modelValue
+      if (mods.lazy) {
+        this.$emit("update:modelValue", val);
+      }
       this.$emit("change", val);
     },
     onEnter(evt) {
-      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea.value;
+      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
       const val = this.normalize(raw);
       this.$emit("enter", val);
     },
     focus() {
-      this.$refs.textarea.focus();
+      this.$refs.textarea?.focus();
     },
     blur() {
-      this.$refs.textarea.blur();
+      this.$refs.textarea?.blur();
     }
   },
   mounted() {}

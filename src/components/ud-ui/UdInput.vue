@@ -55,25 +55,29 @@ export default {
       this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗（若存在）
       const mods = this.modelModifiers || {};
       if (mods.lazy) return; // lazy 僅在 change 觸發更新
-      const raw = evt && evt.target ? evt.target.value : this.$refs.input.value;
+      const raw = evt && evt.target ? evt.target.value : this.$refs.input?.value;
       this.$emit("update:modelValue", this.normalize(raw));
     },
     onChange(evt) {
-      const raw = evt && evt.target ? evt.target.value : this.$refs.input.value;
+      const raw = evt && evt.target ? evt.target.value : this.$refs.input?.value;
       const val = this.normalize(raw);
-      this.$emit("update:modelValue", val);
+      const mods = this.modelModifiers || {};
+      // lazy 模式下，change 事件觸發 update:modelValue
+      if (mods.lazy) {
+        this.$emit("update:modelValue", val);
+      }
       this.$emit("change", val);
     },
     onEnter(evt) {
-      const raw = evt && evt.target ? evt.target.value : this.$refs.input.value;
+      const raw = evt && evt.target ? evt.target.value : this.$refs.input?.value;
       const val = this.normalize(raw);
       this.$emit("enter", val);
     },
     focus() {
-      this.$refs.input.focus();
+      this.$refs.input?.focus();
     },
     blur() {
-      this.$refs.input.blur();
+      this.$refs.input?.blur();
     }
   }
 };

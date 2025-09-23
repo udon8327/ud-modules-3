@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     isMultiple() {
-      return Boolean(this.$attrs && this.$attrs.multiple !== undefined);
+      return 'multiple' in this.$attrs;
     },
     isEmpty() {
       const val = this.modelValue;
@@ -101,8 +101,8 @@ export default {
   methods: {
     onChange() {
       if (this.center) this.centerSelect();
-      this.$mitt.emit("validate"); // 通知FormItem校驗
-      this.$emit("change", this.$refs.select.value);
+      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
+      this.$emit("change", this.$refs.select?.value);
     },
     getTextWidth(text, target) {
       let el = document.createElement("span");
@@ -117,6 +117,7 @@ export default {
     },
     centerSelect() {
       let el = this.$refs.select;
+      if (!el) return;
       let text = "";
       if (el.value) {
         const match = Array.isArray(this.options) ? this.options.find(item => item[this.valueBy] == el.value) : null;

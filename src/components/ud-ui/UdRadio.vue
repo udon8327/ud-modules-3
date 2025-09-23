@@ -45,7 +45,7 @@ export default {
     },
     groupName() {
       // 若外部未提供 name，為本組 radio 生成唯一名稱，避免與其它組衝突
-      return this.$attrs && this.$attrs.name ? this.$attrs.name : this._uidName;
+      return this.$attrs.name || this._uidName;
     }
   },
   data() {

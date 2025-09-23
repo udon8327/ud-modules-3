@@ -12,7 +12,7 @@
     ud-button.mb-3(@click="test") 測試
     ud-form(:rules="rules" :model="formData" ref="form")
       ud-form-item(label="姓名" prop="name" flex)
-        ud-input(v-model.trim="formData.name" placeholder="請輸入您的姓名" @keydown="onInput")
+        ud-input(v-model.trim="formData.name" placeholder="請輸入您的姓名")
         p {{ formData.name }}
       ud-form-item(label="電話" prop="phone" flex)
         ud-input(v-model.trim="formData.phone" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10")
@@ -21,13 +21,13 @@
       ud-form-item(label="年齡" prop="age" flex)
         ud-input(v-model.trim.number="formData.age" placeholder="請輸入您的年齡" inputmode="numeric")
       ud-form-item(label="備註" prop="note" flex)
-        ud-textarea(v-model="formData.note" placeholder="請輸入您的備註" show-limit :limit="100" max-length="100" @keydown="onInput")
+        ud-textarea(v-model="formData.note" placeholder="請輸入您的備註" show-limit :limit="100" max-length="100")
       ud-form-item(label="單選" prop="radio" flex)
-        ud-radio(v-model="formData.radio" :options="options" flex @change="onInput")
+        ud-radio(v-model="formData.radio" :options="options" flex)
       ud-form-item(label="多選" prop="checkbox" flex)
-        ud-checkbox(v-model="formData.checkbox" :options="options" flex @change="onInput")
+        ud-checkbox(v-model="formData.checkbox" :options="options" flex)
       ud-form-item(label="下拉" prop="select" flex)
-        ud-select(v-model="formData.select" :options="options" flex center @change="onInput")
+        ud-select(v-model="formData.select" :options="options" flex center)
       ud-form-item(label="下拉連動" prop="selectGroup" flex)
         .d-flex
           ud-select(v-model="formData.selectGroup[0]" :options="storeOptions" :group="formData.selectGroup" :index="0" placeholder="縣市")

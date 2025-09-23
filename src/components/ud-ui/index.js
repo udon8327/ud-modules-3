@@ -123,7 +123,7 @@ const udLoading = {
   close() {
     if (this.container) {
       render(null, this.container);
-      document.body.removeChild(this.container);
+      this.container.parentNode?.removeChild(this.container);
       this.container = null;
       this.instance = null;
     }
