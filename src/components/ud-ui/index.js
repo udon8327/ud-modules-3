@@ -19,7 +19,7 @@ Layout
   ud-image：等比例自適應圖片 (ok AI Tested)
 
 Notice
-  ud-alert：警告彈窗 (ok AI)
+  ud-alert：警告彈窗 (ok AI Tested)
   ud-modal：通用彈窗 (ok AI)
   ud-loading：載入中 (ok AI)
 
@@ -84,7 +84,9 @@ const udAlert = options => {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  const props = typeof options === "string" ? { message: options } : options;
+  const props = typeof options === "string" || typeof options === "number" 
+    ? { message: options } 
+    : options;
   const vnode = createVNode(UdAlert, props);
 
   render(vnode, container);

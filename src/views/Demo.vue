@@ -298,11 +298,23 @@ export default {
       console.log("e: ", e);
     },
     test() {
-      console.log(this.getRandom());
-      this.$refs.name.focus();
-      setTimeout(() => {
-        this.$refs.name.blur();
-      }, 2000);
+      this.udAlert({
+        title: "錯誤",
+        message: "發生錯誤\n請稍候再試<i>！</i>",
+        confirm: true,
+        confirmText: "確定鈕",
+        cancelText: "取消鈕",
+        maskClose: true,
+        btnClose: true,
+        scrollLock: false,
+        onConfirm: () => {
+          console.log("點擊確定A");
+        },
+      }).then(() => {
+        console.log("點擊確定B");
+      }).catch(() => {
+        console.log("點擊取消");
+      });
     },
     openExternal() {
       location.href = "https://liff.line.me/1655285115-w926gzYP";
@@ -377,6 +389,11 @@ export default {
       })
         .then(() => {
           console.log("確定");
+          this.udAlert({
+            msg: "確定",
+          }).then(() => {
+            this.udAlert(123);
+          })
         })
         .catch(() => {
           console.log("取消");

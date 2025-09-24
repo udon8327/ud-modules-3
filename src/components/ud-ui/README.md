@@ -506,32 +506,35 @@ import image02 from "@/assets/images/picture/02.jpg";
 this.udAlert("發生錯誤\n請稍候再試<i>！</i>");
 // or
 this.udAlert({
+  title: "錯誤",
+  message: "發生錯誤\n請稍候再試<i>！</i>",
   confirm: true,
+  confirmText: "確定鈕",
+  cancelText: "取消鈕"
   maskClose: true,
   btnClose: true,
   scrollLock: false,
-  title: "錯誤",
-  message: "發生錯誤\n請稍候再試<i>！</i>",
-  confirmText: "確定鈕",
   onConfirm: () => {
-    console.log("點擊確定");
+    console.log("點擊確定A");
   },
-  cancelText: "取消鈕"
+}).then(() => {
+  console.log("點擊確定B");
 }).catch(() => {
   console.log("點擊取消");
 });
 ```
 
-- confirm: 是否有確認+取消鈕 | Boolean(false)
+- title: 標題文字 | String("")
+- message: 訊息文字(功能同msg，接受html語法) | String("")
+- msg: 訊息文字(功能同message，接受html語法) | String("")
 - maskClose: 點擊遮罩關閉 | Boolean(false)
 - btnClose: 右上關閉按鈕 | Boolean(false)
 - scrollLock: 是否鎖定背景頁面捲動 | Boolean(true)
-- title: 標題文字 | String("")
-- message: 訊息文字(msg也可以，接受html語法) | String("")
-- cancelText: 取消鈕文字 | String("取消")
-- onCancel: 取消鈕callback(也可使用.then) | Function(() => {})
+- confirm: 是否有確認+取消鈕 | Boolean(false)
 - confirmText: 確認鈕文字 | String("確定")
-- onConfirm: () => 確認鈕callback(也可使用.catch) | Function(() => {})
+- onConfirm: () => 確認鈕callback(也可使用.then) | Function(() => {})
+- cancelText: 取消鈕文字 | String("取消")
+- onCancel: 取消鈕callback(也可使用.catch) | Function(() => {})
 
 ### <font color=#ebc600>ud-modal：通用彈窗</font>
 

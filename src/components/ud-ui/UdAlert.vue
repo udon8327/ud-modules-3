@@ -25,30 +25,31 @@
 <script>
 import { nl2br } from "@/utils/ud-utils";
 import UdButton from "./UdButton.vue";
-import { render } from "vue";
+import DOMPurify from "dompurify";
 
 export default {
   name: "UdAlert",
   components: { UdButton },
   props: {
-    confirm: { type: Boolean, default: false }, // 是否有確認+取消鈕
+    title: { type: String, default: "" }, // 標題文字
+    message: { type: [String, Number, Boolean], default: "" }, // 訊息文字(功能同msg，接受html語法)
+    msg: { type: [String, Number, Boolean], default: "" }, // 訊息文字(功能同message，接受html語法)
     maskClose: { type: Boolean, default: false }, // 點擊遮罩關閉
     btnClose: { type: Boolean, default: false }, // 右上關閉按鈕
     scrollLock: { type: Boolean, default: true }, // 是否鎖定背景頁面捲動
-    title: { type: String, default: "" }, // 標題文字
-    message: { type: String, default: "" }, // 訊息文字 (功能同msg，接受html語法)
-    msg: { type: String, default: "" }, // 訊息文字 (功能同message，接受html語法)
-    cancelText: { type: String, default: "取消" }, // 取消鈕文字
-    onCancel: { type: Function, default: () => {} }, // 取消鈕callback
+    confirm: { type: Boolean, default: false }, // 是否有確認+取消鈕
     confirmText: { type: String, default: "確定" }, // 確認鈕文字
-    onConfirm: { type: Function, default: () => {} } // 確認鈕callback
+    onConfirm: { type: Function, default: () => {} }, // 確認鈕callback(也可使用.then)
+    cancelText: { type: String, default: "取消" }, // 取消鈕文字
+    onCancel: { type: Function, default: () => {} }, // 取消鈕callback(也可使用.catch)
   },
   data() {
     return {
       isShow: false, // 是否顯示
       resolve: null, // 保存resolve
       reject: null, // 保存reject
-      _prevOverflowY: ""
+      _prevOverflowY: "",
+      _isDestroyed: false // 防止重複銷毀
     };
   },
   computed: {
@@ -56,18 +57,23 @@ export default {
       return this.message === "" ? this.msg : this.message;
     }
   },
-  mounted() {
-    if (this.scrollLock && this.isShow) {
-      this._prevOverflowY = document.body.style.overflowY || "";
-      document.body.style.overflowY = "hidden";
-    }
+  mounted() {},
+  beforeUnmount() {
+    // 組件銷毀前清理
+    this.cleanup();
   },
   methods: {
     show() {
+      if (this._isDestroyed) {
+        console.warn("[UdAlert] Component is already destroyed");
+        return Promise.reject("Component destroyed");
+      }
+      
       if (this.scrollLock) {
         this._prevOverflowY = document.body.style.overflowY || "";
         document.body.style.overflowY = "hidden";
       }
+      
       this.isShow = true;
       return new Promise((resolve, reject) => {
         this.resolve = resolve;
@@ -75,35 +81,76 @@ export default {
       });
     },
     nl2br(val) {
-      return nl2br(val);
+      // 確保所有值都轉換為字串
+      const stringVal = val != null ? String(val) : "";
+      // 先處理換行符
+      const withBreaks = nl2br(stringVal);
+      // 使用 DOMPurify 防止 XSS 攻擊
+      return DOMPurify.sanitize(withBreaks, {
+        ALLOWED_TAGS: ['br', 'strong', 'em', 'u', 'b', 'i'], // 只允許安全的標籤
+        ALLOWED_ATTR: [] // 不允許任何屬性
+      });
     },
     confirmHandler() {
+      if (this._isDestroyed) return;
+      
       try {
         this.onConfirm();
       } catch (e) {
         console.error("[UdAlert] onConfirm error:", e);
       }
-      this.resolve && this.resolve("confirm");
+      
+      if (this.resolve) {
+        this.resolve("confirm");
+      }
       this.destroy();
     },
     cancelHandler() {
+      if (this._isDestroyed) return;
+      
       try {
         this.onCancel();
       } catch (e) {
         console.error("[UdAlert] onCancel error:", e);
       }
-      this.reject && this.reject("cancel");
+      
+      if (this.reject) {
+        this.reject("cancel");
+      }
       this.destroy();
     },
     maskHandler() {
-      if (this.maskClose) this.destroy();
+      if (this.maskClose && !this._isDestroyed) {
+        this.destroy();
+      }
     },
     destroy() {
+      if (this._isDestroyed) return;
+      
+      this._isDestroyed = true;
       this.isShow = false;
-      if (this.scrollLock) document.body.style.overflowY = this._prevOverflowY;
-      // 卸載 vnode
-      if (this.$el && this.$el.parentNode) {
-        render(null, this.$el.parentNode);
+      
+      // 恢復滾動
+      if (this.scrollLock) {
+        document.body.style.overflowY = this._prevOverflowY;
+        this._prevOverflowY = "";
+      }
+      
+      // 清理 Promise 引用
+      this.resolve = null;
+      this.reject = null;
+      
+      // 使用 Vue 3 的正確方式卸載組件
+      this.$nextTick(() => {
+        if (this.$el && this.$el.parentNode) {
+          this.$el.parentNode.removeChild(this.$el);
+        }
+      });
+    },
+    cleanup() {
+      // 清理方法，用於 beforeUnmount
+      if (!this._isDestroyed) {
+        this.destroy();
       }
     }
   }
