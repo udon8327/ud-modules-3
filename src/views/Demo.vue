@@ -55,7 +55,7 @@
     .collapse-wrapper.mb-2
       .collapse-button-wrapper
         .arrow-wrapper(:class="{'is-collapse': isCollapse}")
-          ud-arrow(color="#fff" :size="8" :width="5" direction="down" type="solid")
+          ud-arrow(color="#fff" size="8" width="5" direction="down" type="solid")
         ud-button(@click="isCollapse = !isCollapse") 摺疊容器
       ud-collapse(v-model="isCollapse" :duration="0.4")
         ud-image(src="@/assets/images/picture/04.jpg" bg-size="contain")

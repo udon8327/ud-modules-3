@@ -10,11 +10,11 @@ Form
   ud-select-date：日期連動下拉框 (ok AI Tested)
   ud-select-twzip：台灣行政區連動下拉框 (ok AI Tested)
   ud-switch：開關 (ok AI Tested)
-  ud-form-item：表單驗證容器 (ok AI Tested TODO：錯誤回報機制)
-  ud-form：表單驗證 (ok AI Tested TODO：錯誤回報機制)
+  ud-form-item：表單驗證容器 (ok AI Tested)
+  ud-form：表單驗證 (ok AI Tested)
 
 Layout
-  ud-arrow：CSS箭頭 (ok AI)
+  ud-arrow：CSS箭頭 (ok AI Tested)
   ud-collapse：摺疊容器 (ok AI)
   ud-image：等比例自適應圖片 (ok AI)
 

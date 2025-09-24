@@ -95,7 +95,7 @@
 - placeholder: 替代文字 | String
 - rows: 預設行數 | Number(4)
 - showLimit: 是否顯示字數限制 | Boolean(false)
-- maxlength: 字數限制 | Number(null)
+- maxlength: 字數限制 | Number
 - noResize: 禁止改變大小 | Boolean(false)
 
 ### methods
@@ -310,7 +310,7 @@ data: {
 - prop: 驗證名稱 | String
 - flex: 是否並排 | Boolean(false)
 - labelWidth: 標籤寬度 | String("30%")
-- labelAlign: 標籤對齊 | String
+- labelAlign: 標籤對齊(left, center, right) | String("left")
 
 ### <font color=#ebc600>ud-form：表單驗證</font>
 
@@ -454,7 +454,8 @@ methods: {
 - color: 顏色 | String("#333")
 - width: 寬度 | String("3")
 - size: 大小 | String("3")
-- direction: 方向 | String("right")
+- direction: 方向[up, down, left, right] | String("right")
+- type: 類型[hollow(中空), solid(實心)] | String("hollow")
 
 ### <font color=#ebc600>ud-collapse：摺疊容器</font>
 
