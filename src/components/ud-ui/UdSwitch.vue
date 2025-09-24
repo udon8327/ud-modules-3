@@ -44,14 +44,14 @@ export default {
     onChange(evt) {
       // 如果組件被禁用，不處理事件
       if (this.disabled) return;
-      
+
       const checked = evt && evt.target ? !!evt.target.checked : this.value;
       const out = checked ? this.activeValue : this.inactiveValue;
-      
+
       // 發送更新事件
       this.$emit("update:modelValue", out);
       this.$emit("change", out);
-      
+
       // 在值改變後觸發驗證
       this.$nextTick(() => {
         this.$mitt && this.$mitt.emit && this.$mitt.emit("validate");

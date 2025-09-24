@@ -323,47 +323,27 @@ data: {
     <ud-input v-model.trim="formData.name" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10"></ud-input>
   </ud-form-item>
   <ud-form-item label="密碼" prop="password" flex>
-    <ud-input
-      v-model.trim="formData.password"
-      placeholder="請輸入密碼"
-      type="password"
-    ></ud-input>
+    <ud-input v-model.trim="formData.password" placeholder="請輸入密碼" type="password"></ud-input>
   </ud-form-item>
 
   <ud-form-item label="確認密碼" prop="confirmPassword" flex>
-    <ud-input
-      v-model.trim="formData.confirmPassword"
-      placeholder="請再次輸入密碼"
-      type="password"
-    ></ud-input>
+    <ud-input v-model.trim="formData.confirmPassword" placeholder="請再次輸入密碼" type="password"></ud-input>
   </ud-form-item>
 
   <ud-form-item label="自定義正則" prop="customRegex" flex>
-    <ud-input
-      v-model.trim="formData.customRegex"
-      placeholder="只能輸入英文字母"
-    ></ud-input>
+    <ud-input v-model.trim="formData.customRegex" placeholder="只能輸入英文字母"></ud-input>
   </ud-form-item>
 
   <ud-form-item label="自定義驗證" prop="customValidation" flex>
-    <ud-input
-      v-model.trim="formData.customValidation"
-      placeholder="輸入 'test' 通過驗證"
-    ></ud-input>
+    <ud-input v-model.trim="formData.customValidation" placeholder="輸入 'test' 通過驗證"></ud-input>
   </ud-form-item>
 
   <ud-form-item label="數字範圍" prop="numberRange" flex>
-    <ud-input
-      v-model.trim="formData.numberRange"
-      placeholder="輸入 1-100 之間的數字"
-    ></ud-input>
+    <ud-input v-model.trim="formData.numberRange" placeholder="輸入 1-100 之間的數字"></ud-input>
   </ud-form-item>
 
   <ud-form-item label="特殊字符檢查" prop="specialChars" flex>
-    <ud-input
-      v-model.trim="formData.specialChars"
-      placeholder='不能包含 < > " &#39; & 字符'
-    ></ud-input>
+    <ud-input v-model.trim="formData.specialChars" placeholder='不能包含 < > " &#39; & 字符'></ud-input>
   </ud-form-item>
 </ud-form>
 <ud-button @click="formSubmit">送出表單</ud-button>
@@ -390,38 +370,38 @@ data: {
     ],
     confirmPassword: [
       { type: "required", message: "確認密碼為必填項目" },
-      { 
-        type: "equal", 
-        equalTo: "password", 
-        message: "兩次輸入的密碼不一致" 
+      {
+        type: "equal",
+        equalTo: "password",
+        message: "兩次輸入的密碼不一致"
       }
     ],
     customRegex: [
       { type: "regex", regex: "^[a-zA-Z]+$", message: "只能輸入英文字母" }
     ],
     customValidation: [
-      { 
-        type: "schema", 
+      {
+        type: "schema",
         schema: (value) => value === "test",
-        message: "請輸入 'test' 來通過驗證" 
+        message: "請輸入 'test' 來通過驗證"
       }
     ],
     numberRange: [
       { type: "number", message: "只能輸入數字" },
-      { 
-        type: "schema", 
+      {
+        type: "schema",
         schema: (value) => {
           const num = parseInt(value);
           return num >= 1 && num <= 100;
         },
-        message: "數字必須在 1-100 之間" 
+        message: "數字必須在 1-100 之間"
       }
     ],
     specialChars: [
-      { 
-        type: "regex", 
-        regex: "^[^<>\"'&]*$", 
-        message: "不能包含特殊字符 < > \" ' &" 
+      {
+        type: "regex",
+        regex: "^[^<>\"'&]*$",
+        message: "不能包含特殊字符 < > \" ' &"
       }
     ]
   },
@@ -460,7 +440,6 @@ methods: {
 "schema": // 自定義驗證條件
 "regex": // 自訂正則驗證
 ```
-
 
 ## Layout
 

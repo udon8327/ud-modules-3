@@ -60,10 +60,8 @@ export default {
     },
     validOptions() {
       // 過濾掉無效的選項
-      return this.options.filter(option => 
-        option && 
-        option[this.valueBy] !== undefined && 
-        option[this.valueBy] !== null
+      return this.options.filter(
+        option => option && option[this.valueBy] !== undefined && option[this.valueBy] !== null
       );
     }
   },
@@ -71,9 +69,9 @@ export default {
     onChange(evt) {
       // 如果選項被禁用，不處理事件
       if (evt && evt.target && evt.target.disabled) return;
-      
+
       this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
-      
+
       // 多個：回傳陣列；單個：回傳布林
       if (Array.isArray(this.options) && this.options.length) {
         const currentValue = Array.isArray(this.value) ? this.value : [];

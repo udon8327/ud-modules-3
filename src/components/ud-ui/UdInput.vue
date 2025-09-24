@@ -62,7 +62,7 @@ export default {
     onInput(evt) {
       // 中文輸入法期間暫停觸發，避免重複驗證和更新
       if (this.isComposing) return;
-      
+
       this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗（若存在）
       const mods = this.modelModifiers || {};
       if (mods.lazy) return; // lazy 僅在 change 觸發更新

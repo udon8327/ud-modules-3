@@ -2,20 +2,20 @@
   <div class="ud-radio" :class="{ 'is-flex': flex }" role="radiogroup">
     <template v-if="options && options.length > 0">
       <label v-for="option in validOptions" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
-      <input
-        type="radio"
-        v-model="value"
-        v-bind="$attrs"
-        :name="groupName"
-        :value="option[valueBy]"
-        :disabled="option.disabled"
-        @change="onChange"
-        :aria-checked="String(value) === String(option[valueBy])"
-        role="radio"
-      />
-      <div class="radio-decorator" :style="{ 'border-radius': radius }"></div>
-      <p>{{ option[labelBy] }}</p>
-    </label>
+        <input
+          type="radio"
+          v-model="value"
+          v-bind="$attrs"
+          :name="groupName"
+          :value="option[valueBy]"
+          :disabled="option.disabled"
+          @change="onChange"
+          :aria-checked="String(value) === String(option[valueBy])"
+          role="radio"
+        />
+        <div class="radio-decorator" :style="{ 'border-radius': radius }"></div>
+        <p>{{ option[labelBy] }}</p>
+      </label>
     </template>
   </div>
 </template>
@@ -47,10 +47,8 @@ export default {
     },
     validOptions() {
       // 過濾掉無效的選項
-      return this.options.filter(option => 
-        option && 
-        option[this.valueBy] !== undefined && 
-        option[this.valueBy] !== null
+      return this.options.filter(
+        option => option && option[this.valueBy] !== undefined && option[this.valueBy] !== null
       );
     }
   },
@@ -63,14 +61,14 @@ export default {
     onChange(evt) {
       // 如果選項被禁用，不處理事件
       if (evt && evt.target && evt.target.disabled) return;
-      
+
       this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
-      
+
       // 找到對應的選項，使用原始值而不是字符串值
       const selectedValue = evt && evt.target ? evt.target.value : this.modelValue;
       const selectedOption = this.options.find(option => String(option[this.valueBy]) === String(selectedValue));
       const actualValue = selectedOption ? selectedOption[this.valueBy] : selectedValue;
-      
+
       this.$emit("update:modelValue", actualValue);
       this.$emit("change", actualValue);
     }

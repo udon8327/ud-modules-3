@@ -33,7 +33,8 @@ export default {
   name: "UdSelectDate",
   props: {
     modelValue: { default: null }, // 綁定值
-    placeholder: { // placeholder值
+    placeholder: {
+      // placeholder值
       type: Array,
       default: () => ["年", "月", "日"]
     },
@@ -109,7 +110,7 @@ export default {
     onPartChange(index, val) {
       const next = this.value.slice(0, 3);
       next[index] = val;
-      
+
       // 連動邏輯：當上級選項改變時，清空下級選項
       if (index === 0) {
         // 年份改變時，清空月份和日期
@@ -119,7 +120,7 @@ export default {
         // 月份改變時，清空日期
         next[2] = "";
       }
-      
+
       this.$emit("update:modelValue", next);
       this.validate();
     },

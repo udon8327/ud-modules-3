@@ -64,7 +64,7 @@ export default {
 
       if (!rules) return;
       this.errorMessage = "";
-      
+
       for (let rule of rules) {
         try {
           switch (rule.type) {
@@ -111,7 +111,9 @@ export default {
             case "ip": // IP地址驗證
               if (
                 value &&
-                !/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value)
+                !/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(
+                  value
+                )
               )
                 this.errorMessage = rule.message || "IP地址格式有誤，例: 115.28.47.26";
               break;
@@ -152,7 +154,8 @@ export default {
                 this.errorMessage = rule.message || "缺少正則表達式";
                 break;
               }
-              if (value && !new RegExp(rule.regex).test(value)) this.errorMessage = rule.message || "格式有誤，請重新輸入";
+              if (value && !new RegExp(rule.regex).test(value))
+                this.errorMessage = rule.message || "格式有誤，請重新輸入";
               break;
             default:
               console.error("預期外的驗證類型: " + rule.type);

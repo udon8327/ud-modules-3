@@ -554,12 +554,13 @@ export default {
     },
     firstArr() {
       // 過濾掉無效的選項
-      return this.options.filter(option => 
-        option && 
-        option.label !== undefined && 
-        option.label !== null && 
-        option.value !== undefined && 
-        option.value !== null
+      return this.options.filter(
+        option =>
+          option &&
+          option.label !== undefined &&
+          option.label !== null &&
+          option.value !== undefined &&
+          option.value !== null
       );
     },
     secondArr() {
@@ -568,12 +569,13 @@ export default {
         const node = this.options.find(option => option.value === this.firstValue);
         if (node && Array.isArray(node.children)) {
           // 過濾掉無效的子選項
-          temp = node.children.filter(child => 
-            child && 
-            child.label !== undefined && 
-            child.label !== null && 
-            child.value !== undefined && 
-            child.value !== null
+          temp = node.children.filter(
+            child =>
+              child &&
+              child.label !== undefined &&
+              child.label !== null &&
+              child.value !== undefined &&
+              child.value !== null
           );
         }
       }

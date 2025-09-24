@@ -9,7 +9,12 @@
       @change="onChange"
     >
       <option v-if="!isMultiple" value="" disabled>{{ placeholder }}</option>
-      <option v-for="option in validOptions" :value="option[valueBy]" :key="option[valueBy]" :disabled="option.disabled">
+      <option
+        v-for="option in validOptions"
+        :value="option[valueBy]"
+        :key="option[valueBy]"
+        :disabled="option.disabled"
+      >
         {{ option[labelBy] }}
       </option>
     </select>
@@ -22,7 +27,8 @@ export default {
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值
-    options: { // 選項
+    options: {
+      // 選項
       type: Array,
       default: () => [{ label: "", value: "", disabled: true }]
     },
@@ -41,7 +47,7 @@ export default {
   },
   computed: {
     isMultiple() {
-      return 'multiple' in this.$attrs;
+      return "multiple" in this.$attrs;
     },
     isEmpty() {
       const val = this.modelValue;
@@ -65,10 +71,10 @@ export default {
           : [this.group];
       this.groupWatch = [...groupArr];
       let temp = this.options;
-      
+
       // 如果沒有選項或不是數組，返回空數組
       if (!Array.isArray(temp)) return [];
-      
+
       if (this.index === 0) return temp;
       if (groupArr[this.index - 1]) {
         for (let i = 0; i < this.index; i++) {
@@ -83,10 +89,8 @@ export default {
     },
     validOptions() {
       // 過濾掉無效的選項
-      return this.optionsArr.filter(option => 
-        option && 
-        option[this.valueBy] !== undefined && 
-        option[this.valueBy] !== null
+      return this.optionsArr.filter(
+        option => option && option[this.valueBy] !== undefined && option[this.valueBy] !== null
       );
     }
   },
@@ -133,7 +137,9 @@ export default {
       if (!el) return;
       let text = "";
       if (el.value) {
-        const match = Array.isArray(this.optionsArr) ? this.optionsArr.find(item => item[this.valueBy] == el.value) : null;
+        const match = Array.isArray(this.optionsArr)
+          ? this.optionsArr.find(item => item[this.valueBy] == el.value)
+          : null;
         if (match) {
           text = match[this.labelBy];
         } else {

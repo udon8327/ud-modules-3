@@ -182,39 +182,36 @@ export default {
         ],
         confirmPassword: [
           { type: "required", message: "確認密碼為必填項目" },
-          { 
-            type: "equal", 
-            equalTo: "password", 
-            message: "兩次輸入的密碼不一致" 
+          {
+            type: "equal",
+            equalTo: "password",
+            message: "兩次輸入的密碼不一致"
           }
         ],
-        customRegex: [
-          { type: "required" },
-          { type: "regex", regex: "^[a-zA-Z]+$", message: "只能輸入英文字母" }
-        ],
+        customRegex: [{ type: "required" }, { type: "regex", regex: "^[a-zA-Z]+$", message: "只能輸入英文字母" }],
         customValidation: [
-          { 
-            type: "schema", 
-            schema: (value) => value === "test",
-            message: "請輸入 'test' 來通過驗證" 
+          {
+            type: "schema",
+            schema: value => value === "test",
+            message: "請輸入 'test' 來通過驗證"
           }
         ],
         numberRange: [
           { type: "number", message: "只能輸入數字" },
-          { 
-            type: "schema", 
-            schema: (value) => {
+          {
+            type: "schema",
+            schema: value => {
               const num = parseInt(value);
               return num >= 1 && num <= 100;
             },
-            message: "數字必須在 1-100 之間" 
+            message: "數字必須在 1-100 之間"
           }
         ],
         specialChars: [
-          { 
-            type: "regex", 
-            regex: "^[^<>\"'&]*$", 
-            message: "不能包含特殊字符 < > \" ' &" 
+          {
+            type: "regex",
+            regex: "^[^<>\"'&]*$",
+            message: "不能包含特殊字符 < > \" ' &"
           }
         ]
       },
