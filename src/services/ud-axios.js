@@ -100,14 +100,10 @@ udAxios.interceptors.response.use(
   },
   // 狀態碼 3xx: 重新導向, 4xx: 用戶端錯誤, 5xx: 伺服器錯誤
   error => {
-    const respMsg = error?.response?.data?.message;
-    if (respMsg) console.error("API錯誤:", respMsg);
-
     if (!error?.config?.noLoading) {
       ajaxCount = Math.max(ajaxCount - 1, 0);
       if (ajaxCount === 0) udLoading.close();
     }
-
     if (error?.config?.default) return Promise.reject(error);
 
     // 定義錯誤訊息
