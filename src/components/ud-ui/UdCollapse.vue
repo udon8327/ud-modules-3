@@ -11,9 +11,8 @@ export default {
   name: "UdCollapse",
   props: {
     modelValue: { type: Boolean, default: false },
-    duration: { type: Number, default: 0.2 },
-    // 是否在展開時偵測內容高度變化並同步高度（不影響收合動畫）
-    observe: { type: Boolean, default: false }
+    duration: { type: Number, default: 0.2 }, // 開闔速度
+    observe: { type: Boolean, default: false } // 是否在展開時偵測內容高度變化並同步高度
   },
   data() {
     return {
