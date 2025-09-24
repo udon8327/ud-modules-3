@@ -44,10 +44,10 @@ export default {
     },
     validate(
       successCb = () => {
-        console.log("驗證成功");
+        console.log("驗證成功！");
       },
       failedCb = () => {
-        console.log("驗證失敗");
+        console.error("驗證未通過");
       }
     ) {
       this.submitLock = false;
@@ -57,10 +57,7 @@ export default {
         .then(() => {
           successCb();
         })
-        .catch(error => {
-          if (error && error !== undefined) {
-            console.error("驗證過程中發生錯誤：", error);
-          }
+        .catch(() => {
           if (!this.noErrorScroll) {
             this.$nextTick(() => {
               const firstError = document.querySelector(".is-error");
