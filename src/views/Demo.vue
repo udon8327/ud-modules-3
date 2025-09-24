@@ -29,22 +29,6 @@
         ud-select(v-model="formData.select" :options="options" flex center)
       ud-form-item(label="下拉連動" prop="selectGroup" flex)
         .d-flex
-          select(v-model="city")
-            option(value="" disabled) 請選擇縣市
-            option(value="台北市") 台北市
-            option(value="新北市") 新北市
-            option(value="台中市") 台中市
-          select(v-model="store")
-            option(value="" disabled) 請選擇櫃點
-            option(value="A店") A店
-            option(value="B店") B店
-            option(value="C店") C店
-          select(v-model="time")
-            option(value="" disabled) 請選擇時段
-            option(value="上午") 上午
-            option(value="下午") 下午
-            option(value="晚上") 晚上
-        .d-flex
           ud-select(v-model="formData.selectGroup[0]" :options="storeOptions" :group="formData.selectGroup" :index="0" placeholder="縣市")
           ud-select(v-model="formData.selectGroup[1]" :options="storeOptions" :group="formData.selectGroup" :index="1" placeholder="櫃點")
           ud-select(v-model="formData.selectGroup[2]" :options="storeOptions" :group="formData.selectGroup" :index="2" placeholder="時段")
