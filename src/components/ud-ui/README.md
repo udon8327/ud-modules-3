@@ -473,18 +473,30 @@ methods: {
 ### props
 
 - duration: 開闔速度 | Number(0.2)
+- observe: 是否在展開時偵測內容高度變化並同步高度 | Boolean(false)
 
 ### <font color=#ebc600>ud-image：等比例自適應圖片</font>
 
 舊版叫ud-ratio 現已改名為ud-image
 
 ```html
-<ud-image src="img/01.jpg" bg-size="contain"></ud-image>
+<ud-image src="https://imgur.com/DIC7dRT.jpg" :height="50"></ud-image>
+<ud-image src="@/assets/images/picture/01.jpg" bg-size="contain" bg-size="50% 50%"></ud-image>
+<ud-image :src="image02" lazy alt="這是圖片"></ud-image>
+
+import image02 from "@/assets/images/picture/02.jpg";
 ```
 
 ### props
 
-- duration: 開闔速度 | Number(0.2)
+- src: 背景圖片 | String("@/assets/images/picture/default.jpg")
+- height: 高度比例 | Number(100)
+- radius: 圓角 | String("0px")
+- bgSize: 背景尺寸[cover, contain, 100%等] | String("cover")
+- bgPosition: 背景位置[center, top, bottom, left, right等] | String("center")
+- bgRepeat: 重複方式[no-repeat, repeat, repeat-x, repeat-y等] | String("no-repeat")
+- alt: 無障礙說明 | String("")
+- lazy: 是否懶載入 | Boolean(false)
 
 ## Notice
 

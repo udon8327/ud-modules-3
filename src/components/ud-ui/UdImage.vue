@@ -23,14 +23,14 @@ import avatarDefault from "@/assets/images/picture/default.jpg";
 export default {
   name: "UdImage",
   props: {
-    src: { type: String, default: avatarDefault }, // 背景圖片
+    src: { type: String, default: avatarDefault }, // 圖片來源
     height: { type: Number, default: 100 }, // 高度比例
     radius: { type: String, default: "0px" }, // 圓角
-    bgSize: { type: String, default: "cover" }, // 背景尺寸 [cover, contain, 100%...等]
-    bgPosition: { type: String, default: "center" }, // 背景位置
-    bgRepeat: { type: String, default: "no-repeat" }, // 重複方式
+    bgSize: { type: String, default: "cover" }, // 背景尺寸[cover, contain, 100%等]
+    bgPosition: { type: String, default: "center" }, // 背景位置[center, top, bottom, left, right等]
+    bgRepeat: { type: String, default: "no-repeat" }, // 重複方式[no-repeat, repeat, repeat-x, repeat-y等]
     alt: { type: String, default: "" }, // 無障礙說明
-    lazy: { type: Boolean, default: false } // 是否延遲載入（進入視口再載）
+    lazy: { type: Boolean, default: false } // 是否懶載入
   },
   data() {
     return {
