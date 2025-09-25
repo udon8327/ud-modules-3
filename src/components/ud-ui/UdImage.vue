@@ -97,31 +97,21 @@ export default {
         this.currentSrc = this.avatarDefault;
         return;
       }
-      // 處理 "@/assets/..." 開頭路徑
-      let resolved = src.startsWith("@/assets")
-        ? (() => {
-            try {
-              return new URL(src.replace("@/", "/src/"), import.meta.url).href;
-            } catch {
-              return this.avatarDefault;
-            }
-          })()
-        : src;
 
       const token = ++this._loadToken;
       const img = new Image();
       img.decoding = "async";
       img.loading = "eager";
-      img.src = resolved;
+      img.src = src;
       img.onload = () => {
         if (token !== this._loadToken) return; // 已有更新中的載入請求
-        this.currentSrc = resolved;
-        this.$emit && this.$emit("load", resolved);
+        this.currentSrc = src;
+        this.$emit && this.$emit("load", src);
       };
       img.onerror = () => {
         if (token !== this._loadToken) return;
         this.currentSrc = this.avatarDefault;
-        this.$emit && this.$emit("error", resolved);
+        this.$emit && this.$emit("error", src);
       };
     }
   }
