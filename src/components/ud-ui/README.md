@@ -626,13 +626,19 @@ methods: {
 ### props
 
 - time: 倒數秒數 | Number(60)
-- delay: 是否不要立刻開始倒數 | Boolean(1)
-- type: 時間格式 | String("second")["second": 顯示秒, "minute": 顯示分秒]
+- delay: 延遲倒數 | Boolean(false)
+- type: 時間格式[second: 秒, minute: 分+秒] | String("second")
+- text: 加上文字 | Boolean(false)
+- padMinute: 分鐘數補零 | Boolean(false)
+- padSecond: 秒數補零 | Boolean(true)
 
 ### methods
 
 - countdown: 開始倒數 | Function(() => {})
-- reset: 重新開始倒數 | Function(() => {})
+- pause: 暫停倒數 | Function(() => {})
+- resume: 恢復倒數 | Function(() => {})
+- reset: 重置倒數 | Function(() => {})
+- timeup: 倒數時間到($emit) | Function(() => {})
 
 # <font color="aqua">ud-utils 常用函式</font>
 

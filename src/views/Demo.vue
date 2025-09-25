@@ -9,7 +9,6 @@
     ud-button(@click="isModalShow = false" plain) 關閉
 
   .form-area
-    ud-button.mb-3(@click="test") 測試
     ud-form(:rules="rules" :model="formData" ref="form")
       ud-form-item(label="姓名" prop="name" flex)
         ud-input(ref="name" v-model.trim="formData.name" placeholder="請輸入您的姓名")
@@ -71,22 +70,31 @@
     hr
     .button-wrapper.mb-2
       ud-button(@click="alert()") Alert
-      ud-button(@click="isModalShow = true") Modal
+      ud-button(@click="isModalShow = true" plain) Modal
       ud-button(@click="showLoading") Loading
 
   .tools-area
     hr
     ud-html.mb-2(text="<i>用戶</i>自定\n<h3>義訊息</h3><h1 class='title'>h1標題</h1><h2>h2副標題</h2><h3>h3小標題</h3><h4>h4小標題</h4><h5>h5小標題</h5><h6>h6小標題</h6><p>p文字</p><span>span行內文字</span>")
     ud-ellipsis.mb-2(:max-line="2") 文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略
-    ud-countdown.mb-2(ref="countdown" :time="120" @timeup="timeup" type="minute")
+    ud-countdown.mb-2(
+      :time="120"
+      delay
+      ref="countdown"
+      type="minute"
+      text
+      @timeup="udAlert('時間到！')"
+    )
+    .button-wrapper.mb-2
+      ud-button(@click="$refs.countdown.countdown()") 開始
+      ud-button(@click="$refs.countdown.pause()" plain) 暫停
+      ud-button(@click="$refs.countdown.resume()") 恢復
+      ud-button(@click="$refs.countdown.reset()" plain) 重置
 
   .api-area
     hr
     .button-wrapper.mb-2
-      ud-button(@click="sendMessage" plain) 傳送訊息
-      ud-button(@click="shareTargetPicker") 好友分享
-    .button-wrapper.mb-2
-      ud-button(@click="getData" plain) GET
+      ud-button(@click="getData") GET
       ud-button(@click="postData") POST
 
   .liff-area
@@ -97,6 +105,9 @@
         h6 {{ profile.displayName }}
         p {{ profile.userId }}
         p {{ profile.info }}
+    .button-wrapper.mb-2
+      ud-button(@click="sendMessage" plain) 傳送訊息
+      ud-button(@click="shareTargetPicker" plain) 好友分享
 
   .advanced-form-area
     hr
@@ -298,27 +309,6 @@ export default {
     this.liffLogin();
   },
   methods: {
-    onInput(e) {
-      console.log("e: ", e);
-    },
-    test() {
-      this.udAlert({
-        title: "錯誤",
-        message: "發生錯誤\n請稍候再試<i>！</i>",
-        confirm: true,
-        confirmText: "確定鈕",
-        cancelText: "取消鈕",
-        maskClose: true,
-        btnClose: true,
-        onConfirm: () => {
-          console.log("點擊確定A");
-        },
-      }).then(() => {
-        console.log("點擊確定B");
-      }).catch(() => {
-        console.log("點擊取消");
-      });
-    },
     getData() {
       this.udAxios
         .get("test/400/失敗了", {
@@ -354,15 +344,6 @@ export default {
         .catch(() => {
           console.log("取消");
         });
-    },
-    timeup() {
-      console.log("時間到！");
-    },
-    countdown() {
-      this.$refs.cd.countdown();
-    },
-    reset() {
-      this.$refs.cd.reset();
     },
     submitVerify() {
       this.$refs.form.validate(() => {
@@ -551,4 +532,12 @@ export default {
     img, .ud-image
       flex: 0 0 16%
       max-width: 16%
+
+.tools-area
+  .countdown-wrapper
+    display: flex
+    justify-content: space-between
+    gap: 10px
+    .ud-button
+      flex: 1 1 0
 </style>
