@@ -65,7 +65,7 @@
       img(src="@/assets/images/picture/01.jpg", alt="")
       img(:src="image02", alt="")
       img(src="https://imgur.com/DIC7dRT.jpg", alt="")
-      ud-image(src="@/assets/images/picture/01.jpg", alt="")
+      ud-image(src="@/assets/images/picture/01.jpg", alt="UdImage請用import的圖片不然讀不到圖")
       ud-image(:src="image02", alt="")
       ud-image(src="https://imgur.com/DIC7dRT.jpg", alt="")
 
