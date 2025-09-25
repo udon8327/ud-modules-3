@@ -34,11 +34,11 @@
 export default {
   name: "UdModal",
   props: {
-    title: { type: String, default: "通用標題" }, // 通用標題
-    message: { type: String, default: "通用訊息" }, // 通用訊息
-    modelValue: { type: Boolean, default: false }, // 開關值
-    maskClose: { type: Boolean, default: false }, // 遮罩關閉
-    btnClose: { type: Boolean, default: false }, // 按鈕關閉
+    modelValue: { type: Boolean, default: false },
+    title: { type: String, default: "通用標題" }, // 通用標題(slot為空時)
+    message: { type: String, default: "通用訊息" }, // 通用訊息(slot為空時)
+    maskClose: { type: Boolean, default: false }, // 點擊遮罩關閉
+    btnClose: { type: Boolean, default: false }, // 右上關閉按鈕
     fullScreen: { type: Boolean, default: false }, // 是否全螢幕
     zIndex: { type: Number, default: 100 }, // z-index層級
     noBg: { type: Boolean, default: false }, // 背景是否透明
@@ -68,6 +68,7 @@ export default {
         document.body.style.overflowY = "hidden";
       } else {
         document.body.style.overflowY = this._prevOverflowY;
+        this._prevOverflowY = "";
       }
     }
   },
@@ -81,11 +82,14 @@ export default {
   beforeUnmount() {
     if (this.scrollLock) {
       document.body.style.overflowY = this._prevOverflowY;
+      this._prevOverflowY = "";
     }
   },
   methods: {
     maskHandler() {
-      if (this.maskClose) this.isShow = false;
+      if (this.maskClose) {
+        this.isShow = false;
+      }
     }
   }
 };

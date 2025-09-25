@@ -4,6 +4,7 @@
       class="ud-loading"
       v-show="isShow"
       :class="{ 'theme-white': theme === 'white' }"
+      :style="{ zIndex: zIndex }"
       role="status"
       aria-live="polite"
       aria-busy="true"
@@ -39,7 +40,8 @@ export default {
       default: "https://image.flaticon.com/icons/svg/553/553265.svg"
     }, // 圖片icon的路徑
     message: { type: String, default: "" }, // 載入訊息 (功能同msg，接受html語法)
-    msg: { type: String, default: "" } // 載入訊息 (功能同message，接受html語法)
+    msg: { type: String, default: "" }, // 載入訊息 (功能同message，接受html語法)
+    zIndex: { type: Number, default: 140 } // z-index層級
   },
   data() {
     return {

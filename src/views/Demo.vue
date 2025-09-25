@@ -1,6 +1,6 @@
 <template lang="pug">
 #demo
-  ud-modal(v-model="isModalShow" mask-close btn-close)
+  ud-modal(v-model="isModalShow")
     h4.mb-2 通用彈窗
     ud-image.mb-3(src="", alt="")
     .button-wrapper.mb-2
@@ -306,7 +306,6 @@ export default {
         cancelText: "取消鈕",
         maskClose: true,
         btnClose: true,
-        scrollLock: false,
         onConfirm: () => {
           console.log("點擊確定A");
         },
@@ -315,53 +314,6 @@ export default {
       }).catch(() => {
         console.log("點擊取消");
       });
-    },
-    openExternal() {
-      location.href = "https://liff.line.me/1655285115-w926gzYP";
-      // liff.openWindow(
-      //   { url: "https://liff.line.me/1655285115-w926gzYP", external: true }
-      // );
-    },
-    liffLogin() {
-      liff
-        .init({
-          liffId: import.meta.env.VITE_APP_LINE_LIFF_ID
-        })
-        .then(() => {
-          // 檢查是否登入
-          if (!liff.isLoggedIn()) {
-            liff.login({ redirectUri: location.href });
-            return;
-          }
-          // 檢查是否好友
-          liff
-            .getFriendship()
-            .then(data => {
-              if (data.friendFlag) {
-                liff.getProfile().then(res => {
-                  this.profile = res;
-                  this.profile.info =
-                    liff.isInClient() + ", " + liff.getOS() + ", " + liff.getLineVersion() + ", " + liff.getLanguage();
-                });
-              } else {
-                location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${
-                  LINE_LOGIN_CHANNEL_ID
-                }&redirect_uri=${encodeURIComponent(
-                  location.href
-                )}&scope=profile%20openid%20phone%20email&bot_prompt=aggressive&prompt=consent&state=${Date.now()}`;
-              }
-            })
-            .catch(() => {
-              this.udAlert(`LIFF初始化失敗，請稍後再試`).then(() => {
-                location.href = LINE_OA_URL;
-              });
-            });
-        })
-        .catch(err => {
-          this.udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() => {
-            location.href = LINE_OA_URL;
-          });
-        });
     },
     getData() {
       this.udAxios
@@ -385,7 +337,7 @@ export default {
       this.udAlert({
         msg: "這是一個警告訊息",
         title: "警告",
-        confirm: true
+        confirm: true,
       })
         .then(() => {
           console.log("確定");
@@ -438,6 +390,53 @@ export default {
       setTimeout(() => {
         this.udLoading.close();
       }, 1000);
+    },
+    openExternal() {
+      location.href = "https://liff.line.me/1655285115-w926gzYP";
+      // liff.openWindow(
+      //   { url: "https://liff.line.me/1655285115-w926gzYP", external: true }
+      // );
+    },
+    liffLogin() {
+      liff
+        .init({
+          liffId: import.meta.env.VITE_APP_LINE_LIFF_ID
+        })
+        .then(() => {
+          // 檢查是否登入
+          if (!liff.isLoggedIn()) {
+            liff.login({ redirectUri: location.href });
+            return;
+          }
+          // 檢查是否好友
+          liff
+            .getFriendship()
+            .then(data => {
+              if (data.friendFlag) {
+                liff.getProfile().then(res => {
+                  this.profile = res;
+                  this.profile.info =
+                    liff.isInClient() + ", " + liff.getOS() + ", " + liff.getLineVersion() + ", " + liff.getLanguage();
+                });
+              } else {
+                location.href = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${
+                  LINE_LOGIN_CHANNEL_ID
+                }&redirect_uri=${encodeURIComponent(
+                  location.href
+                )}&scope=profile%20openid%20phone%20email&bot_prompt=aggressive&prompt=consent&state=${Date.now()}`;
+              }
+            })
+            .catch(() => {
+              this.udAlert(`LIFF初始化失敗，請稍後再試`).then(() => {
+                location.href = LINE_OA_URL;
+              });
+            });
+        })
+        .catch(err => {
+          this.udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() => {
+            location.href = LINE_OA_URL;
+          });
+        });
     },
     sendMessage() {
       liff

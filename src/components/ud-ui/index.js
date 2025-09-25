@@ -20,7 +20,7 @@ Layout
 
 Notice
   ud-alert：警告彈窗 (ok AI Tested)
-  ud-modal：通用彈窗 (ok AI)
+  ud-modal：通用彈窗 (ok AI Tested)
   ud-loading：載入中 (ok AI)
 
 Tools

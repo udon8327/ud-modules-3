@@ -529,6 +529,7 @@ this.udAlert({
 - msg: 訊息文字(功能同message，接受html語法) | String("")
 - maskClose: 點擊遮罩關閉 | Boolean(false)
 - btnClose: 右上關閉按鈕 | Boolean(false)
+- zIndex: z-index層級 | Number(120)
 - scrollLock: 是否鎖定背景頁面捲動 | Boolean(true)
 - confirm: 是否有確認+取消鈕 | Boolean(false)
 - confirmText: 確認鈕文字 | String("確定")
@@ -546,13 +547,14 @@ this.udAlert({
 
 ### props
 
-- title: 通用標題 | String("通用標題")
-- message: 通用訊息 | String("通用訊息")
+- title: 通用標題(slot為空時) | String("通用標題")
+- message: 通用訊息(slot為空時) | String("通用訊息")
 - maskClose: 點擊遮罩關閉 | Boolean(false)
 - btnClose: 右上關閉按鈕 | Boolean(false)
 - fullScreen: 是否全螢幕 | Boolean(false)
 - zIndex: z-index層級 | Number(100)
 - noBg: 背景是否透明 | Boolean(false)
+- scrollLock: 是否鎖定背景捲動 | Boolean(true)
 
 ### <font color=#ebc600>ud-loading：載入中</font>
 
@@ -572,6 +574,7 @@ this.udLoading.close();
 - iconFont: 字型icon的class | String(例："fas fa-spinner fa-pulse")
 - iconImg: 圖片icon的路徑 | String(例："https://image.flaticon.com/icons/svg/553/553265.svg")
 - message: 載入訊息 | String("")
+- zIndex: z-index層級 | Number(140)
 
 ## Tools
 

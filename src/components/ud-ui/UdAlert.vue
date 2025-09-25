@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="ud-alert" v-if="isShow" @click.self="maskHandler">
+    <div class="ud-alert" v-if="isShow" @click.self="maskHandler" :style="{ zIndex: zIndex }">
       <div class="ud-modal-wrapper">
         <div class="ud-modal-close" v-if="btnClose" @click="destroy">
           <i class="icon-close"></i>
@@ -42,6 +42,7 @@ export default {
     onConfirm: { type: Function, default: () => {} }, // 確認鈕callback(也可使用.then)
     cancelText: { type: String, default: "取消" }, // 取消鈕文字
     onCancel: { type: Function, default: () => {} }, // 取消鈕callback(也可使用.catch)
+    zIndex: { type: Number, default: 120 } // z-index層級
   },
   data() {
     return {
@@ -54,7 +55,11 @@ export default {
   },
   computed: {
     displayMessage() {
-      return this.message === "" ? this.msg : this.message;
+      // 修正邏輯：優先使用 message，如果 message 為空或未定義則使用 msg
+      if (this.message !== "" && this.message != null) {
+        return this.message;
+      }
+      return this.msg;
     }
   },
   mounted() {},
