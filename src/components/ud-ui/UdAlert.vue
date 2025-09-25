@@ -72,12 +72,12 @@ export default {
         console.warn("[UdAlert] Component is already destroyed");
         return Promise.reject("Component destroyed");
       }
-      
+
       if (this.scrollLock) {
         this._prevOverflowY = document.body.style.overflowY || "";
         document.body.style.overflowY = "hidden";
       }
-      
+
       this.isShow = true;
       return new Promise((resolve, reject) => {
         this.resolve = resolve;
@@ -89,13 +89,13 @@ export default {
     },
     confirmHandler() {
       if (this._isDestroyed) return;
-      
+
       try {
         this.onConfirm();
       } catch (e) {
         console.error("[UdAlert] onConfirm error:", e);
       }
-      
+
       if (this.resolve) {
         this.resolve("confirm");
       }
@@ -103,13 +103,13 @@ export default {
     },
     cancelHandler() {
       if (this._isDestroyed) return;
-      
+
       try {
         this.onCancel();
       } catch (e) {
         console.error("[UdAlert] onCancel error:", e);
       }
-      
+
       if (this.reject) {
         this.reject("cancel");
       }
@@ -122,20 +122,20 @@ export default {
     },
     destroy() {
       if (this._isDestroyed) return;
-      
+
       this._isDestroyed = true;
       this.isShow = false;
-      
+
       // 恢復滾動
       if (this.scrollLock) {
         document.body.style.overflowY = this._prevOverflowY;
         this._prevOverflowY = "";
       }
-      
+
       // 清理 Promise 引用
       this.resolve = null;
       this.reject = null;
-      
+
       // 使用 Vue 3 的正確方式卸載組件
       this.$nextTick(() => {
         if (this.$el && this.$el.parentNode) {

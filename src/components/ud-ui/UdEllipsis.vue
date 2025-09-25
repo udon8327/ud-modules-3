@@ -1,9 +1,5 @@
 <template>
-  <p 
-    class="ud-ellipsis" 
-    :class="{ 'multi-line': maxLine > 1 }"
-    :style="inlineStyle"
-  >
+  <p class="ud-ellipsis" :class="{ 'multi-line': maxLine > 1 }" :style="inlineStyle">
     <slot></slot>
   </p>
 </template>

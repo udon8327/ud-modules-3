@@ -42,7 +42,7 @@ export default {
     fullScreen: { type: Boolean, default: false }, // 是否全螢幕
     noBg: { type: Boolean, default: false }, // 背景是否透明
     scrollLock: { type: Boolean, default: true }, // 鎖定背景捲動
-    zIndex: { type: Number, default: 100 }, // z-index層級
+    zIndex: { type: Number, default: 100 } // z-index層級
   },
   computed: {
     isShow: {

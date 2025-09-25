@@ -39,7 +39,7 @@ export default {
     formatCountTimeHtml() {
       // 確保 countTime 不是負數
       const safeCountTime = Math.max(0, this.countTime);
-      
+
       if (this.type === "second") {
         const displayTime = this.padSecond ? this.padStart(safeCountTime) : safeCountTime;
         if (this.text) {

@@ -331,7 +331,7 @@ export default {
       this.udAlert({
         message: "這是一個警告訊息",
         title: "警告",
-        confirm: true,
+        confirm: true
       })
         .then(() => {
           console.log("確定");

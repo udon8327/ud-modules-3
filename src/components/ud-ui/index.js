@@ -85,9 +85,7 @@ const udAlert = options => {
     const container = document.createElement("div");
     document.body.appendChild(container);
 
-    const props = typeof options === "string" || typeof options === "number" 
-      ? { message: options } 
-      : options || {};
+    const props = typeof options === "string" || typeof options === "number" ? { message: options } : options || {};
     const vnode = createVNode(UdAlert, props);
 
     render(vnode, container);
@@ -139,7 +137,7 @@ const udLoading = {
       render(vnode, this.container);
 
       this.instance = vnode.component?.proxy;
-      
+
       if (!this.instance) {
         console.error("[UdLoading] Failed to create instance");
         this.close();
@@ -173,14 +171,14 @@ export { udLoading };
 const install = app => {
   try {
     // 註冊工具函數
-    if (udUtils && typeof udUtils === 'object') {
+    if (udUtils && typeof udUtils === "object") {
       Object.keys(udUtils).forEach(item => {
-        if (udUtils[item] && typeof udUtils[item] === 'function') {
+        if (udUtils[item] && typeof udUtils[item] === "function") {
           app.config.globalProperties[item] = udUtils[item];
         }
       });
     }
-    
+
     // 註冊組件
     if (Array.isArray(udComponents)) {
       udComponents.forEach(item => {
@@ -189,7 +187,7 @@ const install = app => {
         }
       });
     }
-    
+
     // 註冊全局屬性
     app.config.globalProperties.udAxios = udAxios;
     app.config.globalProperties.udAlert = udAlert;

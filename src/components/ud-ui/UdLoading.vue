@@ -75,7 +75,7 @@ export default {
     formatHtml(val) {
       return nl2br(val);
     }
-  } 
+  }
 };
 </script>
 
