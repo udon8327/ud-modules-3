@@ -78,12 +78,7 @@ udAxios.interceptors.request.use(
     return config;
   },
   error => {
-    if (!error?.config?.noLoading) {
-      if (ajaxCount > 0) ajaxCount--;
-      if (ajaxCount === 0) udLoading.close();
-    }
-    // 避免在請求攔截器中顯示 alert，因為這會導致重複錯誤處理
-    console.error("請求發送失敗:", error.message);
+    udAlert("請求發送失敗，請稍候再試");
     return Promise.reject(error);
   }
 );
