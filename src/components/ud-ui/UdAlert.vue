@@ -85,7 +85,6 @@ export default {
       });
     },
     formatHtml(val) {
-      // 直接使用 ud-utils 中的 nl2br，已包含 XSS 防護
       return nl2br(val);
     },
     confirmHandler() {

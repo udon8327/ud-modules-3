@@ -2,8 +2,6 @@
 #demo
   ud-modal(v-model="isModalShow")
     h4.mb-2 通用彈窗
-    p(v-html="formatHtml('<img src=\"x\" onerror=\"alert(1)\">')")
-    p(v-html="formatHtml('將字串內換行符\\n轉為\<br\>，並自動防護XSS攻擊')")
     ud-image.mb-3(:src="''" :alt="''")
     .button-wrapper.mb-2
       ud-button(@click="alert()") Alert
@@ -78,7 +76,7 @@
 
   .tools-area
     hr
-    ud-html.mb-2(text="<i>用戶</i>自定\n<h3>義訊息</h3>")
+    ud-html.mb-2(text="<i>用戶</i>自定\n<h3>義訊息</h3><h1>標題</h1><h2>副標題</h2><h3>小標題</h3><h4>小標題</h4><h5>小標題</h5><h6>小標題</h6><p>段落</p><span>文字</span>")
     ud-ellipsis.mb-2(:max-line="2") 文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略
     ud-countdown.mb-2(ref="countdown" :time="120" @timeup="timeup" type="minute")
 
@@ -341,14 +339,14 @@ export default {
     },
     alert() {
       this.udAlert({
-        msg: "這是一個警告訊息",
+        message: "這是一個警告訊息",
         title: "警告",
         confirm: true,
       })
         .then(() => {
           console.log("確定");
           this.udAlert({
-            msg: "確定",
+            message: "確定",
           }).then(() => {
             this.udAlert(123);
           })
@@ -372,7 +370,7 @@ export default {
       });
     },
     submit() {
-      this.udAlert({ msg: "驗證成功!!" });
+      this.udAlert({ message: "驗證成功!!" });
     },
     clearVerify() {
       this.$refs.form.clearValidate();
@@ -383,7 +381,7 @@ export default {
       });
     },
     submitAdvanced() {
-      this.udAlert({ msg: "進階驗證成功!!" });
+      this.udAlert({ message: "進階驗證成功!!" });
     },
     clearAdvancedVerify() {
       this.$refs.advancedForm.clearValidate();
@@ -500,7 +498,7 @@ export default {
         })
         .catch(error => {
           this.udAlert({
-            msg: `${error.code === "EXCEPTION_IN_SUBWINDOW" ? "請在 LINE APP中 開啟活動\n以便使用好友分享功能" : "訊息分享失敗，請稍後再試"}\n[${error.code}] ${error.message}`
+            message: `${error.code === "EXCEPTION_IN_SUBWINDOW" ? "請在 LINE APP中 開啟活動\n以便使用好友分享功能" : "訊息分享失敗，請稍後再試"}\n[${error.code}] ${error.message}`
           }).then(() => {
             location.href = LINE_OA_URL;
           });

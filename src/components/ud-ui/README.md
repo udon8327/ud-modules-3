@@ -568,8 +568,8 @@ this.udLoading.open({
 this.udLoading.close();
 ```
 
-- message: 載入訊息 (功能同msg，接受html語法) | String("")
-- msg: 載入訊息 (功能同message，接受html語法) | String("")
+- message: 載入訊息(功能同msg，接受html語法) | String("")
+- msg: 載入訊息(功能同message，接受html語法) | String("")
 - theme: 戴入主題 | String(例："white")
 - iconType: icon類型[css, font, img] | String("css")
 - iconFont: 字型icon的class | String("fas fa-spinner fa-pulse")
@@ -638,7 +638,7 @@ methods: {
 
 ## String
 
-### <font color=#ebc600>nl2br：將字串內換行符\n轉為\<br\>，並自動防護XSS攻擊</font>
+### <font color=#ebc600>nl2br：將字串內換行符\n轉為\<br\></font>
 
 ```js
 nl2br((val = ""), (is_xhtml = false));

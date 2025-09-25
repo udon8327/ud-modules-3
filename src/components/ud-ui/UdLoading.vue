@@ -31,7 +31,8 @@ import { nl2br } from "@/utils/ud-utils";
 export default {
   name: "UdLoading",
   props: {
-    message: { type: String, default: "" }, // 載入訊息(兼容msg，接受html語法)
+    message: { type: String, default: "" }, // 載入訊息(功能同msg，接受html語法)
+    msg: { type: String, default: "" }, // 載入訊息(功能同message，接受html語法)
     theme: { type: String, default: "" }, // 戴入主題[white]
     iconType: { type: String, default: "css" }, // icon類型[css:CSS, font:字型, img:圖片]
     iconFont: { type: String, default: "fas fa-spinner fa-pulse" }, // 字型icon的class
@@ -72,7 +73,6 @@ export default {
   },
   methods: {
     formatHtml(val) {
-      // 直接使用 ud-utils 中的 nl2br，已包含 XSS 防護
       return nl2br(val);
     }
   } 
