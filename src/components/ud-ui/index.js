@@ -81,27 +81,44 @@ const udComponents = [
 // 組件呼叫方法
 // udAlert
 const udAlert = options => {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
+  try {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
 
-  const props = typeof options === "string" || typeof options === "number" 
-    ? { message: options } 
-    : options;
-  const vnode = createVNode(UdAlert, props);
+    const props = typeof options === "string" || typeof options === "number" 
+      ? { message: options } 
+      : options || {};
+    const vnode = createVNode(UdAlert, props);
 
-  render(vnode, container);
-  const instance = vnode.component?.proxy;
+    render(vnode, container);
+    const instance = vnode.component?.proxy;
 
-  if (!instance) return;
+    if (!instance) {
+      // 清理容器如果實例創建失敗
+      if (container.parentNode) {
+        container.parentNode.removeChild(container);
+      }
+      return Promise.reject("Failed to create UdAlert instance");
+    }
 
-  const originalDestroy = instance.destroy;
-  instance.destroy = (...args) => {
-    originalDestroy?.(...args);
-    render(null, container);
-    container.parentNode?.removeChild(container);
-  };
+    const originalDestroy = instance.destroy;
+    instance.destroy = (...args) => {
+      try {
+        originalDestroy?.(...args);
+      } catch (error) {
+        console.error("[UdAlert] Error in destroy:", error);
+      }
+      render(null, container);
+      if (container.parentNode) {
+        container.parentNode.removeChild(container);
+      }
+    };
 
-  return instance.show?.();
+    return instance.show?.() || Promise.resolve();
+  } catch (error) {
+    console.error("[UdAlert] Error creating alert:", error);
+    return Promise.reject(error);
+  }
 };
 export { udAlert };
 
@@ -110,22 +127,41 @@ const udLoading = {
   instance: null,
   container: null,
   open(options = {}) {
-    // 如果已經有實例就先關掉，避免重複掛載
-    if (this.instance) {
+    try {
+      // 如果已經有實例就先關掉，避免重複掛載
+      if (this.instance) {
+        this.close();
+      }
+      this.container = document.createElement("div");
+      document.body.appendChild(this.container);
+
+      const vnode = createVNode(UdLoading, options);
+      render(vnode, this.container);
+
+      this.instance = vnode.component?.proxy;
+      
+      if (!this.instance) {
+        console.error("[UdLoading] Failed to create instance");
+        this.close();
+      }
+    } catch (error) {
+      console.error("[UdLoading] Error opening loading:", error);
       this.close();
     }
-    this.container = document.createElement("div");
-    document.body.appendChild(this.container);
-
-    const vnode = createVNode(UdLoading, options);
-    render(vnode, this.container);
-
-    this.instance = vnode.component?.proxy;
   },
   close() {
-    if (this.container) {
-      render(null, this.container);
-      this.container.parentNode?.removeChild(this.container);
+    try {
+      if (this.container) {
+        render(null, this.container);
+        if (this.container.parentNode) {
+          this.container.parentNode.removeChild(this.container);
+        }
+        this.container = null;
+        this.instance = null;
+      }
+    } catch (error) {
+      console.error("[UdLoading] Error closing loading:", error);
+      // 強制清理
       this.container = null;
       this.instance = null;
     }
@@ -135,11 +171,32 @@ export { udLoading };
 
 // ud-ui插件註冊方法
 const install = app => {
-  Object.keys(udUtils).forEach(item => (app.config.globalProperties[item] = udUtils[item]));
-  udComponents.forEach(item => app.component(item.name, item));
-  app.config.globalProperties.udAxios = udAxios;
-  app.config.globalProperties.udAlert = udAlert;
-  app.config.globalProperties.udLoading = udLoading;
+  try {
+    // 註冊工具函數
+    if (udUtils && typeof udUtils === 'object') {
+      Object.keys(udUtils).forEach(item => {
+        if (udUtils[item] && typeof udUtils[item] === 'function') {
+          app.config.globalProperties[item] = udUtils[item];
+        }
+      });
+    }
+    
+    // 註冊組件
+    if (Array.isArray(udComponents)) {
+      udComponents.forEach(item => {
+        if (item && item.name) {
+          app.component(item.name, item);
+        }
+      });
+    }
+    
+    // 註冊全局屬性
+    app.config.globalProperties.udAxios = udAxios;
+    app.config.globalProperties.udAlert = udAlert;
+    app.config.globalProperties.udLoading = udLoading;
+  } catch (error) {
+    console.error("[UdUI] Error during installation:", error);
+  }
 };
 
 export default install;

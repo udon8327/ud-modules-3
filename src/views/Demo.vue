@@ -335,11 +335,7 @@ export default {
       })
         .then(() => {
           console.log("確定");
-          this.udAlert({
-            message: "確定",
-          }).then(() => {
-            this.udAlert(123);
-          })
+          this.udAlert(123);
         })
         .catch(() => {
           console.log("取消");
