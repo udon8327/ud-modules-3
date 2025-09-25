@@ -587,7 +587,7 @@ this.udLoading.close();
 
 ### props
 
-- text: 文字 | String("可帶入含標籤的HTML字段")
+- text: 文字(可帶入含標籤的HTML字段) | String
 
 ### <font color=#ebc600>ud-ellipsis：文字省略</font>
 

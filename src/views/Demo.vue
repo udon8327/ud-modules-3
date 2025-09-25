@@ -76,7 +76,7 @@
 
   .tools-area
     hr
-    ud-html.mb-2(text="<i>用戶</i>自定\n<h3>義訊息</h3><h1>標題</h1><h2>副標題</h2><h3>小標題</h3><h4>小標題</h4><h5>小標題</h5><h6>小標題</h6><p>段落</p><span>文字</span>")
+    ud-html.mb-2(text="<i>用戶</i>自定\n<h3>義訊息</h3><h1 class='title'>h1標題</h1><h2>h2副標題</h2><h3>h3小標題</h3><h4>h4小標題</h4><h5>h5小標題</h5><h6>h6小標題</h6><p>p文字</p><span>span行內文字</span>")
     ud-ellipsis.mb-2(:max-line="2") 文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略文字省略
     ud-countdown.mb-2(ref="countdown" :time="120" @timeup="timeup" type="minute")
 
