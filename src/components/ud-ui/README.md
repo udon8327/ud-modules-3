@@ -489,7 +489,7 @@ import image02 from "@/assets/images/picture/02.jpg";
 
 ### props
 
-- src: 背景圖片 | String("@/assets/images/picture/default.jpg")
+- src: 背景圖片(請使用import的圖片) | String("avatarDefault")
 - height: 高度比例 | Number(100)
 - radius: 圓角 | String("0px")
 - bgSize: 背景尺寸[cover, contain, 100%等] | String("cover")
@@ -529,13 +529,13 @@ this.udAlert({
 - msg: 訊息文字(功能同message，接受html語法) | String("")
 - maskClose: 點擊遮罩關閉 | Boolean(false)
 - btnClose: 右上關閉按鈕 | Boolean(false)
-- zIndex: z-index層級 | Number(120)
-- scrollLock: 是否鎖定背景頁面捲動 | Boolean(true)
 - confirm: 是否有確認+取消鈕 | Boolean(false)
 - confirmText: 確認鈕文字 | String("確定")
 - onConfirm: () => 確認鈕callback(也可使用.then) | Function(() => {})
 - cancelText: 取消鈕文字 | String("取消")
 - onCancel: 取消鈕callback(也可使用.catch) | Function(() => {})
+- scrollLock: 鎖定背景捲動 | Boolean(true)
+- zIndex: z-index層級 | Number(120)
 
 ### <font color=#ebc600>ud-modal：通用彈窗</font>
 
@@ -552,9 +552,9 @@ this.udAlert({
 - maskClose: 點擊遮罩關閉 | Boolean(false)
 - btnClose: 右上關閉按鈕 | Boolean(false)
 - fullScreen: 是否全螢幕 | Boolean(false)
-- zIndex: z-index層級 | Number(100)
 - noBg: 背景是否透明 | Boolean(false)
-- scrollLock: 是否鎖定背景捲動 | Boolean(true)
+- scrollLock: 鎖定背景捲動 | Boolean(true)
+- zIndex: z-index層級 | Number(100)
 
 ### <font color=#ebc600>ud-loading：載入中</font>
 
@@ -568,12 +568,13 @@ this.udLoading.open({
 this.udLoading.close();
 ```
 
-- fixed: 是否固定body | Boolean(false)
+- message: 載入訊息 (功能同msg，接受html語法) | String("")
+- msg: 載入訊息 (功能同message，接受html語法) | String("")
 - theme: 戴入主題 | String(例："white")
-- iconType: icon類型 | String("css")[css:CSS, font:字型, img:圖片]
-- iconFont: 字型icon的class | String(例："fas fa-spinner fa-pulse")
-- iconImg: 圖片icon的路徑 | String(例："https://image.flaticon.com/icons/svg/553/553265.svg")
-- message: 載入訊息 | String("")
+- iconType: icon類型[css, font, img] | String("css")
+- iconFont: 字型icon的class | String("fas fa-spinner fa-pulse")
+- iconImg: 圖片icon的路徑 | String("")
+- scrollLock: 鎖定背景捲動 | Boolean(true)
 - zIndex: z-index層級 | Number(140)
 
 ## Tools
@@ -637,7 +638,7 @@ methods: {
 
 ## String
 
-### <font color=#ebc600>nl2br：將字串內換行符\n轉為\<br\></font>
+### <font color=#ebc600>nl2br：將字串內換行符\n轉為\<br\>，並自動防護XSS攻擊</font>
 
 ```js
 nl2br((val = ""), (is_xhtml = false));

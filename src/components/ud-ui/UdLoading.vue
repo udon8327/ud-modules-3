@@ -17,7 +17,7 @@
             <img v-else class="icon-img" :src="iconImg" />
           </div>
           <div class="ud-modal-body">
-            <p v-html="nl2br(displayMessage)"></p>
+            <p v-html="formatHtml(displayMessage)"></p>
           </div>
         </div>
       </div>
@@ -31,16 +31,12 @@ import { nl2br } from "@/utils/ud-utils";
 export default {
   name: "UdLoading",
   props: {
-    fixed: { type: Boolean, default: true }, // 是否固定body
-    theme: { type: String, default: "" }, // 戴入主題 [white]
-    iconType: { type: String, default: "css" }, // icon類型 [css:CSS, font:字型, img:圖片]
+    message: { type: String, default: "" }, // 載入訊息(兼容msg，接受html語法)
+    theme: { type: String, default: "" }, // 戴入主題[white]
+    iconType: { type: String, default: "css" }, // icon類型[css:CSS, font:字型, img:圖片]
     iconFont: { type: String, default: "fas fa-spinner fa-pulse" }, // 字型icon的class
-    iconImg: {
-      type: String,
-      default: "https://image.flaticon.com/icons/svg/553/553265.svg"
-    }, // 圖片icon的路徑
-    message: { type: String, default: "" }, // 載入訊息 (功能同msg，接受html語法)
-    msg: { type: String, default: "" }, // 載入訊息 (功能同message，接受html語法)
+    iconImg: { type: String, default: "" }, // 圖片icon的路徑
+    scrollLock: { type: Boolean, default: true }, // 鎖定背景捲動
     zIndex: { type: Number, default: 140 } // z-index層級
   },
   data() {
@@ -52,12 +48,16 @@ export default {
   },
   computed: {
     displayMessage() {
-      return this.message === "" ? this.msg : this.message;
+      // 修正邏輯：優先使用 message，如果 message 為空或未定義則使用 msg
+      if (this.message !== "" && this.message != null) {
+        return this.message;
+      }
+      return this.msg;
     }
   },
   mounted() {
     this.isShow = true;
-    if (this.fixed && typeof document !== "undefined") {
+    if (this.scrollLock && typeof document !== "undefined") {
       this._prevOverflowY = document.body.style.overflowY || "";
       document.body.style.overflowY = "hidden";
       this._locked = true;
@@ -66,14 +66,16 @@ export default {
   beforeUnmount() {
     if (this._locked && typeof document !== "undefined") {
       document.body.style.overflowY = this._prevOverflowY;
+      this._prevOverflowY = "";
       this._locked = false;
     }
   },
   methods: {
-    nl2br(val) {
+    formatHtml(val) {
+      // 直接使用 ud-utils 中的 nl2br，已包含 XSS 防護
       return nl2br(val);
     }
-  }
+  } 
 };
 </script>
 

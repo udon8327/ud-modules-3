@@ -21,7 +21,7 @@ Layout
 Notice
   ud-alert：警告彈窗 (ok AI Tested)
   ud-modal：通用彈窗 (ok AI Tested)
-  ud-loading：載入中 (ok AI)
+  ud-loading：載入中 (ok AI Tested)
 
 Tools
   ud-html：用戶自定義訊息 (ok AI)

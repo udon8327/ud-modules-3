@@ -40,9 +40,9 @@ export default {
     maskClose: { type: Boolean, default: false }, // 點擊遮罩關閉
     btnClose: { type: Boolean, default: false }, // 右上關閉按鈕
     fullScreen: { type: Boolean, default: false }, // 是否全螢幕
-    zIndex: { type: Number, default: 100 }, // z-index層級
     noBg: { type: Boolean, default: false }, // 背景是否透明
-    scrollLock: { type: Boolean, default: true } // 是否鎖定背景捲動
+    scrollLock: { type: Boolean, default: true }, // 鎖定背景捲動
+    zIndex: { type: Number, default: 100 }, // z-index層級
   },
   computed: {
     isShow: {

@@ -35,12 +35,12 @@ export default {
     msg: { type: [String, Number, Boolean], default: "" }, // 訊息文字(功能同message，接受html語法)
     maskClose: { type: Boolean, default: false }, // 點擊遮罩關閉
     btnClose: { type: Boolean, default: false }, // 右上關閉按鈕
-    scrollLock: { type: Boolean, default: true }, // 是否鎖定背景頁面捲動
     confirm: { type: Boolean, default: false }, // 是否有確認+取消鈕
     confirmText: { type: String, default: "確定" }, // 確認鈕文字
     onConfirm: { type: Function, default: () => {} }, // 確認鈕callback(也可使用.then)
     cancelText: { type: String, default: "取消" }, // 取消鈕文字
     onCancel: { type: Function, default: () => {} }, // 取消鈕callback(也可使用.catch)
+    scrollLock: { type: Boolean, default: true }, // 是否鎖定背景頁面捲動
     zIndex: { type: Number, default: 120 } // z-index層級
   },
   data() {

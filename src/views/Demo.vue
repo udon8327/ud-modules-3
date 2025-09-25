@@ -60,11 +60,13 @@
           ud-arrow(color="#fff" size="8" width="5" direction="down" type="solid")
         ud-button(@click="isCollapse = !isCollapse") 摺疊容器
       ud-collapse(v-model="isCollapse" :duration="0.4")
-        ud-image(:src="image02" bg-size="contain")
+        ud-image(:src="image03" bg-size="contain")
     .image-wrapper.mb-2
-      img(:src="image01", alt="")
+      img(src="@/assets/images/picture/01.jpg", alt="")
+      img(:src="image02", alt="")
       img(src="https://imgur.com/DIC7dRT.jpg", alt="")
-      ud-image(:src="image01", alt="")
+      ud-image(src="@/assets/images/picture/01.jpg", alt="")
+      ud-image(:src="image02", alt="")
       ud-image(src="https://imgur.com/DIC7dRT.jpg", alt="")
 
   .notice-area
@@ -123,6 +125,7 @@
 <script>
 import image01 from "@/assets/images/picture/01.jpg";
 import image02 from "@/assets/images/picture/02.jpg";
+import image03 from "@/assets/images/picture/03.jpg";
 import liff from "@line/liff";
 
 export default {
@@ -130,8 +133,9 @@ export default {
   components: {},
   data() {
     return {
-      image02,
       image01,
+      image02,
+      image03,
       isModalShow: false,
       isCollapse: false,
       profile: {
@@ -547,6 +551,6 @@ export default {
     display: flex
     justify-content: space-between
     img, .ud-image
-      flex: 0 0 24%
-      max-width: 24%
+      flex: 0 0 16%
+      max-width: 16%
 </style>
