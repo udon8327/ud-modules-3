@@ -1,7 +1,9 @@
+import DOMPurify from 'dompurify';
+
 /*
 ==================== ud-utils 常用函式 ====================
 String
-  nl2br：將字串內換行符\n轉為<br>
+  nl2br：將字串內換行符\n轉為<br>，並自動防護XSS攻擊
   getRandomString：取得隨機字串
   copyText：複製文字至剪貼簿
 
@@ -49,15 +51,27 @@ Web
 
 //-----------------------String-----------------------
 /**
- * 將字串內換行符\n轉為<br>
+ * 將字串內換行符\n轉為<br>，並自動防護XSS攻擊
  * @param {string} val 傳入值
  * @param {boolean} is_xhtml 是否為xhtml 預設為false
+ * @param {boolean} sanitize 是否啟用XSS防護 預設為true
  * @example nl2br("Line1\nLine2") -> "Line1<br>Line2"
  */
-const nl2br = (val = "", isXhtml = false) => {
-  if (typeof val !== "string") return val;
+const nl2br = (val = "", isXhtml = false, sanitize = true) => {
+  // 確保所有值都轉換為字串
+  const stringVal = val != null ? String(val) : "";
   const breakTag = isXhtml ? "<br />" : "<br>";
-  return val.replace(/(\r\n|\n\r|\r|\n)/g, breakTag);
+  const withBreaks = stringVal.replace(/(\r\n|\n\r|\r|\n)/g, breakTag);
+  
+  // 如果啟用XSS防護且 DOMPurify 可用
+  if (sanitize && DOMPurify && DOMPurify.sanitize) {
+    return DOMPurify.sanitize(withBreaks, {
+      ALLOWED_TAGS: ['br', 'strong', 'em', 'u', 'b', 'i'], // 只允許安全的標籤
+      ALLOWED_ATTR: [] // 不允許任何屬性
+    });
+  }
+  
+  return withBreaks;
 };
 
 /**

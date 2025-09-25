@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import DOMPurify from "dompurify";
+import { nl2br } from "@/utils/ud-utils";
 
 export default {
   name: "UdHtml",
@@ -17,19 +17,8 @@ export default {
   },
   computed: {
     safeHtml() {
-      const html = this.nl2br(this.text || "");
-      return DOMPurify.sanitize(html, {
-        USE_PROFILES: { html: true },
-        FORBID_ATTR: [/^on/i],
-        ALLOW_UNKNOWN_PROTOCOLS: false
-      });
-    }
-  },
-  methods: {
-    nl2br(val = "", isXhtml = false) {
-      if (typeof val !== "string") return val;
-      const breakTag = isXhtml ? "<br />" : "<br>";
-      return val.replace(/(\r\n|\n\r|\r|\n)/g, breakTag);
+      // 直接使用 ud-utils 中的 nl2br，已包含 XSS 防護
+      return nl2br(this.text || "");
     }
   }
 };

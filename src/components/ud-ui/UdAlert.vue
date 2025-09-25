@@ -6,10 +6,10 @@
           <i class="icon-close"></i>
         </div>
         <div class="ud-modal-header" v-if="title">
-          <p v-html="nl2br(title)"></p>
+          <p v-html="formatHtml(title)"></p>
         </div>
         <div class="ud-modal-body">
-          <p v-html="nl2br(displayMessage)"></p>
+          <p v-html="formatHtml(displayMessage)"></p>
         </div>
         <div class="ud-modal-footer">
           <ud-button @click="cancelHandler" plain v-if="confirm">
@@ -25,7 +25,6 @@
 <script>
 import { nl2br } from "@/utils/ud-utils";
 import UdButton from "./UdButton.vue";
-import DOMPurify from "dompurify";
 
 export default {
   name: "UdAlert",
@@ -85,16 +84,9 @@ export default {
         this.reject = reject;
       });
     },
-    nl2br(val) {
-      // 確保所有值都轉換為字串
-      const stringVal = val != null ? String(val) : "";
-      // 先處理換行符
-      const withBreaks = nl2br(stringVal);
-      // 使用 DOMPurify 防止 XSS 攻擊
-      return DOMPurify.sanitize(withBreaks, {
-        ALLOWED_TAGS: ['br', 'strong', 'em', 'u', 'b', 'i'], // 只允許安全的標籤
-        ALLOWED_ATTR: [] // 不允許任何屬性
-      });
+    formatHtml(val) {
+      // 直接使用 ud-utils 中的 nl2br，已包含 XSS 防護
+      return nl2br(val);
     },
     confirmHandler() {
       if (this._isDestroyed) return;

@@ -2,7 +2,9 @@
 #demo
   ud-modal(v-model="isModalShow")
     h4.mb-2 通用彈窗
-    ud-image.mb-3(src="", alt="")
+    p(v-html="formatHtml('<img src=\"x\" onerror=\"alert(1)\">')")
+    p(v-html="formatHtml('將字串內換行符\\n轉為\<br\>，並自動防護XSS攻擊')")
+    ud-image.mb-3(:src="''" :alt="''")
     .button-wrapper.mb-2
       ud-button(@click="alert()") Alert
       ud-button(@click="showLoading") Loading
@@ -390,6 +392,9 @@ export default {
       setTimeout(() => {
         this.udLoading.close();
       }, 1000);
+    },
+    formatHtml(val) {
+      return this.nl2br(val);
     },
     openExternal() {
       location.href = "https://liff.line.me/1655285115-w926gzYP";
