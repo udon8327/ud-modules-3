@@ -107,12 +107,12 @@ udAxios.interceptors.response.use(
       // 請求已發出，有收到錯誤回應
       errorMsg = statusMsg[error.response.status] || "發生未知的錯誤";
       if (error.response.data?.message) errorMsg = error.response.data.message;
-    } else if (error?.request) {
-      // 請求已發出，但没有收到回應
-      errorMsg = "請求逾時或伺服器沒有回應";
     } else if (error.code === "ECONNABORTED") {
       // 請求超時
       errorMsg = "請求超時，請稍候再試";
+    } else if (error?.request) {
+      // 請求已發出，但没有收到回應
+      errorMsg = "請求逾時或伺服器沒有回應";
     } else {
       // 請求被取消或發送請求時異常
       errorMsg = "請求被取消或發送請求時異常";
