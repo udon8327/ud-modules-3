@@ -1,7 +1,11 @@
 {
-  "name": "vue3-vite",
+  "name": "ud-modules-3",
   "version": "1.0.0",
+  "description": "Vue 3 + Vite 模板專案，包含 UI 元件庫和常用工具",
+  "type": "module",
   "private": true,
+  "author": "Bohan Huang",
+  "license": "MIT",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
@@ -27,6 +31,11 @@
     "vite": "^6.3.5"
   },
   "engines": {
-    "node": ">=20.17.0"
-  }
+    "node": ">=22.20.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }
