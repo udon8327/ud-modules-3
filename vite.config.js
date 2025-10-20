@@ -61,21 +61,10 @@ export default defineConfig(async ({ command, mode }) => {
       https: httpsConfig,
       proxy: proxyConfig,
       port: devPort,
-      open: false,
-      // 預加載模組，加快開發伺服器啟動
-      preTransformRequests: ["/src/main.js"],
     },
     build: {
       outDir: env.VITE_APP_OUTPUT_DIR || "dist",
       sourcemap: mode === "development",
-      // 最小化配置，優化生產構建
-      minify: "terser",
-      terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true
-        }
-      },
       assetsInlineLimit: 10240,
     },
     css: {
