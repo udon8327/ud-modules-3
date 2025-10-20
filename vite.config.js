@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
+import basicSsl from "@vitejs/plugin-basic-ssl";
 import fs from "fs";
 import portfinder from "portfinder";
 
@@ -12,17 +13,28 @@ export default defineConfig(async ({ command, mode }) => {
   const useProxy = Boolean(env.VITE_APP_DEV_PROXY);
 
   // port 設定
-  const basePort = Number(env.VITE_APP_DEV_PORT) || 5173;
+  const basePort = Number(env.VITE_APP_DEV_PORT) || 8053;
   const devPort = isDev ? await portfinder.getPortPromise({ port: basePort }) : basePort;
 
   // https 設定
-  const httpsConfig =
-    isDev && useHttps
-      ? {
-          key: fs.readFileSync(env.VITE_APP_DEV_SSL_KEY),
-          cert: fs.readFileSync(env.VITE_APP_DEV_SSL_CERT)
-        }
-      : false;
+  let httpsConfig = false;
+  let plugins = [vue()];
+  
+  if (isDev && useHttps) {
+    if (env.VITE_APP_DEV_SSL_KEY && env.VITE_APP_DEV_SSL_CERT && 
+        fs.existsSync(env.VITE_APP_DEV_SSL_KEY) && 
+        fs.existsSync(env.VITE_APP_DEV_SSL_CERT)) {
+      // 使用提供的 SSL 金鑰和憑證
+      httpsConfig = {
+        key: fs.readFileSync(env.VITE_APP_DEV_SSL_KEY),
+        cert: fs.readFileSync(env.VITE_APP_DEV_SSL_CERT)
+      };
+    } else {
+      // 使用 @vitejs/plugin-basic-ssl 自動生成自簽憑證
+      plugins.push(basicSsl());
+      httpsConfig = true;
+    }
+  }
 
   // proxy 設定
   const proxyConfig =
@@ -38,7 +50,7 @@ export default defineConfig(async ({ command, mode }) => {
 
   return {
     base: env.VITE_APP_PUBLIC_PATH || "/",
-    plugins: [vue()],
+    plugins: plugins,
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url))
@@ -48,17 +60,29 @@ export default defineConfig(async ({ command, mode }) => {
       host: env.VITE_APP_DEV_HOST || "localhost",
       https: httpsConfig,
       proxy: proxyConfig,
-      port: devPort
+      port: devPort,
+      open: false,
+      // 預加載模組，加快開發伺服器啟動
+      preTransformRequests: ["/src/main.js"],
     },
     build: {
       outDir: env.VITE_APP_OUTPUT_DIR || "dist",
       sourcemap: mode === "development",
-      assetsInlineLimit: 10240
+      // 最小化配置，優化生產構建
+      minify: "terser",
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        }
+      },
+      assetsInlineLimit: 10240,
     },
     css: {
       preprocessorOptions: {
         sass: {
-          additionalData: `@use "@/style/variables" as *;`
+          additionalData: `@use "@/style/variables" as *;`,
+          quietDeps: true
         }
       }
     }
