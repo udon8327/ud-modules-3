@@ -10,9 +10,11 @@
 
   .form-area
     ud-form(:rules="rules" :model="formData" ref="form")
-      ud-form-item(label="姓名" prop="name" flex)
+      ud-form-item(label="姓名" prop="name" flex required)
         ud-input(ref="name" v-model.trim="formData.name" placeholder="請輸入您的姓名")
       ud-form-item(label="電話" prop="phone" flex)
+        template(#label)
+          p 電話#[span.required (必填)]
         ud-input(v-model.trim="formData.phone" placeholder="請輸入您的手機號碼" inputmode="tel" maxlength="10")
       ud-form-item(label="Email" prop="email" flex)
         ud-input(v-model.trim="formData.email" placeholder="請輸入您的Email" inputmode="email")
@@ -42,6 +44,10 @@
         ud-select-twzip(ref="zip" v-model="formData.twzip" flex)
       ud-form-item(label="是否啟用" prop="isActive" flex)
         ud-switch(v-model="formData.isActive" activeValue="Y" inactiveValue="N")
+      ud-form-item(label="驗證碼" prop="captcha" flex)
+        .captcha-wrapper
+          ud-input(v-model="formData.captcha" placeholder="驗證碼" maxlength="4")
+          ud-captcha(v-model="formData.captchaCode" noRefresh)
       ud-form-item(label="" prop="isAgree")
         ud-checkbox(v-model="formData.isAgree")
           p 我同意#[a(href="https://www.google.com.tw/") 使用者條款]
@@ -166,7 +172,9 @@ export default {
         twzip: ["", ""],
         date: ["", "", ""],
         isActive: "N",
-        isAgree: false
+        captcha: "",
+        captchaCode: "",
+        isAgree: false,
       },
       advancedFormData: {
         password: "",
@@ -188,6 +196,10 @@ export default {
         selectGroup: [{ type: "required" }],
         twzip: [{ type: "required" }],
         date: [{ type: "required" }],
+        captcha: [
+          { type: "required" },
+          { type: "equal", equalTo: "captchaCode", caseIgnore: "true" },
+        ],
         isAgree: [{ type: "required", message: "請先同意相關使用條款" }]
       },
       advancedRules: {
@@ -486,6 +498,19 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.form-area
+  .ud-form-item
+    span.required
+      color: $red
+      margin-left: 2px
+  .captcha-wrapper
+    display: flex
+    align-items: center
+    width: 100%
+    .ud-input
+      flex: 1 1 0
+      margin-right: 5px
+
 .liff-area
   .liff-wrapper
     display: flex

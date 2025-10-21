@@ -12,8 +12,10 @@
     >
       <img :src="icon" v-if="icon" />
       <label v-if="label" :style="{ 'text-align': labelAlign }">
-        <span v-if="required">*</span>
-        {{ label }}
+        <slot name="label">
+          <span class="star" v-if="required">*</span>
+          {{ label }}
+        </slot>
       </label>
     </div>
     <div class="ud-form-item-right">
@@ -222,7 +224,7 @@ export default {
         font-size: 16px
         position: relative
         margin-right: 5px
-        span
+        span.star
           color: $red
           font-size: 20px
           position: absolute

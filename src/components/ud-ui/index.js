@@ -10,6 +10,7 @@ Form
   ud-select-date：日期連動下拉框 (ok AI Tested)
   ud-select-twzip：台灣行政區連動下拉框 (ok AI Tested)
   ud-switch：開關 (ok AI Tested)
+  ud-captcha：圖形驗證碼 (ok AI Tested)
   ud-form-item：表單驗證容器 (ok AI Tested)
   ud-form：表單驗證 (ok AI Tested)
 
@@ -36,6 +37,7 @@ import * as udUtils from "@/utils/ud-utils";
 import UdAlert from "./UdAlert.vue";
 import UdArrow from "./UdArrow.vue";
 import UdButton from "./UdButton.vue";
+import UdCaptcha from "./UdCaptcha.vue";
 import UdCheckbox from "./UdCheckbox.vue";
 import UdCollapse from "./UdCollapse.vue";
 import UdCountdown from "./UdCountdown.vue";
@@ -59,6 +61,7 @@ const udComponents = [
   UdAlert,
   UdArrow,
   UdButton,
+  UdCaptcha,
   UdCheckbox,
   UdCollapse,
   UdCountdown,

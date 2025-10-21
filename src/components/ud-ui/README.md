@@ -298,13 +298,41 @@ data: {
 - activeValue: 開啟的值 | String
 - inactiveValue: 關閉的值 | String
 
+### <font color=#ebc600>ud-captcha：圖形驗證碼</font>
+
+純前端的圖形驗證碼
+
+```html
+<ud-captcha ref="captcha" v-model="formData.captchaValue">
+```
+### props
+
+- color: 字體顏色 | String("#989799")
+- bgColor: 背景顏色 | String("#000")
+- lineColor: 隨機點線的顏色 | String("#777")
+- font: 字體設定 | String("20px Arial")
+- noLine: 無隨機線 | Boolean(false)
+- noDots: 無隨機點 | Boolean(false)
+- noRefresh: 無刷新鈕 | Boolean(false)
+
+
 ### <font color=#ebc600>ud-form-item：表單驗證容器</font>
 
-基本與ud-form搭配使用，使用方式與驗證格式請參照ud-form
+基本與ud-form搭配使用，使用方式與驗證格式請參照ud-form，<br>
+可用\<template #label\>插入自定義label內容
+
+```html
+  <ud-form-item label="姓名" prop="name" flex>
+    <template #label>
+      <p>姓名#[span.required (必填)</p>
+    </template>
+    <ud-input v-model.trim="formData.name" placeholder="請輸入您的姓名"></ud-input>
+  </ud-form-item>
+```
 
 ### props
 
-- required: 必填提示 | Boolean(false),
+- required: 必填提示(純星號提示不影響實際驗證) | Boolean(false),
 - icon: icon路徑 | String
 - label: 標籤內容 | String
 - prop: 驗證名稱 | String
@@ -639,6 +667,7 @@ methods: {
 - resume: 恢復倒數 | Function(() => {})
 - reset: 重置倒數 | Function(() => {})
 - timeup: 倒數時間到($emit) | Function(() => {})
+
 
 # <font color="aqua">ud-utils 常用函式</font>
 
