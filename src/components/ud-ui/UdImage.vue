@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import avatarDefault from "@/assets/images/picture/default.jpg";
+import avatarDefault from "@/assets/common/picture/default.jpg";
 
 export default {
   name: "UdImage",

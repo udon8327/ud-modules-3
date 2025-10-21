@@ -65,10 +65,10 @@
       ud-collapse(v-model="isCollapse" :duration="0.4")
         ud-image(:src="image03" bg-size="contain")
     .image-wrapper.mb-2
-      img(src="@/assets/images/picture/01.jpg", alt="")
+      img(src="@/assets/01.jpg", alt="")
       img(:src="image02", alt="")
       img(src="https://imgur.com/DIC7dRT.jpg", alt="")
-      ud-image(src="@/assets/images/picture/01.jpg", alt="UdImage請用import的圖片不然讀不到圖")
+      ud-image(src="@/assets/01.jpg", alt="UdImage請用import的圖片不然讀不到圖")
       ud-image(:src="image02", alt="")
       ud-image(src="https://imgur.com/DIC7dRT.jpg", alt="")
 
@@ -138,9 +138,9 @@
 </template>
 
 <script>
-import image01 from "@/assets/images/picture/01.jpg";
-import image02 from "@/assets/images/picture/02.jpg";
-import image03 from "@/assets/images/picture/03.jpg";
+import image01 from "@/assets/01.jpg";
+import image02 from "@/assets/02.jpg";
+import image03 from "@/assets/03.jpg";
 import liff from "@line/liff";
 
 export default {

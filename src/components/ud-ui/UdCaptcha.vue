@@ -6,7 +6,7 @@
       <input type="hidden" v-model="value">
     </div>
     <div class="refresh" @click="refresh" v-if="!noRefresh">
-      <img src="@/assets/images/icon/refresh.png">
+      <img src="@/assets/common/icon/refresh.png">
     </div>
   </div>
 </template>

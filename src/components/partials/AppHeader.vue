@@ -1,6 +1,6 @@
 <template lang="pug">
 #app-header
-  img(src="@/assets/images/logo/logo.png")
+  img(src="@/assets/common/logo/logo.png")
 </template>
 
 <script>

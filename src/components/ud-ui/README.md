@@ -509,10 +509,10 @@ methods: {
 
 ```html
 <ud-image src="https://imgur.com/DIC7dRT.jpg" :height="50"></ud-image>
-<ud-image src="@/assets/images/picture/01.jpg" bg-size="contain" bg-size="50% 50%"></ud-image>
+<ud-image src="@/assets/01.jpg" bg-size="contain" bg-size="50% 50%"></ud-image>
 <ud-image :src="image02" lazy alt="這是圖片"></ud-image>
 
-import image02 from "@/assets/images/picture/02.jpg";
+import image02 from "@/assets/02.jpg";
 ```
 
 ### props
