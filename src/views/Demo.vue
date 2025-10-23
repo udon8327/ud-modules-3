@@ -174,7 +174,7 @@ export default {
         isActive: "N",
         captcha: "",
         captchaCode: "",
-        isAgree: false,
+        isAgree: false
       },
       advancedFormData: {
         password: "",
@@ -196,10 +196,7 @@ export default {
         selectGroup: [{ type: "required" }],
         twzip: [{ type: "required" }],
         date: [{ type: "required" }],
-        captcha: [
-          { type: "required" },
-          { type: "equal", equalTo: "captchaCode", caseIgnore: "true" },
-        ],
+        captcha: [{ type: "required" }, { type: "equal", equalTo: "captchaCode", caseIgnore: "true" }],
         isAgree: [{ type: "required", message: "請先同意相關使用條款" }]
       },
       advancedRules: {

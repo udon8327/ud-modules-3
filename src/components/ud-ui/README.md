@@ -303,8 +303,9 @@ data: {
 純前端的圖形驗證碼
 
 ```html
-<ud-captcha ref="captcha" v-model="formData.captchaValue">
+<ud-captcha ref="captcha" v-model="formData.captchaValue"></ud-captcha>
 ```
+
 ### props
 
 - color: 字體顏色 | String("#989799")
@@ -315,19 +316,18 @@ data: {
 - noDots: 無隨機點 | Boolean(false)
 - noRefresh: 無刷新鈕 | Boolean(false)
 
-
 ### <font color=#ebc600>ud-form-item：表單驗證容器</font>
 
 基本與ud-form搭配使用，使用方式與驗證格式請參照ud-form，<br>
 可用\<template #label\>插入自定義label內容
 
 ```html
-  <ud-form-item label="姓名" prop="name" flex>
-    <template #label>
-      <p>姓名#[span.required (必填)</p>
-    </template>
-    <ud-input v-model.trim="formData.name" placeholder="請輸入您的姓名"></ud-input>
-  </ud-form-item>
+<ud-form-item label="姓名" prop="name" flex>
+  <template #label>
+    <p>姓名#[span.required (必填)</p>
+  </template>
+  <ud-input v-model.trim="formData.name" placeholder="請輸入您的姓名"></ud-input>
+</ud-form-item>
 ```
 
 ### props
@@ -667,7 +667,6 @@ methods: {
 - resume: 恢復倒數 | Function(() => {})
 - reset: 重置倒數 | Function(() => {})
 - timeup: 倒數時間到($emit) | Function(() => {})
-
 
 # <font color="aqua">ud-utils 常用函式</font>
 

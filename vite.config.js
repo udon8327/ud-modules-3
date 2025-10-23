@@ -19,11 +19,14 @@ export default defineConfig(async ({ command, mode }) => {
   // https 設定
   let httpsConfig = false;
   let plugins = [vue()];
-  
+
   if (isDev && useHttps) {
-    if (env.VITE_APP_DEV_SSL_KEY && env.VITE_APP_DEV_SSL_CERT && 
-        fs.existsSync(env.VITE_APP_DEV_SSL_KEY) && 
-        fs.existsSync(env.VITE_APP_DEV_SSL_CERT)) {
+    if (
+      env.VITE_APP_DEV_SSL_KEY &&
+      env.VITE_APP_DEV_SSL_CERT &&
+      fs.existsSync(env.VITE_APP_DEV_SSL_KEY) &&
+      fs.existsSync(env.VITE_APP_DEV_SSL_CERT)
+    ) {
       // 使用提供的 SSL 金鑰和憑證
       httpsConfig = {
         key: fs.readFileSync(env.VITE_APP_DEV_SSL_KEY),
@@ -60,12 +63,12 @@ export default defineConfig(async ({ command, mode }) => {
       host: env.VITE_APP_DEV_HOST || "localhost",
       https: httpsConfig,
       proxy: proxyConfig,
-      port: devPort,
+      port: devPort
     },
     build: {
       outDir: env.VITE_APP_OUTPUT_DIR || "dist",
       sourcemap: mode === "development",
-      assetsInlineLimit: 10240,
+      assetsInlineLimit: 10240
     },
     css: {
       preprocessorOptions: {
