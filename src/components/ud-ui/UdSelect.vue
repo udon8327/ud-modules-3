@@ -1,9 +1,9 @@
 <template>
-  <div class="ud-select">
+  <div class="ud-select" :class="$attrs.class" :style="$attrs.style">
     <select
       ref="select"
       v-model="value"
-      v-bind="$attrs"
+      v-bind="filteredAttrs"
       :data-placeholder-selected="isEmpty"
       :class="{ hasValue: !isEmpty }"
       @change="onChange"
@@ -46,6 +46,10 @@ export default {
     };
   },
   computed: {
+    filteredAttrs() {
+      const { class: classAttr, style, ...attrs } = this.$attrs;
+      return attrs;
+    },
     isMultiple() {
       return "multiple" in this.$attrs;
     },

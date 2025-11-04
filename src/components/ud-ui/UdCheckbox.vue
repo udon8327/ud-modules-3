@@ -1,11 +1,11 @@
 <template>
-  <div class="ud-checkbox" :class="{ 'is-flex': flex }" role="group">
+  <div class="ud-checkbox" :class="[$attrs.class, { 'is-flex': flex }]" :style="$attrs.style" role="group">
     <template v-if="Array.isArray(options) && options.length">
       <label v-for="option in validOptions" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
         <input
           type="checkbox"
           v-model="value"
-          v-bind="$attrs"
+          v-bind="filteredAttrs"
           :value="option[valueBy]"
           :disabled="option.disabled"
           @change="onChange"
@@ -19,7 +19,7 @@
         <input
           type="checkbox"
           v-model="value"
-          v-bind="$attrs"
+          v-bind="filteredAttrs"
           :true-value="true"
           :false-value="false"
           :disabled="disabled"
@@ -46,6 +46,10 @@ export default {
     disabled: { type: Boolean, default: false } // 單一選項模式的禁用
   },
   computed: {
+    filteredAttrs() {
+      const { class: classAttr, style, ...attrs } = this.$attrs;
+      return attrs;
+    },
     value: {
       get() {
         if (Array.isArray(this.options) && this.options.length) {

@@ -1,10 +1,10 @@
 <template>
-  <div class="ud-switch">
+  <div class="ud-switch" :class="$attrs.class" :style="$attrs.style">
     <label :class="{ 'is-disabled': disabled }">
       <input
         type="checkbox"
         :checked="value"
-        v-bind="$attrs"
+        v-bind="filteredAttrs"
         :disabled="disabled"
         role="switch"
         :aria-checked="value"
@@ -30,6 +30,10 @@ export default {
     inactiveValue: { default: false } // 關閉的值
   },
   computed: {
+    filteredAttrs() {
+      const { class: classAttr, style, ...attrs } = this.$attrs;
+      return attrs;
+    },
     value: {
       get() {
         return this.modelValue === this.activeValue;

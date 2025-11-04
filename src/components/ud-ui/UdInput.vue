@@ -1,9 +1,9 @@
 <template>
-  <div class="ud-input">
+  <div class="ud-input" :class="$attrs.class" :style="$attrs.style">
     <input
       ref="input"
       v-model="value"
-      v-bind="$attrs"
+      v-bind="filteredAttrs"
       :class="{ 'is-center': center }"
       @input="onInput"
       @change="onChange"
@@ -32,6 +32,10 @@ export default {
     };
   },
   computed: {
+    filteredAttrs() {
+      const { class: classAttr, style, ...attrs } = this.$attrs;
+      return attrs;
+    },
     value: {
       get() {
         // 避免 input 綁定 null/undefined 造成告警，轉為空字串

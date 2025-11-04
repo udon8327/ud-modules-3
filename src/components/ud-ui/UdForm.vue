@@ -7,7 +7,6 @@
 <script>
 export default {
   name: "UdForm",
-  inheritAttrs: false,
   provide() {
     return {
       registerFormItem: this.registerFormItem,

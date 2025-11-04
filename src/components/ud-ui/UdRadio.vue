@@ -1,11 +1,11 @@
 <template>
-  <div class="ud-radio" :class="{ 'is-flex': flex }" role="radiogroup">
+  <div class="ud-radio" :class="[$attrs.class, { 'is-flex': flex }]" :style="$attrs.style" role="radiogroup">
     <template v-if="options && options.length > 0">
       <label v-for="option in validOptions" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
         <input
           type="radio"
           v-model="value"
-          v-bind="$attrs"
+          v-bind="filteredAttrs"
           :name="groupName"
           :value="option[valueBy]"
           :disabled="option.disabled"
@@ -33,6 +33,10 @@ export default {
     valueBy: { type: String, default: "value" } // value替代值
   },
   computed: {
+    filteredAttrs() {
+      const { class: classAttr, style, ...attrs } = this.$attrs;
+      return attrs;
+    },
     value: {
       get() {
         return this.modelValue;

@@ -1,5 +1,5 @@
 <template>
-  <div class="ud-button">
+  <div class="ud-button" :class="$attrs.class" :style="$attrs.style">
     <button
       ref="button"
       v-bind="filteredAttrs"
@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     filteredAttrs() {
-      const { onClick, ...attrs } = this.$attrs;
+      const { class: classAttr, style, onClick, ...attrs } = this.$attrs;
       return attrs;
     }
   },

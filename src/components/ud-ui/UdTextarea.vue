@@ -1,9 +1,9 @@
 <template>
-  <div class="ud-textarea">
+  <div class="ud-textarea" :class="$attrs.class" :style="$attrs.style">
     <textarea
       ref="textarea"
       v-model="value"
-      v-bind="$attrs"
+      v-bind="filteredAttrs"
       :rows="rows"
       :maxlength="maxlength"
       :class="{ 'is-no-resize': noResize }"
@@ -35,6 +35,10 @@ export default {
     modelModifiers: { type: Object, default: () => ({}) }
   },
   computed: {
+    filteredAttrs() {
+      const { class: classAttr, style, ...attrs } = this.$attrs;
+      return attrs;
+    },
     value: {
       get() {
         return this.modelValue === null || this.modelValue === undefined ? "" : String(this.modelValue);
