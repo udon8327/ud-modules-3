@@ -128,7 +128,7 @@ export default {
 <style lang="sass" scoped>
 .ud-form
   &.is-no-error-msg
-    ::v-deep(.ud-form-item)
+    :deep(.ud-form-item)
       &.is-error
         .ud-form-item-right
           >div

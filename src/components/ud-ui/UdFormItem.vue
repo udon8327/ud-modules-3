@@ -236,7 +236,7 @@ export default {
   &.is-error
     .ud-form-item-right
       position: relative
-      ::v-deep(>div)
+      :deep(>div)
         input,textarea,select
           border: 1px solid $red
           &:focus
