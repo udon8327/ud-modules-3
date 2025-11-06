@@ -2,14 +2,12 @@
   <div class="ud-input" :class="$attrs.class" :style="$attrs.style">
     <input
       ref="input"
-      v-model="value"
       v-bind="filteredAttrs"
       :class="{ 'is-center': center }"
+      :value="modelValue"
       @input="onInput"
       @change="onChange"
-      @keydown.enter="onEnter"
       @compositionstart="onCompositionStart"
-      @compositionupdate="onCompositionUpdate"
       @compositionend="onCompositionEnd"
     />
     <slot></slot>
@@ -21,10 +19,9 @@ export default {
   name: "UdInput",
   inheritAttrs: false,
   props: {
-    modelValue: { default: null }, // 綁定值
+    modelValue: { type: [String, Number], default: "" }, // 綁定值
     center: { type: Boolean, default: false }, // 是否置中
-    // 支援 v-model 修飾子：v-model.trim / v-model.number / v-model.lazy
-    modelModifiers: { type: Object, default: () => ({}) }
+    modelModifiers: { type: Object, default: () => ({}) } // v-model修飾子
   },
   data() {
     return {
@@ -36,57 +33,30 @@ export default {
       const { class: classAttr, style, ...attrs } = this.$attrs;
       return attrs;
     },
-    value: {
-      get() {
-        // 避免 input 綁定 null/undefined 造成告警，轉為空字串
-        return this.modelValue === null || this.modelValue === undefined ? "" : this.modelValue;
-      },
-      set(val) {
-        this.$emit("update:modelValue", val);
-      }
-    }
   },
   mounted() {},
+  emits: ["update:modelValue", "input", "change"],
   methods: {
-    normalize(val) {
-      let output = val;
-      const mods = this.modelModifiers || {};
-      if (typeof output === "string" && mods.trim) {
-        output = output.trim();
-      }
-      if (mods.number) {
-        if (typeof output === "string") {
-          if (output === "") return null; // 對齊 Vue 對空字串的處理
-          const n = Number(output);
-          output = Number.isNaN(n) ? output : n;
-        }
-      }
-      return output;
+    onInput(e) {
+      if (this.isComposing) return; // 避免中途 IME 組字觸發
+      if (this.modelModifiers.lazy) return; // lazy 模式只在 change 時觸發
+      this.$emit("input", e);
+      this.$emit("update:modelValue", this.formatValue(e.target.value));
+      this.$mitt.emit("validate"); // 通知FormItem校驗
     },
-    onInput(evt) {
-      // 中文輸入法期間暫停觸發，避免重複驗證和更新
-      if (this.isComposing) return;
-
-      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗（若存在）
-      const mods = this.modelModifiers || {};
-      if (mods.lazy) return; // lazy 僅在 change 觸發更新
-      const raw = evt && evt.target ? evt.target.value : this.$refs.input?.value;
-      this.$emit("update:modelValue", this.normalize(raw));
+    onChange(e) {
+      this.$emit("change", e);
+      this.$emit("update:modelValue", this.formatValue(e.target.value));
+      this.$mitt.emit("validate"); // 通知FormItem校驗
     },
-    onChange(evt) {
-      const raw = evt && evt.target ? evt.target.value : this.$refs.input?.value;
-      const val = this.normalize(raw);
-      const mods = this.modelModifiers || {};
-      // lazy 模式下，change 事件觸發 update:modelValue
-      if (mods.lazy) {
-        this.$emit("update:modelValue", val);
-      }
-      this.$emit("change", val);
+    onCompositionStart() {
+      this.isComposing = true;
     },
-    onEnter(evt) {
-      const raw = evt && evt.target ? evt.target.value : this.$refs.input?.value;
-      const val = this.normalize(raw);
-      this.$emit("enter", val);
+    onCompositionEnd(e) {
+      this.isComposing = false;
+      this.$emit("input", e);
+      this.$emit("update:modelValue", this.formatValue(e.target.value));
+      this.$mitt.emit("validate"); // 通知FormItem校驗
     },
     focus() {
       this.$refs.input?.focus();
@@ -94,23 +64,17 @@ export default {
     blur() {
       this.$refs.input?.blur();
     },
-    // 中文輸入法事件處理
-    onCompositionStart() {
-      this.isComposing = true;
+    formatValue(value) {
+      const mods = this.modelModifiers;
+      // .trim
+      if (mods.trim) value = value.trim();
+      // .number
+      if (mods.number) {
+        const parsed = parseFloat(value);
+        value = isNaN(parsed) ? value : parsed;
+      }
+      return value;
     },
-    onCompositionUpdate() {
-      // compositionupdate 期間保持 isComposing 為 true
-      this.isComposing = true;
-    },
-    onCompositionEnd(evt) {
-      this.isComposing = false;
-      // 中文輸入法結束後，觸發數據更新和驗證
-      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate");
-      const mods = this.modelModifiers || {};
-      if (mods.lazy) return; // lazy 模式下不在此處觸發更新
-      const raw = evt && evt.target ? evt.target.value : this.$refs.input?.value;
-      this.$emit("update:modelValue", this.normalize(raw));
-    }
   }
 };
 </script>

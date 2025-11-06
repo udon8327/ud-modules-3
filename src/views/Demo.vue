@@ -11,7 +11,9 @@
   .form-area
     ud-form(:rules="rules" :model="formData" ref="form")
       ud-form-item(label="姓名" prop="name" flex required)
-        ud-input(ref="name" v-model.trim="formData.name" placeholder="請輸入您的姓名")
+        p {{ formData.name }}
+        //- input(v-model.trim.number="formData.name" placeholder="請輸入您的姓名" @input="onInput" @change="onChange")
+        ud-input.test(ref="name" v-model.trim.number="formData.name" placeholder="請輸入您的姓名" @input="onInput($event.target.value)" @change="onChange")
       ud-form-item(label="電話" prop="phone" flex)
         template(#label)
           p 電話#[span.required (必填)]
@@ -26,6 +28,11 @@
         ud-radio(v-model="formData.radio" :options="options" flex)
       ud-form-item(label="多選" prop="checkbox" flex)
         ud-checkbox(v-model="formData.checkbox" :options="options" flex)
+      ud-form-item(label="多選(獨立)" prop="checkbox" flex)
+        .button-wrapper.select.mb-2
+          .checkbox(v-for="option in options" :key="option.value")
+            ud-checkbox(v-model="formData.checkbox" :option="option.value" :disabled="option.disabled")
+              p {{ option.label }}
       ud-form-item(label="下拉" prop="select" flex)
         ud-select(v-model="formData.select" :options="options" flex center)
       ud-form-item(label="下拉連動" prop="selectGroup" flex)
@@ -49,7 +56,8 @@
           ud-input(v-model="formData.captcha" placeholder="驗證碼" maxlength="4")
           ud-captcha(v-model="formData.captchaCode" noRefresh)
       ud-form-item(label="" prop="isAgree")
-        ud-checkbox(v-model="formData.isAgree")
+        input(type="checkbox" v-model="formData.isAgree" @change="onChange")
+        ud-checkbox(v-model="formData.isAgree" @change="onChange")
           p 我同意#[a(href="https://www.google.com.tw/") 使用者條款]
     .button-wrapper.mb-2
       ud-button(@click="clearVerify" plain) 清除驗證
@@ -318,6 +326,24 @@ export default {
     this.liffLogin();
   },
   methods: {
+    onChange(val) {
+      console.log("onChange: ", val);
+    },
+    onInput(val) {
+      console.log("onInput: ", val);
+    },
+    onFocus(val) {
+      console.log("onFocus: ", val);
+    },
+    onBlur(val) {
+      console.log("onBlur: ", val);
+    },
+    onKeydown(val) {
+      console.log("onKeydown: ", val);
+    },
+    onKeyup(val) {
+      console.log("onKeyup: ", val);
+    },
     getData() {
       this.udAxios
         .get("test/400/失敗了", {
@@ -529,6 +555,9 @@ export default {
   display: flex
   justify-content: space-between
   gap: 10px
+  &.select
+    gap: 12px
+    justify-content: flex-start
   .ud-button
     flex: 1 1 0
 
