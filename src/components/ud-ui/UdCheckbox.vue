@@ -69,12 +69,9 @@ export default {
   },
   methods: {
     onChange(evt) {
-      // 如果選項被禁用，不處理事件
-      if (evt && evt.target && evt.target.disabled) return;
-      // 通知FormItem校驗
-      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate");
+      if (evt && evt.target && evt.target.disabled) return; // 如果選項被禁用，不處理事件
       this.$emit('change', evt.target.value);
-      console.log('evt.target.value: ', evt.target.value);
+      this.$mitt.emit("validate"); // 通知FormItem校驗
     }
   }
 };
