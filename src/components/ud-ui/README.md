@@ -261,9 +261,9 @@ data: {
 
 ```html
 <ud-select-date v-model="formData.date" flex third roc>
-  <p>年</p>
-  <p slot="second">月</p>
-  <p slot="third">日</p>
+  <template #first><p>年</p></template>
+  <template #second><p>月</p></template>
+  <template #third><p>日</p></template>
 </ud-select-date>
 ```
 

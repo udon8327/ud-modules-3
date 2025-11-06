@@ -7,7 +7,7 @@
       :placeholder="placeholder[0]"
       @validate="validate"
     ></ud-select>
-    <slot></slot>
+    <slot name="first"></slot>
     <ud-select
       :modelValue="value[1]"
       @update:modelValue="onPartChange(1, $event)"
