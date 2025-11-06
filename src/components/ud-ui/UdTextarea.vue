@@ -2,16 +2,14 @@
   <div class="ud-textarea" :class="$attrs.class" :style="$attrs.style">
     <textarea
       ref="textarea"
-      v-model="value"
       v-bind="filteredAttrs"
+      :class="{ 'is-no-resize': noResize }"
+      :value="modelValue"
       :rows="rows"
       :maxlength="maxlength"
-      :class="{ 'is-no-resize': noResize }"
       @input="onInput"
       @change="onChange"
-      @keydown.enter="onEnter"
       @compositionstart="onCompositionStart"
-      @compositionupdate="onCompositionUpdate"
       @compositionend="onCompositionEnd"
     ></textarea>
     <div class="textarea-limit" v-if="showLimit" :class="{ 'limit-input': valueLength > 0 }">
@@ -25,102 +23,70 @@ export default {
   name: "UdTextarea",
   inheritAttrs: false,
   props: {
-    modelValue: { default: null }, // 綁定值
+    modelValue: { type: [String, Number], default: "" }, // 綁定值
     rows: { type: Number, default: 4 }, // 預設行數
     showLimit: { type: Boolean, default: false }, // 是否顯示字數限制
     limit: { type: Number, default: 0 }, // 字數限制
     maxlength: { type: [Number, String], default: null }, // 最大字數限制
     noResize: { type: Boolean, default: false }, // 禁止改變大小
-    // 支援 v-model 修飾子：trim / number / lazy
-    modelModifiers: { type: Object, default: () => ({}) }
+    modelModifiers: { type: Object, default: () => ({}) } // v-model修飾子
+  },
+  data() {
+    return {
+      isComposing: false // 中文輸入法狀態追蹤
+    };
   },
   computed: {
     filteredAttrs() {
       const { class: classAttr, style, ...attrs } = this.$attrs;
       return attrs;
     },
-    value: {
-      get() {
-        return this.modelValue === null || this.modelValue === undefined ? "" : String(this.modelValue);
-      },
-      set(val) {
-        this.$emit("update:modelValue", val);
-      }
-    },
     valueLength() {
       return String(this.value ?? "").length;
     }
   },
-  watch: {},
-  data() {
-    return {
-      _isComposing: false
-    };
-  },
+  mounted() {},
+  emits: ["update:modelValue", "input", "change"],
   methods: {
-    normalize(val) {
-      let output = val;
-      const mods = this.modelModifiers || {};
-      if (typeof output === "string" && mods.trim) {
-        output = output.trim();
-      }
-      if (mods.number) {
-        if (typeof output === "string") {
-          if (output === "") return null;
-          const n = Number(output);
-          output = Number.isNaN(n) ? output : n;
-        }
-      }
-      return output;
+    onInput(e) {
+      if (this.isComposing) return; // 避免中途 IME 組字觸發
+      if (this.modelModifiers.lazy) return; // lazy 模式只在 change 時觸發
+      this.$emit("input", e);
+      this.$emit("update:modelValue", this.formatValue(e.target.value));
+      this.$mitt.emit("validate"); // 通知FormItem校驗
     },
-    onInput(evt) {
-      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
-      const mods = this.modelModifiers || {};
-      if (this._isComposing) return; // 中文輸入組字中不更新
-      if (mods.lazy) return; // lazy 僅在 change 同步
-      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
-      this.$emit("update:modelValue", this.normalize(raw));
+    onChange(e) {
+      this.$emit("change", e);
+      this.$emit("update:modelValue", this.formatValue(e.target.value));
+      this.$mitt.emit("validate"); // 通知FormItem校驗
     },
     onCompositionStart() {
-      this._isComposing = true;
+      this.isComposing = true;
     },
-    onCompositionUpdate() {
-      // compositionupdate 期間保持 _isComposing 為 true
-      this._isComposing = true;
-    },
-    onCompositionEnd(evt) {
-      this._isComposing = false;
-      // 中文輸入法結束後，觸發數據更新和驗證
-      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate");
-      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
-      const mods = this.modelModifiers || {};
-      if (!mods.lazy) {
-        this.$emit("update:modelValue", this.normalize(raw));
-      }
-    },
-    onChange(evt) {
-      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
-      const val = this.normalize(raw);
-      const mods = this.modelModifiers || {};
-      // lazy 模式下，change 事件觸發 update:modelValue
-      if (mods.lazy) {
-        this.$emit("update:modelValue", val);
-      }
-      this.$emit("change", val);
-    },
-    onEnter(evt) {
-      const raw = evt && evt.target ? evt.target.value : this.$refs.textarea?.value;
-      const val = this.normalize(raw);
-      this.$emit("enter", val);
+    onCompositionEnd(e) {
+      this.isComposing = false;
+      this.$emit("input", e);
+      this.$emit("update:modelValue", this.formatValue(e.target.value));
+      this.$mitt.emit("validate"); // 通知FormItem校驗
     },
     focus() {
       this.$refs.textarea?.focus();
     },
     blur() {
       this.$refs.textarea?.blur();
-    }
+    },
+    formatValue(value) {
+      const mods = this.modelModifiers;
+      // .trim
+      if (mods.trim) value = value.trim();
+      // .number
+      if (mods.number) {
+        const parsed = parseFloat(value);
+        value = isNaN(parsed) ? value : parsed;
+      }
+      return value;
+    },
   },
-  mounted() {}
 };
 </script>
 
