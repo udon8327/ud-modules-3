@@ -1,7 +1,7 @@
 <template>
   <div class="ud-checkbox" :class="[$attrs.class, { 'is-flex': flex }]" :style="$attrs.style" role="group">
-    <template v-if="Array.isArray(options) && options.length">
-      <label v-for="option in validOptions" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
+    <template v-if="options">
+      <label v-for="option in options" :key="option[valueBy]" :class="{ 'is-disabled': option.disabled }">
         <input
           type="checkbox"
           v-model="value"
@@ -9,9 +9,10 @@
           :value="option[valueBy]"
           :disabled="option.disabled"
           @change="onChange"
-        />
-        <div class="checkbox-decorator" :style="{ 'border-radius': radius }"></div>
-        <p>{{ option[labelBy] }}</p>
+          ref="checkbox"
+        >
+        <div class="checkbox-decorator"></div>
+        <p v-if="!noLabel">{{ option[labelBy] }}</p>
       </label>
     </template>
     <template v-else>
@@ -19,14 +20,14 @@
         <input
           type="checkbox"
           v-model="value"
+          :value="option"
           v-bind="filteredAttrs"
-          :true-value="true"
-          :false-value="false"
           :disabled="disabled"
           @change="onChange"
-        />
-        <div class="checkbox-decorator" :style="{ 'border-radius': radius }"></div>
-        <p><slot></slot></p>
+          ref="checkbox"
+        >
+        <div class="checkbox-decorator"></div>
+        <p v-if="!noLabel"><slot>{{ option }}</slot></p>
       </label>
     </template>
   </div>
@@ -38,12 +39,13 @@ export default {
   inheritAttrs: false,
   props: {
     modelValue: { default: null }, // 綁定值 (單個時綁定Boolean，多個時綁定Array)
-    options: { default: null }, // 選項
+    option: { default: true }, // 單選項
+    options: { default: null }, // 多選項
     flex: { type: Boolean, default: false }, // 是否並排
-    radius: { type: String, default: "3px" }, // 圓角
+    disabled: { type: Boolean, default: false }, // 單選項時是否禁用
+    noLabel: { type: Boolean, default: false }, // 是否有label
     labelBy: { type: String, default: "label" }, // label替代值
     valueBy: { type: String, default: "value" }, // value替代值
-    disabled: { type: Boolean, default: false } // 單一選項模式的禁用
   },
   computed: {
     filteredAttrs() {
@@ -52,11 +54,7 @@ export default {
     },
     value: {
       get() {
-        if (Array.isArray(this.options) && this.options.length) {
-          return Array.isArray(this.modelValue) ? this.modelValue : [];
-        }
-        // 單個 checkbox：回傳布林
-        return Boolean(this.modelValue);
+        return this.modelValue;
       },
       set(val) {
         this.$emit("update:modelValue", val);
@@ -73,19 +71,10 @@ export default {
     onChange(evt) {
       // 如果選項被禁用，不處理事件
       if (evt && evt.target && evt.target.disabled) return;
-
-      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate"); // 通知FormItem校驗
-
-      // 多個：回傳陣列；單個：回傳布林
-      if (Array.isArray(this.options) && this.options.length) {
-        const currentValue = Array.isArray(this.value) ? this.value : [];
-        this.$emit("update:modelValue", currentValue);
-        this.$emit("change", currentValue);
-      } else {
-        const currentValue = Boolean(this.value);
-        this.$emit("update:modelValue", currentValue);
-        this.$emit("change", currentValue);
-      }
+      // 通知FormItem校驗
+      this.$mitt && this.$mitt.emit && this.$mitt.emit("validate");
+      this.$emit('change', evt.target.value);
+      console.log('evt.target.value: ', evt.target.value);
     }
   }
 };
