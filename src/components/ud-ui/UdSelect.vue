@@ -163,7 +163,7 @@ export default {
 .ud-select
   position: relative
   flex: 1 1 0
-  &:before
+  &::before
     content: ""
     width: 0
     height: 0

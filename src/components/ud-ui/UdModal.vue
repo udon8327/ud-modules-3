@@ -137,16 +137,16 @@ export default {
       .icon-close
         opacity: 0.75
         transition: all 0.2s ease
-        &:before, &:after
+        &::before, &::after
           position: absolute
           left: 13px
           content: ''
           height: 26px
           width: 2px
           background-color: #fff
-        &:before
+        &::before
           transform: rotate(45deg)
-        &:after
+        &::after
           transform: rotate(-45deg)
     .ud-modal-header
       flex: 0 0 auto

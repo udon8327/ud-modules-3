@@ -111,7 +111,7 @@ export default {
       pointer-events: none
       &:checked + .radio-decorator
         border-color: #000
-        &:before
+        &::before
           background-color: #000
     .radio-decorator
       margin-right: 6px
