@@ -29,16 +29,17 @@
       ud-form-item(label="下拉" prop="select" flex)
         ud-select(v-model="formData.select" :options="options" flex center)
       ud-form-item(label="下拉連動" prop="selectGroup" flex)
-        .d-flex
+        .select-wrapper
           ud-select(v-model="formData.selectGroup[0]" :options="storeOptions" :group="formData.selectGroup" :index="0" placeholder="縣市")
           ud-select(v-model="formData.selectGroup[1]" :options="storeOptions" :group="formData.selectGroup" :index="1" placeholder="櫃點")
           ud-select(v-model="formData.selectGroup[2]" :options="storeOptions" :group="formData.selectGroup" :index="2" placeholder="時段")
       ud-form-item(label="預約日期" prop="date" flex)
         ud-select-date(v-model="formData.date" flex third roc)
-          p 年
-          template(v-slot:second)
+          template(#first)
+            p 年
+          template(#second)
             p 月
-          template(v-slot:third)
+          template(#third)
             p 日
       ud-form-item(label="地址" prop="twzip" flex)
         ud-select-twzip(ref="zip" v-model="formData.twzip" flex)
@@ -500,6 +501,12 @@ export default {
     span.required
       color: $red
       margin-left: 2px
+  .select-wrapper
+    display: flex
+    justify-content: space-between
+    gap: 5px
+    .ud-select
+      flex: 1 1 0
   .captcha-wrapper
     display: flex
     align-items: center

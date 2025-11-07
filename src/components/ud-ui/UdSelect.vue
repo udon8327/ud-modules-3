@@ -162,7 +162,6 @@ export default {
 <style lang="sass" scoped>
 .ud-select
   position: relative
-  flex: 1 1 0
   &::before
     content: ""
     width: 0
