@@ -157,6 +157,14 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+// Transition styles for fade effect
+.fade-enter-active, .fade-leave-active
+  transition: opacity 0.2s ease
+.fade-enter-from, .fade-leave-to
+  opacity: 0
+.fade-enter-to, .fade-leave-from
+  opacity: 1
+
 .ud-alert
   position: fixed
   z-index: 120
@@ -232,12 +240,4 @@ export default {
         max-width: 50%
       >.ud-button + .ud-button
         margin-left: 15px
-
-// Transition styles for fade effect
-.fade-enter-active, .fade-leave-active
-  transition: opacity 0.2s ease
-.fade-enter-from, .fade-leave-to
-  opacity: 0
-.fade-enter-to, .fade-leave-from
-  opacity: 1
 </style>
