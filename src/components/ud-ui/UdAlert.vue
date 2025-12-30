@@ -78,10 +78,13 @@ export default {
         document.body.style.overflowY = "hidden";
       }
 
-      this.isShow = true;
-      return new Promise((resolve, reject) => {
-        this.resolve = resolve;
-        this.reject = reject;
+      // 使用 nextTick 確保 transition 能夠正確觸發
+      return this.$nextTick(() => {
+        this.isShow = true;
+        return new Promise((resolve, reject) => {
+          this.resolve = resolve;
+          this.reject = reject;
+        });
       });
     },
     formatHtml(val) {
@@ -229,4 +232,12 @@ export default {
         max-width: 50%
       >.ud-button + .ud-button
         margin-left: 15px
+
+// Transition styles for fade effect
+.fade-enter-active, .fade-leave-active
+  transition: opacity 0.2s ease
+.fade-enter-from, .fade-leave-to
+  opacity: 0
+.fade-enter-to, .fade-leave-from
+  opacity: 1
 </style>
