@@ -29,9 +29,5 @@ export default {
   overflow: hidden
   text-overflow: ellipsis
   -webkit-box-orient: vertical
-  // 移除硬編碼的 -webkit-line-clamp，由 inlineStyle 動態控制
   word-break: break-word
-  white-space: nowrap
-  &.multi-line
-    white-space: normal
 </style>
