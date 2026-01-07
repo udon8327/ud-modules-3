@@ -137,5 +137,6 @@ export default {
       border: 1px solid #000
     &:disabled
       background-color: #efefef
+      color: #999
       cursor: not-allowed
 </style>

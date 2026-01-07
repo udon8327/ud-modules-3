@@ -203,4 +203,7 @@ export default {
     &:disabled
       background-color: #efefef
       cursor: not-allowed
+      &.hasValue
+        &[data-placeholder-selected]
+          color: #999
 </style>
