@@ -422,13 +422,13 @@ export default {
             })
             .catch(() => {
               this.udAlert(`LIFF初始化失敗，請稍後再試`).then(() => {
-                location.href = LINE_OA_URL;
+                location.href = import.meta.env.VITE_APP_LINE_ADD_FRIEND_LINK;
               });
             });
         })
         .catch(err => {
           this.udAlert(`[${err.code}] ${err.message}\nLIFF初始化失敗，請稍後再試`).then(() => {
-            location.href = LINE_OA_URL;
+            location.href = import.meta.env.VITE_APP_LINE_ADD_FRIEND_LINK;
           });
         });
     },
@@ -450,14 +450,14 @@ export default {
     shareTargetPicker() {
       if (!liff.isApiAvailable("shareTargetPicker")) {
         this.udAlert("您的設備不支援好友分享功能\n請更新手機系統或LINE版本").then(() => {
-          location.href = LINE_OA_URL;
+          location.href = import.meta.env.VITE_APP_LINE_ADD_FRIEND_LINK;
         });
         return;
       }
       // shareTargetPicker只能在LIFF或外部瀏覽器(除了LINE內建瀏覽器)使用
       if (!liff.isInClient() && liff.getLineVersion()) {
         this.udAlert("請點擊活動LIFF連結進入頁面\n才可使用好友分享功能").then(() => {
-          location.href = LINE_OA_URL;
+          location.href = import.meta.env.VITE_APP_LINE_ADD_FRIEND_LINK;
         });
         return;
       }
@@ -487,7 +487,7 @@ export default {
           this.udAlert({
             message: `${error.code === "EXCEPTION_IN_SUBWINDOW" ? "請在 LINE APP中 開啟活動\n以便使用好友分享功能" : "訊息分享失敗，請稍後再試"}\n[${error.code}] ${error.message}`
           }).then(() => {
-            location.href = LINE_OA_URL;
+            location.href = import.meta.env.VITE_APP_LINE_ADD_FRIEND_LINK;
           });
         });
     }
